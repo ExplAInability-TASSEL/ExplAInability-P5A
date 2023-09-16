@@ -29,10 +29,11 @@ TASSEL_orig</h3>
 
 <!-- Auteurs -->
 ## Auteurs
-GAUBIL Clara (@claragbl)
-GILLARD Thibault (@Thibault-GILLARD)
-COURBI Antoine (@TonioElPuebloSchool)
-RAGEOT Pierre (@Tpierrert3)
+
+- [GAUBIL Clara (@claragbl)](https://github.com/claragbl)
+- [GILLARD Thibault (@Thibault-GILLARD)](https://github.com/Thibault-GILLARD)
+- [COURBI Antoine (@TonioElPuebloSchool)](https://github.com/TonioElPuebloSchool)
+- [RAGEOT Pierre (@Tpierrert3)](https://github.com/Tpierrert3)
 
 <!-- LICENSE -->
 ## License
