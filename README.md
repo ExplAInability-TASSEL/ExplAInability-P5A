@@ -16,7 +16,7 @@ TASSEL_orig</h3>
   <p align="center">
     Code developed for the web programming course at epf whose goal was "Create your own APIs to share data".
     <br />
-    <a href="https://github.com/Thibault-GILLARD/epfbook"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/pierrert3/ExplAInability-P5A/tree/main"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/Thibault-GILLARD/epfbook/issues">Report Bug</a>
