@@ -35,6 +35,13 @@ TASSEL_orig</h3>
 - [COURBI Antoine (@TonioElPuebloSchool)](https://github.com/TonioElPuebloSchool)
 - [RAGEOT Pierre (@Tpierrert3)](https://github.com/Tpierrert3)
 
+Auteurs de la publication
+
+- RAFFAELE GAETANO
+- DINO IENCO
+- YAWOGAN JEAN EUDES GBODJO
+- ROBERTO INTERDONATO
+
 <!-- LICENSE -->
 ## License
 
