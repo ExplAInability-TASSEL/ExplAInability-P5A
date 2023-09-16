@@ -6,8 +6,9 @@ Hey youuu
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <h2 align="center">Web Programming,
-Code your own social network -
+  <h2 align="center">Weakly Supervised Learning for Land Cover
+Mapping of Satellite Image Time Series via
+Attention-Based CNN
 Epfbook</h3>
   <a href="https://www.epf.fr/en">
     <img src="https://upload.wikimedia.org/wikipedia/fr/e/e9/EPF_logo_2021.png" alt="Logo" width="211" height="179">
