@@ -19,8 +19,7 @@ TASSEL_orig</h3>
     <a href="https://github.com/pierrert3/ExplAInability-P5A/tree/main"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/Thibault-GILLARD/epfbook/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/Thibault-GILLARD/epfbook/issues">Request Feature</a>
+    <a href="https://github.com/pierrert3/ExplAInability-P5A/issues">Report Bug</a>
+    <a href="https://github.com/pierrert3/ExplAInability-P5A/issues">Request Feature</a>
   </p>
 </div>
