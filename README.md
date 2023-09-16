@@ -23,3 +23,18 @@ TASSEL_orig</h3>
     <a href="https://github.com/pierrert3/ExplAInability-P5A/issues">Request Feature</a>
   </p>
 </div>
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+<!-- Auteurs -->
+## Auteurs
+GAUBIL Clara (@claragbl)
+GILLARD Thibault (@Thibault-GILLARD)
+COURBI Antoine (@TonioElPuebloSchool)
+RAGEOT Pierre (@Tpierrert3)
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
