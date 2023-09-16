@@ -27,6 +27,10 @@ TASSEL_orig</h3>
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+- **Objectif de l'article** : [Lien vers l'article](https://hal.inrae.fr/hal-02941804)
+
+L'utilisation de séries temporelles d'images satellites à haute résolution ouvre de nouvelles opportunités pour la surveillance de la surface terrestre, mais pose également des défis en termes d'analyse de données massives. L'un de ces défis concerne la cartographie de l'occupation des sols, où les informations disponibles sont souvent limitées et de qualité approximative. Pour relever ce défi, les auteurs proposent TASSEL, un nouveau cadre d'apprentissage en profondeur qui exploite les informations détaillées des images satellites pour améliorer la cartographie des sols. Leurs expériences montrent que TASSEL non seulement améliore les performances prédictives par rapport aux approches concurrentes, mais fournit également des informations supplémentaires pour interpréter les décisions du modèle.
+
 <!-- Auteurs -->
 ## Auteurs
 
