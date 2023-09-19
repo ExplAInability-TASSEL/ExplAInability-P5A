@@ -37,7 +37,7 @@ L'utilisation de séries temporelles d'images satellites à haute résolution ou
 - [GAUBIL Clara (@claragbl)](https://github.com/claragbl)
 - [GILLARD Thibault (@Thibault-GILLARD)](https://github.com/Thibault-GILLARD)
 - [COURBI Antoine (@TonioElPuebloSchool)](https://github.com/TonioElPuebloSchool)
-- [RAGEOT Pierre (@Tpierrert3)](https://github.com/Tpierrert3)
+- [RAGEOT Pierre (@pierrert3)](https://github.com/pierrert3)
 
 Auteurs de la publication
 
