@@ -31,13 +31,22 @@ TASSEL_orig</h3>
 
 L'utilisation de séries temporelles d'images satellites à haute résolution ouvre de nouvelles opportunités pour la surveillance de la surface terrestre, mais pose également des défis en termes d'analyse de données massives. L'un de ces défis concerne la cartographie de l'occupation des sols, où les informations disponibles sont souvent limitées et de qualité approximative. Pour relever ce défi, les auteurs proposent TASSEL, un nouveau cadre d'apprentissage en profondeur qui exploite les informations détaillées des images satellites pour améliorer la cartographie des sols. Leurs expériences montrent que TASSEL non seulement améliore les performances prédictives par rapport aux approches concurrentes, mais fournit également des informations supplémentaires pour interpréter les décisions du modèle.
 
+<!-- MAP VIEW -->
+## MAP VIEW
+
+GOOGLE API
+https://tonioelpuebloschool.github.io/Test_Site/
+
+MapBox API
+https://thibault-gillard.github.io/Explainability/
+
 <!-- Auteurs -->
 ## Auteurs
 
 - [GAUBIL Clara (@claragbl)](https://github.com/claragbl)
 - [GILLARD Thibault (@Thibault-GILLARD)](https://github.com/Thibault-GILLARD)
 - [COURBI Antoine (@TonioElPuebloSchool)](https://github.com/TonioElPuebloSchool)
-- [RAGEOT Pierre (@Tpierrert3)](https://github.com/Tpierrert3)
+- [RAGEOT Pierre (@pierrert3)](https://github.com/pierrert3)
 
 Auteurs de la publication
 
