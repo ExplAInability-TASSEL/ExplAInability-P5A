@@ -40,6 +40,8 @@ https://tonioelpuebloschool.github.io/Test_Site/
 MapBox API
 https://thibault-gillard.github.io/Explainability/
 
+![Alt Text](ExplAInability-P5A/assets/Enregistrement de l’écran 2023-09-22 à 23.52.46.gif)
+
 <!-- Auteurs -->
 ## Auteurs
 
