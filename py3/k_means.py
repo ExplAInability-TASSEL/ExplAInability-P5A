@@ -75,3 +75,11 @@ cluster_centers = custom_kmeans.get_cluster_centers()
 print("cluster_labels shape ",cluster_labels.shape)
 print("Number of pixels in each cluster: ", np.bincount(cluster_labels))
 print("cluster_centers shape ",cluster_centers.shape)
+
+
+""" results
+cluster_labels shape  (100,)
+Number of pixels in each cluster:  [80 20]
+cluster_centers shape  (2, 73, 10)
+parfait !!!!
+"""
