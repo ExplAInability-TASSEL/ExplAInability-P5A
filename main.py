@@ -1,6 +1,6 @@
 from py3.k_means import PixelValueGenerator, CustomKMeans
-from py3.CNN_model import CustomCNN
 import numpy as np
+from py3.CNN_model import CustomCNN, CustomCNN_1D, Cplx_CustomCNN_1D
 
 
 # Usage example, With an segment of 100 pixels, each with shape (73, 10)
@@ -16,7 +16,7 @@ custom_kmeans = CustomKMeans(n_clusters=2)
 
 # Fit the K-Means model and retrieve cluster labels and centers
 custom_kmeans.fit(pixels)
-
+print("hey")
 # results
 cluster_labels = custom_kmeans.get_cluster_labels()
 cluster_centers = custom_kmeans.get_cluster_centers()
@@ -24,9 +24,47 @@ print("cluster_labels shape ",cluster_labels.shape)
 print("Number of pixels in each cluster: ", np.bincount(cluster_labels))
 print("cluster_centers shape ",cluster_centers.shape)
 
-# Appl
+cluster_1 = cluster_centers[0]
+print(f'cluster_1 shape: {cluster_1.shape}')
+# Reshape cluster_1 to match the input shape of CustomCNN
+cluster_1 = cluster_1.reshape((1,) + cluster_1.shape)  # Add the batch dimension
+
+# Create an instance of CustomCNN
+custom_cnn = CustomCNN_1D(input_shape=cluster_1.shape[1:], num_classes=7)
 
 
+# Compile the model
+custom_cnn.compile_model()
 
+# Summarize the model
+custom_cnn.summary()
+
+# You can use custom_cnn.model to make predictions
+predictions1 = custom_cnn.model.predict(cluster_1)
+
+cluster_2 = cluster_centers[1]
+print(f'cluster_2 shape: {cluster_2.shape}')
+
+# Reshape cluster_2 to match the input shape of CustomCNN
+cluster_2 = cluster_2.reshape((1,) + cluster_2.shape)  # Add the batch dimension
+ 
+# Create an instance of CustomCNN
+custom_cnn = Cplx_CustomCNN_1D(input_shape=cluster_2.shape[1:], num_classes=7)
+
+# Compile the model
+custom_cnn.compile_model()
+ 
+# Summarize the model
+custom_cnn.summary()
+ 
+# You can use custom_cnn.model to make predictions
+predictions2 = custom_cnn.model.predict(cluster_2)
+
+
+# Print the predictions
+print(predictions1)
+print(predictions2)
+
+#groupe
 
  
