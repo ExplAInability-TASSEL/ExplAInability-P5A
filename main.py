@@ -1,6 +1,6 @@
 from py3.k_means import PixelValueGenerator, CustomKMeans
 import numpy as np
-from py3.CNN_model import CustomCNN, CustomCNN_1D, Cplx_CustomCNN_1D
+from py3.CNN_model import Cplx_CustomCNN_1D
 
 
 # Usage example, With an segment of 100 pixels, each with shape (73, 10)
@@ -29,19 +29,6 @@ print(f'cluster_1 shape: {cluster_1.shape}')
 # Reshape cluster_1 to match the input shape of CustomCNN
 cluster_1 = cluster_1.reshape((1,) + cluster_1.shape)  # Add the batch dimension
 
-# Create an instance of CustomCNN
-custom_cnn = CustomCNN_1D(input_shape=cluster_1.shape[1:], num_classes=7)
-
-
-# Compile the model
-custom_cnn.compile_model()
-
-# Summarize the model
-custom_cnn.summary()
-
-# You can use custom_cnn.model to make predictions
-predictions1 = custom_cnn.model.predict(cluster_1)
-
 cluster_2 = cluster_centers[1]
 print(f'cluster_2 shape: {cluster_2.shape}')
 
@@ -57,14 +44,12 @@ custom_cnn.compile_model()
 # Summarize the model
 custom_cnn.summary()
  
-# You can use custom_cnn.model to make predictions
+#custom_cnn.model to make predictions
 predictions2 = custom_cnn.model.predict(cluster_2)
 
 
 # Print the predictions
-print(predictions1)
 print(predictions2)
 
-#groupe
 
  
