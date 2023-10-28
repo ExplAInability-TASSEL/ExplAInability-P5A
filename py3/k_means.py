@@ -2,6 +2,22 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 class CustomKMeans:
+    """Custom K-Means Clustering.
+
+    Args:
+        n_clusters (int): The number of clusters.
+
+    Attributes:
+        n_clusters (int): The number of clusters in the model.
+        kmeans (KMeans): The K-Means clustering model.
+        cluster_labels (ndarray): Labels of the clustered data.
+        cluster_centers (ndarray): Cluster centers.
+
+    Methods:
+        fit: Fit the K-Means model to input data.
+        get_cluster_labels: Get the cluster labels of the input data.
+        get_cluster_centers: Get the cluster centers.
+    """
     def __init__(self, n_clusters):
         self.n_clusters = n_clusters
         self.kmeans = KMeans(n_clusters=n_clusters)
@@ -25,10 +41,23 @@ class CustomKMeans:
     def get_cluster_centers(self):
         return self.cluster_centers
     
-    
-class PixelValueGenerator:
-    """This class generates pixel values for a given shape and percentage of low values
+"""This class generates pixel values for a given shape and percentage of low values
     This is useful for the first tests, to see if we can have unbalanced clusters
+"""
+class PixelValueGenerator:
+    """
+    Generate Pixel Values with Low and High Intensities.
+
+    Args:
+        low_value_percentage (float): Percentage of low-intensity values.
+
+    Attributes:
+        low_value_percentage (float): The percentage of low-intensity values.
+        values (ndarray): Generated pixel values.
+
+    Methods:
+        generate_values: Generate pixel values with specified low and high intensities.
+        get_values: Get the generated pixel values
     """
     def __init__(self, low_value_percentage):
         self.low_value_percentage = low_value_percentage
@@ -54,32 +83,3 @@ class PixelValueGenerator:
 
     def get_values(self):
         return self.values
-
-# Usage example, With an segment of 100 pixels, each with shape (73, 10)
-pixels = np.random.random((100, 73, 10))
-
-# we want to generate more realistic values for the pixels, so we help the clustering algorithm
-generator = PixelValueGenerator(low_value_percentage=0.8)
-generator.generate_values(pixels.shape)
-pixels = generator.get_values()
-
-# object of the class CustomKMeans
-custom_kmeans = CustomKMeans(n_clusters=2)
-
-# Fit the K-Means model and retrieve cluster labels and centers
-custom_kmeans.fit(pixels)
-
-# results
-cluster_labels = custom_kmeans.get_cluster_labels()
-cluster_centers = custom_kmeans.get_cluster_centers()
-print("cluster_labels shape ",cluster_labels.shape)
-print("Number of pixels in each cluster: ", np.bincount(cluster_labels))
-print("cluster_centers shape ",cluster_centers.shape)
-
-
-""" results
-cluster_labels shape  (100,)
-Number of pixels in each cluster:  [80 20]
-cluster_centers shape  (2, 73, 10)
-parfait !!!!
-"""
