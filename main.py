@@ -48,21 +48,30 @@ custom_cnn.summary()
 #custom_cnn.model to make predictions
 predictions2 = custom_cnn.model.predict(cluster_2)
 
+# prediction 1 
+predictions1 = custom_cnn.model.predict(cluster_1)
+
 # Print the predictions
 print(predictions2)
+print(predictions1)
 
+# join predictions as in cluster_centers 
+predictions = np.concatenate((predictions1, predictions2), axis=1)
 
+print(predictions)
 
+# Create an instance of CustomAttentionLayer
 attn_layer = CustomAttentionLayer(units=1)
 
-# attention layer for cluster_centers 
-attn_layer.build(cluster_centers.shape)
-print("attn_layer shape ",attn_layer.shape)
-# attention layer for cluster_1
-attn_layer.build(cluster_1.shape)
-print("attn_layer shape ",attn_layer.shape)
-# attention layer for cluster_2
-attn_layer.build(cluster_2.shape)
+# Get the attention weights
+attn_weights = attn_layer(predictions)
+ 
+ 
+# Print the attention weights
+print(attn_weights)
+print(attn_weights.shape)
+ 
+
 
  
 
