@@ -1,7 +1,6 @@
 from py3.k_means import PixelValueGenerator, CustomKMeans
 import numpy as np
 from py3.CNN_model import Cplx_CustomCNN_1D
-#hey
 
 # Usage example, With an segment of 100 pixels, each with shape (73, 10)
 pixels = np.random.random((100, 73, 10))
