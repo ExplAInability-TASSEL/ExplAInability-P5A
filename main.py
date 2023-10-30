@@ -58,7 +58,7 @@ print(f"predictions1 shape: {predictions1.shape}")
 print(f"predictions2 shape: {predictions2.shape}")
 
 # join predictions as in cluster_centers 
-predictions = np.concatenate((predictions1, predictions2), axis=1)
+predictions = np.concatenate((predictions1, predictions2), axis=0)
 
 print(predictions)
 print(f"predictions shape: {predictions.shape}")
