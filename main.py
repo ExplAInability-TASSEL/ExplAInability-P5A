@@ -1,6 +1,7 @@
 from py3.k_means import PixelValueGenerator, CustomKMeans
 import numpy as np
 from py3.CNN_model import Cplx_CustomCNN_1D
+from py3.Attention_Layer import CustomAttentionLayer
 
 # Usage example, With an segment of 100 pixels, each with shape (73, 10)
 pixels = np.random.random((100, 73, 10))
@@ -11,7 +12,8 @@ generator.generate_values(pixels.shape)
 pixels = generator.get_values()
 
 # object of the class CustomKMeans
-custom_kmeans = CustomKMeans(n_clusters=2)
+n_clusters=2
+custom_kmeans = CustomKMeans(n_clusters=n_clusters)
 
 # Fit the K-Means model and retrieve cluster labels and centers
 custom_kmeans.fit(pixels)
@@ -46,9 +48,23 @@ custom_cnn.summary()
 #custom_cnn.model to make predictions
 predictions2 = custom_cnn.model.predict(cluster_2)
 
-
 # Print the predictions
 print(predictions2)
+
+
+
+attn_layer = CustomAttentionLayer(units=1)
+
+# attention layer for cluster_centers 
+attn_layer.build(cluster_centers.shape)
+print("attn_layer shape ",attn_layer.shape)
+# attention layer for cluster_1
+attn_layer.build(cluster_1.shape)
+print("attn_layer shape ",attn_layer.shape)
+# attention layer for cluster_2
+attn_layer.build(cluster_2.shape)
+
+ 
 
 
  

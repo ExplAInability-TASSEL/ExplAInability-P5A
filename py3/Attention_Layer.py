@@ -5,7 +5,7 @@ class CustomAttentionLayer(Layer):
     """Custom Attention Layer.
 
     Args:
-        units (int): The number of attention units.
+        units (int): The number of attention units. 
 
     Usage:
         This layer adds a custom attention mechanism to your neural network model.
@@ -18,7 +18,7 @@ class CustomAttentionLayer(Layer):
     """
     def __init__(self, units, **kwargs):
         super(CustomAttentionLayer, self).__init__(**kwargs)
-        self.units = units
+        self.units = units 
 
     def build(self, input_shape):
         self.Wa = self.add_weight(name='Wa', shape=(self.units, input_shape[-1]),
