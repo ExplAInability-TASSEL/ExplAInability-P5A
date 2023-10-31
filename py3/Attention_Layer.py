@@ -1,5 +1,6 @@
 from keras.layers import Layer
 import tensorflow as tf
+import numpy as np
 
 class CustomAttentionLayer(Layer):
     """Custom Attention Layer.
@@ -42,5 +43,5 @@ class CustomAttentionLayer(Layer):
     
     def get_weighted_sum(self, inputs, alphas):
         # Calculate the weighted sum of input vectors based on attention scores
-        weighted_sum = tf.reduce_sum(inputs * alphas, axis=0)
+        weighted_sum = np.concatenate(inputs * alphas, axis=0)
         return weighted_sum
