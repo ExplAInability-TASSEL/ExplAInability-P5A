@@ -42,5 +42,5 @@ class CustomAttentionLayer(Layer):
     
     def get_weighted_sum(self, inputs, alphas):
         # Calculate the weighted sum of input vectors based on attention scores
-        weighted_sum = tf.reduce_sum(inputs * alphas, axis=1)
+        weighted_sum = tf.reduce_sum(inputs * alphas, axis=0)
         return weighted_sum
