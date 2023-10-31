@@ -2,6 +2,7 @@ from py3.k_means import PixelValueGenerator, CustomKMeans
 import numpy as np
 from py3.CNN_model import Cplx_CustomCNN_1D
 from py3.Attention_Layer import CustomAttentionLayer
+from py3.classification import CustomClassifierModel
 
 # Usage example, With an segment of 100 pixels, each with shape (73, 10)
 pixels = np.random.random((100, 73, 10))
@@ -77,6 +78,15 @@ print(f"attn_weights shape: {attn_weights.shape}")
 h = attn_layer.get_weighted_sum(predictions, attn_weights)
 print(h)
 print(f"h shape: {h.shape}")
+
+classifier = CustomClassifierModel(num_classes=8)
+classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+classifier.summary()
+ 
+# Make predictions
+predictions = classifier.predict(h)
+print(predictions)
+print(f"predictions shape: {predictions.shape}")
 
  
 
