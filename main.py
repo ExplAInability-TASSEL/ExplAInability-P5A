@@ -74,7 +74,9 @@ attn_weights = attn_layer(predictions)
 print(attn_weights)
 print(f"attn_weights shape: {attn_weights.shape}")
  
-
+h = attn_layer.get_weighted_sum(predictions, attn_weights)
+print(h)
+print(f"h shape: {h.shape}")
 
  
 
