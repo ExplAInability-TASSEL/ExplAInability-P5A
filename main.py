@@ -1,3 +1,4 @@
+from typing import Any
 from py3.k_means import PixelValueGenerator, CustomKMeans
 import numpy as np
 from py3.CNN_model import Cplx_CustomCNN_1D
@@ -32,13 +33,9 @@ print(f'cluster_1 shape: {cluster_1.shape}')
 cluster_1 = cluster_1.reshape((1,) + cluster_1.shape)  # Add the batch dimension
 
 cluster_2 = cluster_centers[1]
-print(f'cluster_2 shape: {cluster_2.shape}')
+input_shape = cluster_2.shape  # Use the shape directly without adding a batch dimension
 
-# Reshape cluster_2 to match the input shape of CustomCNN
-cluster_2 = cluster_2.reshape((1,) + cluster_2.shape)  # Add the batch dimension
- 
-# Create an instance of CustomCNN
-custom_cnn = Cplx_CustomCNN_1D(input_shape=cluster_2.shape[1:], num_classes=7)
+custom_cnn = Cplx_CustomCNN_1D(input_shape=input_shape, num_classes=7)
 
 # Compile the model
 custom_cnn.compile_model()
@@ -89,6 +86,20 @@ print(predictions)
 print(f"predictions shape: {predictions.shape}")
 
  
-
-
+class MODEL():
+    def __init__(self, num_classes=7, num_clusters=2):
+        self.num_classes = num_classes
+        self.num_clusters = num_clusters
+        self.input_shape = self.calculate_input_shape()
+        self.cluster_centers = CustomKMeans(n_clusters=self.num_clusters) 
+        self.enc = Cplx_CustomCNN_1D(input_shape=self.input_shape, num_classes=self.num_classes)
+        self.attn = CustomAttentionLayer(units=1)
+        self.classifier = CustomClassifierModel(num_classes=self.num_classes)
+        
+    # encode the cluster with Cplx_CustomCNN_1D and return the "predictions"
+    def calculate_input_shape(self):
+        cluster_centers = self.cluster_centers.get_cluster_centers()
+        return cluster_centers[0].shape[1:]
+        
+        
  
