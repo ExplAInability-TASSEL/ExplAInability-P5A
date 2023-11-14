@@ -17,7 +17,7 @@ class MODEL():
         self.classifier = CustomClassifierModel(num_classes=self.num_classes)
         
     def calculate_input_shape(self):
-        self.kmeans.fit(pixels)
+        self.kmeans.fit(reshaped_array) # AAA CHANGER !!!! 
         cluster_centers = self.kmeans.get_cluster_centers()
         print("cluster_centers shape ",cluster_centers.shape)
         return (cluster_centers[0].reshape((1,) + cluster_centers[0].shape)).shape[1:]
@@ -35,7 +35,7 @@ class MODEL():
     def train(self, train_data, train_labels, epochs=10, batch_size=32):
         self.model.fit(train_data, train_labels, epochs=epochs, batch_size=batch_size)
         
-        
+"""
 # Usage example, With an segment of 100 pixels, each with shape (73, 10)
 pixels = np.random.random((100, 73, 10))
 
@@ -51,11 +51,34 @@ custom_kmeans = CustomKMeans(n_clusters=n_clusters)
 
 # Fit the K-Means model and retrieve cluster labels and centers
 custom_kmeans.fit(pixels)
+"""
+
+import re
+import numpy as np
+
+vectors = []
+
+with open('segment_test.txt', 'r') as file:
+    for line in file:
+        values = re.findall(r'\[([^]]*)\]', line)
+        for sublist in values:
+            vector = [float(value) for value in sublist.split(',')]
+            vectors.append(vector)
+
+numpy_array = np.array(vectors)
+
+print("Shape of the numpy...:", numpy_array.shape)
+reshaped_array = numpy_array.reshape(62, 73, 10)
+
+n_clusters=2
+custom_kmeans = CustomKMeans(n_clusters=n_clusters)
+custom_kmeans.fit(reshaped_array)
+
 
 MODEL = MODEL(num_classes=7, num_clusters=2)
 
 MODEL.build(learning_rate=0.001)
 
-MODEL.train(pixels, custom_kmeans.get_cluster_labels(), epochs=10, batch_size=32)
+MODEL.train(reshaped_array, custom_kmeans.get_cluster_labels(), epochs=10, batch_size=32)
 
  
