@@ -1,2 +1,5 @@
 /.Ds_store
 /data
+/venv/
+__pycache__/
+
