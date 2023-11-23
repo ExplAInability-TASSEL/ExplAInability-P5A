@@ -69,6 +69,7 @@ numpy_array = np.array(vectors)
 
 print("Shape of the numpy...:", numpy_array.shape)
 reshaped_array = numpy_array.reshape(62, 73, 10)
+print(reshaped_array)
 
 n_clusters=2
 custom_kmeans = CustomKMeans(n_clusters=n_clusters)
