@@ -5,15 +5,15 @@ class Cplx_CustomCNN_1D(layers.Layer):
     """Custom 1D Convolutional Neural Network.
 
     Args:
-        input_shape (tuple): Input shape (default: (730, 10)).
-        num_classes (int): Number of classes (default: 7).
+        input_shape (tuple): Input shape (default: (73, 10)).
+        num_classes (int): Number of classes (default: 8).
 
     Attributes:
         input_shape (tuple): The input shape of the model.
         num_classes (int): The number of target classes.
         model (keras.Sequential): The built CNN model.
     """
-    def __init__(self, input_shape_custom=(73, 10), num_classes=7):
+    def __init__(self, input_shape_custom=(73, 10), num_classes=8):
         super(Cplx_CustomCNN_1D, self).__init__()
         self.input_shape_custom = input_shape_custom
         self.num_classes = num_classes
@@ -56,7 +56,7 @@ class Cplx_CustomCNN_1D(layers.Layer):
         self.model.summary()
 
 class CustomCNN:
-    def __init__(self, input_shape=(73, 10), num_classes=7):
+    def __init__(self, input_shape=(73, 10), num_classes=8):
         self.input_shape = input_shape
         self.num_classes = num_classes
         self.model = self.build_model()
