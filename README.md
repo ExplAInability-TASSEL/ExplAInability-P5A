@@ -35,7 +35,7 @@ L'utilisation de séries temporelles d'images satellites à haute résolution ou
 ## MAP VIEW
 
 GOOGLE API
-https://tonioelpuebloschool.github.io/Test_Site/
+https://pierrert3.github.io/ExplAInability-P5A/
 
 MapBox API
 https://thibault-gillard.github.io/Explainability/

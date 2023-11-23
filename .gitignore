@@ -1,1 +1,5 @@
 /.Ds_store
+/data
+/venv/
+__pycache__/
+post_processed_data.ftr
