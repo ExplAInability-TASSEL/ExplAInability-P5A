@@ -117,7 +117,7 @@ class Custom_Model(tf.keras.Model):
         print("emb shape before reshape:", np.array(emb).shape)
         emb = emb.reshape(emb.shape[0], -1)
         print("emb shape after reshape:", np.array(emb).shape)
-
+# tf.stack 
         return self.classifier(emb)
     
     def summary(self):
@@ -128,14 +128,14 @@ class Custom_Model(tf.keras.Model):
     def compile(self, optimizer, loss, metrics=None):
         super(Custom_Model, self).compile(optimizer=optimizer, loss=loss, metrics=metrics)
         
-    def fit(self, x, y, epochs, batch_size):
+    """def fit(self, x, y, epochs, batch_size):
         self.call(x)
         self.classifier.compile(optimizer=self.optimizer, loss=self.loss, metrics=self.metrics)
-        self.classifier.fit(x, y, epochs=epochs, batch_size=batch_size)
+        self.classifier.fit(x, y, epochs=epochs, batch_size=batch_size)"""
          
 model = Custom_Model()
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-model.fit(clusters, clusters, epochs=10, batch_size=32)
+model.fit(clusters, clusters, epochs=10, batch_size=3)
  
   
     
