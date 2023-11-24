@@ -2,7 +2,7 @@ from keras.layers import Layer
 import tensorflow as tf
 import numpy as np
 
-class CustomAttentionLayer(Layer):
+class CustomAttentionLayer(tf.keras.layers.Layer):
     """Custom Attention Layer.
 
     Args:

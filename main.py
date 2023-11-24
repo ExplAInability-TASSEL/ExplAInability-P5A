@@ -69,18 +69,75 @@ numpy_array = np.array(vectors)
 
 print("Shape of the numpy...:", numpy_array.shape)
 reshaped_array = numpy_array.reshape(62, 73, 10)
-print(reshaped_array)
+shuffled_arrays = []
+for _ in range(3):
+    np.random.shuffle(reshaped_array)
+    shuffled_arrays.append(reshaped_array.copy())
+
+
+# Create the data variable
+data = np.array(shuffled_arrays)
+print("data shape:", data.shape)
 
 n_clusters=2
 custom_kmeans = CustomKMeans(n_clusters=n_clusters)
-custom_kmeans.fit(reshaped_array)
-print("Cluster centers: ", custom_kmeans.get_cluster_centers())
+
+clustered_data = []
+#
+for i in range(data.shape[0]):
+    custom_kmeans.fit(data[i])
+    clustered_data.append(custom_kmeans.get_cluster_centers())
+     
+clusters = np.array(clustered_data)
+print("clusters shape:", clusters.shape)
+   
+ 
 
 
-MODEL = MODEL(num_classes=7, num_clusters=2)
 
-MODEL.build(learning_rate=0.001)
+class Custom_Model(tf.keras.Model):
+    
+    def __init__(self):
+        super(Custom_Model, self).__init__()
+        self.enc = Cplx_CustomCNN_1D()
+        self.attn = CustomAttentionLayer(units=64)
+        self.classifier = CustomClassifierModel(num_classes=8)
+    
+    def call(self, inputs):
+        intermediate = []
+        for el in inputs:
+            intermediate.append(self.enc(el))
+            print("intermediate shape ", np.array(intermediate).shape)
+        # Apply attention individually
+        attention_outputs = [self.attn(x) for x in intermediate]
+        print("attention_outputs shape:", np.array(attention_outputs).shape)
+        print("attention_outputs:", attention_outputs)
+        emb = [alpha * tensor for alpha, tensor in zip(attention_outputs, intermediate)]
+        emb = np.array(emb)
+        print("emb shape before reshape:", np.array(emb).shape)
+        emb = emb.reshape(emb.shape[0], -1)
+        print("emb shape after reshape:", np.array(emb).shape)
 
-MODEL.train(reshaped_array, custom_kmeans.get_cluster_labels(), epochs=10, batch_size=32)
-
+        return self.classifier(emb)
+    
+    def summary(self):
+        self.enc.summary()
+        self.attn.summary()
+        self.classifier.summary()
+        
+    def compile(self, optimizer, loss, metrics=None):
+        super(Custom_Model, self).compile(optimizer=optimizer, loss=loss, metrics=metrics)
+        
+    def fit(self, x, y, epochs, batch_size):
+        self.call(x)
+        self.classifier.compile(optimizer=self.optimizer, loss=self.loss, metrics=self.metrics)
+        self.classifier.fit(x, y, epochs=epochs, batch_size=batch_size)
+         
+model = Custom_Model()
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+model.fit(clusters, clusters, epochs=10, batch_size=32)
+ 
+  
+    
+    
  
