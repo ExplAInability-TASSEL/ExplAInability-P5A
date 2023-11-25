@@ -1,7 +1,6 @@
 from keras.layers import Layer
 import tensorflow as tf
 import numpy as np
-
 class CustomAttentionLayer(tf.keras.layers.Layer):
     """Custom Attention Layer.
 
@@ -26,19 +25,20 @@ class CustomAttentionLayer(tf.keras.layers.Layer):
                                  initializer='uniform', trainable=True)
         self.ba = self.add_weight(name='ba', shape=(self.units,),
                                  initializer='uniform', trainable=True)
-        #self.va = self.add_weight(name='va', shape=(self.units,),
-        #                         initializer='uniform', trainable=True)
+        self.va = self.add_weight(name='va', shape=(1, self.units),
+                                 initializer='uniform', trainable=True)
         super(CustomAttentionLayer, self).build(input_shape)
 
     def call(self, inputs):
         hl = inputs 
 
-        # e = tf.exp(self.va@tf.tanh(self.ba + tf.matmul(hl, tf.transpose(self.Wa))))
-        
-        e = tf.exp(tf.reduce_sum(self.ba + tf.tanh(tf.matmul(hl, tf.transpose(self.Wa))), axis=-1, keepdims=True))
+        matmul = tf.matmul(hl, tf.transpose(self.Wa))
+        e = tf.exp(tf.matmul(self.va, tf.transpose(tf.tanh(self.ba + matmul))))
+        #e = tf.exp(tf.reduce_sum(self.ba + tf.tanh(tf.matmul(hl, tf.transpose(self.Wa))), axis=-1, keepdims=True))
 
         alpha = e / tf.reduce_sum(e, axis=0, keepdims=True)
 
+        alpha = tf.transpose(alpha)
         
         return alpha
 
