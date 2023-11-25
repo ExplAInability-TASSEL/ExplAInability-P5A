@@ -20,6 +20,7 @@ class CustomFullyConnectedLayer(Layer):
 
     def compute_output_shape(self, input_shape):
         return input_shape
+    
 
 class CustomClassifierModel(tf.keras.Model):
     """
@@ -53,5 +54,7 @@ class CustomClassifierModel(tf.keras.Model):
 
     def compute_output_shape(self, input_shape):
         return (input_shape[0], self.num_classes)
+    
+    
 
 

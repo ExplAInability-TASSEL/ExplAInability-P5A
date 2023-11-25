@@ -26,14 +26,16 @@ class CustomAttentionLayer(tf.keras.layers.Layer):
                                  initializer='uniform', trainable=True)
         self.ba = self.add_weight(name='ba', shape=(self.units,),
                                  initializer='uniform', trainable=True)
-        self.va = self.add_weight(name='va', shape=(self.units,),
-                                 initializer='uniform', trainable=True)
+        #self.va = self.add_weight(name='va', shape=(self.units,),
+        #                         initializer='uniform', trainable=True)
         super(CustomAttentionLayer, self).build(input_shape)
 
     def call(self, inputs):
         hl = inputs 
 
-        e = tf.exp(self.va@tf.tanh(self.ba + tf.matmul(hl, tf.transpose(self.Wa))))
+        # e = tf.exp(self.va@tf.tanh(self.ba + tf.matmul(hl, tf.transpose(self.Wa))))
+        
+        e = tf.exp(tf.reduce_sum(self.ba + tf.tanh(tf.matmul(hl, tf.transpose(self.Wa))), axis=-1, keepdims=True))
 
         alpha = e / tf.reduce_sum(e, axis=0, keepdims=True)
 
@@ -47,3 +49,9 @@ class CustomAttentionLayer(tf.keras.layers.Layer):
         # Calculate the weighted sum of input vectors based on attention scores
         weighted_sum = np.concatenate(inputs * alphas, axis=0)
         return weighted_sum
+
+    def summary(self):
+        print("Custom Attention Layer with {} units".format(self.units))
+        #print("va shape:", self.va.shape)
+        print("Trainable weights:", self.trainable_weights)
+        print("Non-trainable weights:", self.non_trainable_weights)
