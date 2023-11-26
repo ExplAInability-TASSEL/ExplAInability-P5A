@@ -25,9 +25,12 @@ class CustomKMeans:
         self.cluster_centers = None
 
     def fit(self, pixels):
-        # Reshape to have a single feature vector per pixel, 73x10 to 730
-        reshaped_pixels = pixels.reshape(len(pixels), -1)
-
+        # Reshape to have a single feature vector per pixel, 73x10 to 730 if not already in that shape
+        if len(pixels.shape) == 3:
+            reshaped_pixels = pixels.reshape(len(pixels), -1)
+        else:
+            reshaped_pixels = pixels
+            
         # Fit the K-Means model
         self.kmeans.fit(reshaped_pixels)
         self.cluster_labels = self.kmeans.labels_
