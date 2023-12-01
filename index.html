@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reunion Map</title>
+    <title>Koumbia Map</title>
+    <!-- CSS, mise en page -->
     <style>
         body {
             margin: 0;
             padding: 0;
             overflow: hidden;
         }
+        /* carte de base */
         #map-container {
             position: absolute;
             top: 40px;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: calc(100% - 40px);
         }
+        /* menu en haut (menu info contact) */
         #nav-menu {
             position: absolute;
             top: 0;
@@ -27,16 +30,19 @@
             color: #fff; /* Text color for the menu items */
             z-index: 999;
         }
+        /* liste des 3 element menus info et contact */
         #nav-menu ul {
             list-style: none;
             padding: 0;
             margin: 0;
             display: flex;
         }
+        /* chaque element de la liste de la barre */
         #nav-menu li {
             padding: 10px 20px;
             cursor: pointer;
         }
+        /* panel segment à droite */
         #info-panel {
             position: absolute;
             top: 40px;
@@ -46,7 +52,10 @@
             background-color: #fff;
             box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
             transform: translateX(100%); /* Adjusted initial position */
+            display: flex;
+            flex-direction: column;
         }
+        /* petite fleche du panel */
         #info-panel-arrow {
             position: absolute;
             top: 50%;
@@ -59,33 +68,90 @@
             border-top: 10px solid #3a1414;
             cursor: pointer;
         }
+        /* map google API dans le panel*/
         #map-in-panel {
             width: 100%;
-            height: 100%;
+            height: calc(100% - 80px);
+        }
+        /* bandeau info segment ID */
+        #info-content {
+        width: 100%;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        }
+        /* segment ID définit plus bas, on enlève la marge */
+        #info-content h3 {
+            margin: 0;
+        }
+        /* legend de la heatmap -> barre blanche en bas */
+        #legend {
+            width: 100%;
+            height: 180px; /* Hauteur de la légende */
+            background-color: #fff;
+            position: relative; /* Position relative pour placer les éléments internes absolus */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        /* degradé de couleur barre de la heatmap */
+        #gradient {
+            width: 100%;
+            height: 20px; /* Ajustez la hauteur selon vos besoins */
+            background: linear-gradient(to right, #ff0000, #00ff00);
+        }
+        #legend-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 0px; /* Ajustez la marge selon vos besoins */
+            text-align: center;
         }
     </style>
 </head>
 <body>
+    <!-- section menu de la page -->
     <div id="nav-menu">
         <ul>
+            <!-- lien hypertextes qui renvoient vers les sections dont l'ID est #menu, #infos et #contact. A DEFINIR -->
             <li><a href="#menu" style="text-decoration: none; color: #fff;">Menu</a></li>
             <li><a href="#infos" style="text-decoration: none; color: #fff;">Infos</a></li>
             <li><a href="#contact" style="text-decoration: none; color: #fff;">Contact</a></li>
         </ul>
     </div>
+
+    <!-- map  -->
     <div id="map-container"></div>
+
+    <!-- panel qui apparait quand on clique sur segment -->
     <div id="info-panel">
         <div id="info-content">
             <!-- Data will be displayed here when an area is clicked -->
         </div>
-        <div id="info-panel-arrow" onclick="toggleInfoPanel()"></div>
         <div id="map-in-panel">
             <!-- New map will be displayed here when an area is clicked -->
         </div>
+        <div id="legend">
+            <!-- <div id="gradient"></div> -->
+            <div id="legend-content">
+                <!-- <h4>Heatmap LegendSS</h4> -->
+                <div id="gradient"></div>
+                <p>Intensity RangeSS: ${maxIntensity} - ${minIntensity}</p>
+                <!-- Ajoutez d'autres éléments de légende selon vos besoins -->
+            </div>
+        </div>
+        <div id="info-panel-arrow" onclick="toggleInfoPanel()"></div>
     </div>
+
     <script>
         let infoPanelVisible = false;
         let mapInPanel;
+        let map;
+        let heatmap;
 
         function toggleInfoPanel() {
             const infoPanel = document.getElementById("info-panel");
@@ -98,15 +164,43 @@
             }
         }
 
+        // fonction qui est appelée lorsque l'API google map est chargée (javascript)
         function initMap() {
-            const map = new google.maps.Map(document.getElementById("map-container"), {
-                center: { lat: -21.1151, lng: 55.5364 }, // La Reunion coordinates
+            // study area = 2000 km^2 in Burkina Faso around the town of Koumbia
+            // objets avec les propriétés lat et lng
+            var topLeft = {lat: 11.37, lng: -3.89};
+            var topRight = {lat: 11.37, lng: -3.42};
+            var bottomRight = {lat: 10.96, lng: -3.42};
+            var bottomLeft = {lat: 10.96, lng: -3.89};
+
+            // Calculer le centre de la bounding box
+            var centerCoordinates = {
+                lat: (topLeft.lat + bottomRight.lat) / 2,
+                lng: (topLeft.lng + bottomRight.lng) / 2
+            };
+
+            // charger la carte
+            map = new google.maps.Map(document.getElementById('map-container'), {
                 zoom: 10,
+                center: centerCoordinates
             });
 
-            // Fetch data from the JSON file
-            fetch('sources/data.json')
+            // Créer une forme de rectangle pour représenter la bounding box
+            var boundingBox = new google.maps.Polygon({
+                map: map,
+                paths: [topLeft, topRight, bottomRight, bottomLeft],
+                strokeColor: '#FF0000', // rouge
+                strokeOpacity: 1,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.2
+            });
+
+            // recupérer les coordonnées des segments à partir du fichier JSON (requête fetch)
+            fetch('./sources/data.json')
+                // convertit la réponse en JSON
                 .then(response => response.json())
+                // traitement des donnnées récupérées
                 .then(data => {
                     // Loop through the data and create polygons for each area
                     data.forEach((areaData) => {
@@ -121,27 +215,61 @@
                         // Add click event listener to the polygon to open the info panel with data
                         polygon.addListener("click", () => {
                             const infoContent = `
-                                <h3>${areaData.name}</h3>
-                                <p>${areaData.description}</p>
+                                <h3>Segment ID: ${areaData.segment_id}</h3>
                             `;
-                            document.getElementById("info-content").innerHTML = infoContent;
+                            document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
 
-                            // Create a new map in the panel centered on the clicked area
+                            // Récupérer les coordonnées du polygone cliqué
+                            const polygonCoordinates = areaData.coordinates.map(coord => ({
+                                lat: parseFloat(coord.lat),
+                                lng: parseFloat(coord.lng),
+                                intensity: parseFloat(coord.intensity)
+                            }));
+
+                            // Calculer le centre géométrique du polygone
+                            const centerLat = polygonCoordinates.reduce((sum, coord) => sum + coord.lat, 0) / polygonCoordinates.length;
+                            const centerLng = polygonCoordinates.reduce((sum, coord) => sum + coord.lng, 0) / polygonCoordinates.length;
+
+                            // Create a new map in the panel centered on the clicked area -> ON VEUT HEAT MAP
                             const mapOptions = {
-                                center: new google.maps.LatLng(areaData.coordinates[0].lat, areaData.coordinates[0].lng),
-                                zoom: 18,
+                                center: new google.maps.LatLng(centerLat, centerLng),
+                                zoom: 11,
                             };
                             mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
-                            const imageBounds = new google.maps.LatLngBounds(
-                                new google.maps.LatLng(areaData.coordinates[0].lat, areaData.coordinates[0].lng),
-                                new google.maps.LatLng(areaData.coordinates[1].lat, areaData.coordinates[1].lng)
-                            );
-                            const imageOverlay = new google.maps.GroundOverlay(
-                                areaData.image, // Image URL
-                                imageBounds
-                            );
-                            imageOverlay.setMap(mapInPanel);
+
+                            // Initialize the heatmap layer
+                            const heatmapData = polygonCoordinates.map(coord => ({
+                                location: new google.maps.LatLng(coord.lat, coord.lng),
+                                weight: coord.intensity
+                            }));
+
+                            // Add console.log for debugging
+                            console.log('polygonCoordinates V1232:', polygonCoordinates);
+                            console.log('heatmapData:', heatmapData);
+
+                            heatmap = new google.maps.visualization.HeatmapLayer({
+                                data: heatmapData,
+                                dissipating: true,
+                                radius: 50,
+                                opacity: 0.7,
+                                map: mapInPanel,
+                            });
+                            //heatmap.setMap(mapInPanel);
+
+                            // Obtenir les valeurs minimale et maximale de l'intensité
+                            const minIntensity = Math.min(...polygonCoordinates.map(coord => coord.intensity));
+                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => coord.intensity));
+
+                            // Mise à jour de la légende
+                            const legendContent = `
+                                <h4>Heatmap Legend</h4>
+                                <div id="gradient"></div>
+                                <p>Intensity Range: ${maxIntensity} - ${minIntensity}</p>
+                                <!-- Ajoutez d'autres informations de légende selon vos besoins -->
+                            `;
+                            document.getElementById("legend-content").innerHTML = legendContent;
+
                         });
                     });
                 })
@@ -149,7 +277,8 @@
                     console.error('Error fetching data:', error);
                 });
         }
+
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxA1cdWCvsuIZsdxrWAsqXwIX5zn4D_6Q&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAltD6Kd7wGiuY6dDsDwYavGL45e03BvLA&libraries=visualization&callback=initMap" async defer></script>
 </body>
 </html>

@@ -1,103 +1,13 @@
 [
     {
-        "name": "Area 1",
+        "segment_id": 1,
         "coordinates": [
-            { "lat": -21.113, "lng": 55.536 },
-            { "lat": -21.112, "lng": 55.537 },
-            { "lat": -21.112, "lng": 55.538 },
-            { "lat": -21.113, "lng": 55.538 }
-        ],
-        "description": "Description of Area 1",
-        "image": "sources/area1.jpeg"
-    },
-    {
-        "name": "Area 2",
-        "coordinates": [
-            { "lat": -21.115, "lng": 55.534 },
-            { "lat": -21.114, "lng": 55.535 },
-            { "lat": -21.114, "lng": 55.536 },
-            { "lat": -21.115, "lng": 55.536 }
-        ],
-        "description": "Description of Area 2"
-    },
-    {
-        "name": "Area 3",
-        "coordinates": [
-            { "lat": -21.117, "lng": 55.533 },
-            { "lat": -21.116, "lng": 55.534 },
-            { "lat": -21.116, "lng": 55.535 },
-            { "lat": -21.117, "lng": 55.535 }
-        ],
-        "description": "Description of Area 3"
-    },
-    {
-        "name": "Area 4",
-        "coordinates": [
-            { "lat": -21.119, "lng": 55.532 },
-            { "lat": -21.118, "lng": 55.533 },
-            { "lat": -21.118, "lng": 55.534 },
-            { "lat": -21.119, "lng": 55.534 }
-        ],
-        "description": "Description of Area 4"
-    },
-    {
-        "name": "Area 5",
-        "coordinates": [
-            { "lat": -21.121, "lng": 55.531 },
-            { "lat": -21.120, "lng": 55.532 },
-            { "lat": -21.120, "lng": 55.533 },
-            { "lat": -21.121, "lng": 55.533 }
-        ],
-        "description": "Description of Area 5"
-    },
-    {
-        "name": "Area 6",
-        "coordinates": [
-            { "lat": -21.123, "lng": 55.530 },
-            { "lat": -21.122, "lng": 55.531 },
-            { "lat": -21.122, "lng": 55.532 },
-            { "lat": -21.123, "lng": 55.532 }
-        ],
-        "description": "Description of Area 6"
-    },
-    {
-        "name": "Area 7",
-        "coordinates": [
-            { "lat": -21.125, "lng": 55.529 },
-            { "lat": -21.124, "lng": 55.530 },
-            { "lat": -21.124, "lng": 55.531 },
-            { "lat": -21.125, "lng": 55.531 }
-        ],
-        "description": "Description of Area 7"
-    },
-    {
-        "name": "Area 8",
-        "coordinates": [
-            { "lat": -21.127, "lng": 55.528 },
-            { "lat": -21.126, "lng": 55.529 },
-            { "lat": -21.126, "lng": 55.530 },
-            { "lat": -21.127, "lng": 55.530 }
-        ],
-        "description": "Description of Area 8"
-    },
-    {
-        "name": "Area 9",
-        "coordinates": [
-            { "lat": -21.129, "lng": 55.527 },
-            { "lat": -21.128, "lng": 55.528 },
-            { "lat": -21.128, "lng": 55.529 },
-            { "lat": -21.129, "lng": 55.529 }
-        ],
-        "description": "Description of Area 9"
-    },
-    {
-        "name": "Area 10",
-        "coordinates": [
-            { "lat": -21.131, "lng": 55.526 },
-            { "lat": -21.130, "lng": 55.527 },
-            { "lat": -21.130, "lng": 55.528 },
-            { "lat": -21.131, "lng": 55.528 }
-        ],
-        "description": "Description of Area 10"
+            { "lat": 11.2292, "lng": -3.7273, "intensity": 10 },
+            { "lat": 11.2480, "lng": -3.7162, "intensity": 5 },
+            { "lat": 11.2548, "lng": -3.6944, "intensity": 8 },
+            { "lat": 11.2383, "lng": -3.6732, "intensity": 12 },
+            { "lat": 11.2148, "lng": -3.6903, "intensity": 15 },
+            { "lat": 11.2144, "lng": -3.7204, "intensity": 18 } 
+        ]
     }
 ]
