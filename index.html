@@ -228,8 +228,55 @@
                             document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
 
-                            // Use orderedCoordinates for further processing
-                            // ...
+                            // Récupérer les coordonnées du polygone cliqué
+                            const polygonCoordinates = areaData.coordinates.map(coord => ({
+                                lat: parseFloat(coord.lat),
+                                lng: parseFloat(coord.lng),
+                                intensity: parseFloat(coord.intensity)
+                            }));
+
+                            // Calculer le centre géométrique du polygone
+                            const centerLat = polygonCoordinates.reduce((sum, coord) => sum + coord.lat, 0) / polygonCoordinates.length;
+                            const centerLng = polygonCoordinates.reduce((sum, coord) => sum + coord.lng, 0) / polygonCoordinates.length;
+
+                            // Create a new map in the panel centered on the clicked area -> ON VEUT HEAT MAP
+                            const mapOptions = {
+                                center: new google.maps.LatLng(centerLat, centerLng),
+                                zoom: 11,
+                            };
+                            mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
+
+                            // Initialize the heatmap layer
+                            const heatmapData = polygonCoordinates.map(coord => ({
+                                location: new google.maps.LatLng(coord.lat, coord.lng),
+                                weight: coord.intensity
+                            }));
+
+                            // Add console.log for debugging
+                            console.log('polygonCoordinates V1620:', polygonCoordinates);
+                            console.log('heatmapData:', heatmapData);
+
+                            heatmap = new google.maps.visualization.HeatmapLayer({
+                                data: heatmapData,
+                                dissipating: true,
+                                radius: 50,
+                                opacity: 0.7,
+                                map: mapInPanel,
+                            });
+                            //heatmap.setMap(mapInPanel);
+
+                            // Obtenir les valeurs minimale et maximale de l'intensité
+                            const minIntensity = Math.min(...polygonCoordinates.map(coord => coord.intensity));
+                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => coord.intensity));
+
+                            // Mise à jour de la légende
+                            const legendContent = `
+                                <h4>Heatmap Legend</h4>
+                                <div id="gradient"></div>
+                                <p>Intensity Range: ${maxIntensity} - ${minIntensity}</p>
+                                <!-- Ajoutez d'autres informations de légende selon vos besoins -->
+                            `;
+                            document.getElementById("legend-content").innerHTML = legendContent;
 
                         });
                     });
@@ -263,6 +310,7 @@
 
             return sortedCoordinates;
         }
+        
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBp3S_V-7rlwJhgO11lkjih-1RAiFGmb0Y&callback=initMap" async defer></script>
 </body>
