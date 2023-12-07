@@ -204,71 +204,32 @@
                 .then(data => {
                     // Loop through the data and create polygons for each area
                     data.forEach((areaData) => {
+                        const polygonCoordinates = areaData.coordinates.map(coord => ({
+                            lat: parseFloat(coord.latitude),
+                            lng: parseFloat(coord.longitude),
+                            intensity: parseFloat(coord.intensity)
+                        }));
+
+                        // Arrange the coordinates in counter-clockwise order
+                        const orderedCoordinates = orderCoordinates(polygonCoordinates);
+
+                        // Create a polygon with ordered coordinates
                         const polygon = new google.maps.Polygon({
-                            paths: areaData.coordinates.map(coord => ({
-                                lat: parseFloat(coord.lat),
-                                lng: parseFloat(coord.lng)
-                            })),
+                            paths: orderedCoordinates,
                             map: map,
                         });
 
-                        // Add click event listener to the polygon to open the info panel with data
+                        // Add click event listener to the polygon
                         polygon.addListener("click", () => {
                             const infoContent = `
                                 <h3>Segment ID: ${areaData.segment_id}</h3>
+                                <h3>Class ID: ${areaData.class_id}</h3>
                             `;
                             document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
 
-                            // Récupérer les coordonnées du polygone cliqué
-                            const polygonCoordinates = areaData.coordinates.map(coord => ({
-                                lat: parseFloat(coord.lat),
-                                lng: parseFloat(coord.lng),
-                                intensity: parseFloat(coord.intensity)
-                            }));
-
-                            // Calculer le centre géométrique du polygone
-                            const centerLat = polygonCoordinates.reduce((sum, coord) => sum + coord.lat, 0) / polygonCoordinates.length;
-                            const centerLng = polygonCoordinates.reduce((sum, coord) => sum + coord.lng, 0) / polygonCoordinates.length;
-
-                            // Create a new map in the panel centered on the clicked area -> ON VEUT HEAT MAP
-                            const mapOptions = {
-                                center: new google.maps.LatLng(centerLat, centerLng),
-                                zoom: 11,
-                            };
-                            mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
-
-                            // Initialize the heatmap layer
-                            const heatmapData = polygonCoordinates.map(coord => ({
-                                location: new google.maps.LatLng(coord.lat, coord.lng),
-                                weight: coord.intensity
-                            }));
-
-                            // Add console.log for debugging
-                            console.log('polygonCoordinates V1232:', polygonCoordinates);
-                            console.log('heatmapData:', heatmapData);
-
-                            heatmap = new google.maps.visualization.HeatmapLayer({
-                                data: heatmapData,
-                                dissipating: true,
-                                radius: 50,
-                                opacity: 0.7,
-                                map: mapInPanel,
-                            });
-                            //heatmap.setMap(mapInPanel);
-
-                            // Obtenir les valeurs minimale et maximale de l'intensité
-                            const minIntensity = Math.min(...polygonCoordinates.map(coord => coord.intensity));
-                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => coord.intensity));
-
-                            // Mise à jour de la légende
-                            const legendContent = `
-                                <h4>Heatmap Legend</h4>
-                                <div id="gradient"></div>
-                                <p>Intensity Range: ${maxIntensity} - ${minIntensity}</p>
-                                <!-- Ajoutez d'autres informations de légende selon vos besoins -->
-                            `;
-                            document.getElementById("legend-content").innerHTML = legendContent;
+                            // Use orderedCoordinates for further processing
+                            // ...
 
                         });
                     });
@@ -278,7 +239,31 @@
                 });
         }
 
+        // Function to arrange coordinates in counter-clockwise order
+        function orderCoordinates(coordinates) {
+            // Calculate the centroid of the polygon
+            const centroid = coordinates.reduce((acc, coord) => {
+                acc.lat += coord.lat;
+                acc.lng += coord.lng;
+                return acc;
+            }, { lat: 0, lng: 0 });
+
+            centroid.lat /= coordinates.length;
+            centroid.lng /= coordinates.length;
+
+            // Sort coordinates based on polar angle with respect to the centroid
+            const sortedCoordinates = coordinates.sort((a, b) => {
+                const angleA = Math.atan2(a.lat - centroid.lat, a.lng - centroid.lng);
+                const angleB = Math.atan2(b.lat - centroid.lat, b.lng - centroid.lng);
+                return angleA - angleB;
+            });
+
+            // Repeat the first coordinate at the end to ensure the polygon is closed
+            sortedCoordinates.push(sortedCoordinates[0]);
+
+            return sortedCoordinates;
+        }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAltD6Kd7wGiuY6dDsDwYavGL45e03BvLA&libraries=visualization&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBp3S_V-7rlwJhgO11lkjih-1RAiFGmb0Y&callback=initMap" async defer></script>
 </body>
 </html>
