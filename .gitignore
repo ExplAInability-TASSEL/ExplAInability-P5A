@@ -3,6 +3,9 @@
 /venv/
 __pycache__/
 post_processed_data.ftr
+<<<<<<< HEAD
 post_processed_data.csv
 test.py
 /Prepro_Data/post_processed_data.csv
+=======
+>>>>>>> Training
