@@ -22,7 +22,7 @@ class MODEL():
         print("cluster_centers shape ",cluster_centers.shape)
         return (cluster_centers[0].reshape((1,) + cluster_centers[0].shape)).shape[1:]
     
-    def build(self, learning_rate=0.001):
+    def build(self, learning_rate=0.0001):
         self.model = tf.keras.models.Sequential([
             self.enc,
             self.attn,
@@ -58,7 +58,7 @@ import numpy as np
 
 vectors = []
 
-with open('segment_test.txt', 'r') as file:
+with open('1_segment_test.txt', 'r') as file:
     for line in file:
         values = re.findall(r'\[([^]]*)\]', line)
         for sublist in values:
@@ -69,10 +69,12 @@ numpy_array = np.array(vectors)
 
 print("Shape of the numpy...:", numpy_array.shape)
 reshaped_array = numpy_array.reshape(62, 73, 10)
+print(reshaped_array)
 
 n_clusters=2
 custom_kmeans = CustomKMeans(n_clusters=n_clusters)
 custom_kmeans.fit(reshaped_array)
+print("Cluster centers: ", custom_kmeans.get_cluster_centers())
 
 
 MODEL = MODEL(num_classes=7, num_clusters=2)
