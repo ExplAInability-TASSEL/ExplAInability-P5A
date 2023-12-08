@@ -222,7 +222,7 @@
                         // Add click event listener to the polygon
                         polygon.addListener("click", () => {
                             const infoContent = `
-                                <h3>Segment ID: ${areaData.segment_id}</h3>
+                                <h3>Segment ID: ${areaData.segment_id}</h3> \n
                                 <h3>Class ID: ${areaData.class_id}</h3>
                             `;
                             document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
