@@ -222,8 +222,8 @@
                         // Add click event listener to the polygon
                         polygon.addListener("click", () => {
                             const infoContent = `
-                                <h3 style="margin-bottom: 10px;">Segment ID: ${areaData.segment_id}</h3>
-                                <h3 style="margin-top: 10px;">Class ID: ${areaData.class_id}</h3>
+                                <h3>Segment ID: ${areaData.segment_id} -</h3>
+                                <h3>- Class ID: ${areaData.class_id}</h3>
                             `;
                             document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
@@ -253,7 +253,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1527:', polygonCoordinates);
+                            console.log('polygonCoordinates V2159:', polygonCoordinates);
                             console.log('heatmapData:', heatmapData);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
