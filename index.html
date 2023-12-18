@@ -210,12 +210,9 @@
                             intensity: parseFloat(coord.intensity)
                         }));
 
-                        // Arrange the coordinates in counter-clockwise order
-                        const orderedCoordinates = orderCoordinates(polygonCoordinates);
-
                         // Create a polygon with ordered coordinates
                         const polygon = new google.maps.Polygon({
-                            paths: orderedCoordinates,
+                            paths: polygonCoordinates,
                             map: map,
                         });
 
@@ -286,30 +283,6 @@
                 });
         }
 
-        // Function to arrange coordinates in counter-clockwise order
-        function orderCoordinates(coordinates) {
-            // Calculate the centroid of the polygon
-            const centroid = coordinates.reduce((acc, coord) => {
-                acc.lat += coord.lat;
-                acc.lng += coord.lng;
-                return acc;
-            }, { lat: 0, lng: 0 });
-
-            centroid.lat /= coordinates.length;
-            centroid.lng /= coordinates.length;
-
-            // Sort coordinates based on polar angle with respect to the centroid
-            const sortedCoordinates = coordinates.sort((a, b) => {
-                const angleA = Math.atan2(a.lat - centroid.lat, a.lng - centroid.lng);
-                const angleB = Math.atan2(b.lat - centroid.lat, b.lng - centroid.lng);
-                return angleA - angleB;
-            });
-
-            // Repeat the first coordinate at the end to ensure the polygon is closed
-            sortedCoordinates.push(sortedCoordinates[0]);
-
-            return sortedCoordinates;
-        }
         
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBp3S_V-7rlwJhgO11lkjih-1RAiFGmb0Y&callback=initMap" async defer></script>
