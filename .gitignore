@@ -5,3 +5,4 @@ __pycache__/
 *.pyo
 *.pyd
 Prepro_Data/post_processed_data.csv
+saved_models/
