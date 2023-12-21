@@ -6,3 +6,4 @@ __pycache__/
 *.pyd
 Prepro_Data/post_processed_data.csv
 saved_models/
+Prepro_Data/
