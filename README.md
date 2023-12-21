@@ -67,6 +67,12 @@ This project is organized into several key files and directories:
 
 ### 3. The Map
 
+- `index.html`: This file contains the code for the map.
+
+- `sources/`: This directory contains the source code for the map. It includes:
+
+  - `data.json`: Contains the data for the map.
+  - `segment_lat_long.json`: Contains the data for the map.
 
 <!-- Authors -->
 ## Authors
