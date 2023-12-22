@@ -49,6 +49,20 @@ This project is organized into several key files and directories:
 
 ### 1. Preprocessing
 
+The preprocessing is done in the numbered notebooks, following the numerical order :
+- `1_data_analyze.ipynb` analyze the input data.
+- `2_extract_included_segments.ipynb` extract segments partially (0%->100%) included in polygons for training set.
+- `2_extract_segments.ipynb` extract all segments and their pixels for inference set.
+- `3_segment_analyze.ipynb` analyze the segment extraction results.
+- `4_normalization.ipynb` normalize the acquisition data.
+- `5_730_conversion.ipynb` convert pixel coordinates for each segment (obtained with `2_extract_segments.ipynb`) to their 730 values vector (73 acquisitions for 10 bands --> 730 values).
+
+The requiered packages are listed in the `requirements.txt` file.
+
+The preprocessing can also be done with the `preprocessing.py` file, hence can be launched with a command line.
+
+
+
 ### 2. Training and Inference
 
 - `main_inference.ipynb` and `main_train.ipynb`: These Jupyter notebooks contain the main code for training and inference.
