@@ -53,7 +53,7 @@ This project is organized into several key files and directories:
 
 - `main_inference.ipynb` and `main_train.ipynb`: These Jupyter notebooks contain the main code for training and inference.
 
-- `py3/`: This directory contains the source code for the project. It includes:
+- `model_components/`: This directory contains the source code for the model components. It includes:
 
   - `Attention_Layer.py`: Implements an attention layer for a neural network.
 
