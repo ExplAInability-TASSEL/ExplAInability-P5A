@@ -27,9 +27,9 @@ TASSEL_orig</h3>
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-- **Objectif de l'article** : [Lien vers l'article](https://hal.inrae.fr/hal-02941804)
+- **Objective of the article** : [Link to article](https://hal.inrae.fr/hal-02941804)
 
-L'utilisation de séries temporelles d'images satellites à haute résolution ouvre de nouvelles opportunités pour la surveillance de la surface terrestre, mais pose également des défis en termes d'analyse de données massives. L'un de ces défis concerne la cartographie de l'occupation des sols, où les informations disponibles sont souvent limitées et de qualité approximative. Pour relever ce défi, les auteurs proposent TASSEL, un nouveau cadre d'apprentissage en profondeur qui exploite les informations détaillées des images satellites pour améliorer la cartographie des sols. Leurs expériences montrent que TASSEL non seulement améliore les performances prédictives par rapport aux approches concurrentes, mais fournit également des informations supplémentaires pour interpréter les décisions du modèle.
+The use of time series of high-resolution satellite images opens up new opportunities for monitoring the earth's surface, but also poses challenges in terms of analysing massive amounts of data. One of these challenges concerns land cover mapping, where the information available is often limited and of approximate quality. To address this challenge, the authors propose TASSEL, a new deep learning framework that exploits detailed information from satellite images to improve land mapping. Their experiments show that TASSEL not only improves predictive performance compared with competing approaches, but also provides additional information for interpreting model decisions.
 
 <!-- MAP VIEW -->
 ## MAP VIEW
@@ -42,15 +42,63 @@ https://thibault-gillard.github.io/Explainability/
 
 ![Alt Text](https://github.com/pierrert3/ExplAInability-P5A/blob/main/assets/Enregistrement%20de%20l%E2%80%99%C3%A9cran%202023-09-22%20%C3%A0%2023.52.46.gif)
 
-<!-- Auteurs -->
-## Auteurs
+
+## Organization of the project
+
+This project is organized into several key files and directories:
+
+### 1. Preprocessing
+
+### 2. Training and Inference
+
+- `main_inference.ipynb` and `main_train.ipynb`: These Jupyter notebooks contain the main code for training and inference.
+
+- `py3/`: This directory contains the source code for the project. It includes:
+
+  - `Attention_Layer.py`: Implements an attention layer for a neural network.
+
+  - `CNN_model.py`: Implements a Convolutional Neural Network (CNN) model.
+
+  - `classification.py`: Implements a classification model.
+
+  - `k_means.py`: Implements a k-means clustering algorithm.
+
+  - `test_K_m.py`: Contains tests for the k-means clustering algorithm.
+
+### 3. The Map
+
+- `index.html`: This file contains the code for the map.
+
+- `sources/`: This directory contains the source code for the map. It includes:
+
+  - `data.json`: Contains the data for the map.
+  - `segment_lat_long.json`: Contains the data for the map.
+
+## Installation
+
+Python 3.10.13 was used for this project.
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/pierrert3/ExplAInability-P5A.git
+    ```
+2. Install the required packages
+    ```sh
+    pip install -r requirements.txt
+    ```
+3. Run the notebooks to train and test the model
+4. Run the map
+5. If you want to use the map with your own data, you can use the `index.html` and `segment_lat_long.json` file as a template.
+  
+<!-- Authors -->
+## Authors
 
 - [GAUBIL Clara (@claragbl)](https://github.com/claragbl)
 - [GILLARD Thibault (@Thibault-GILLARD)](https://github.com/Thibault-GILLARD)
 - [COURBI Antoine (@TonioElPuebloSchool)](https://github.com/TonioElPuebloSchool)
 - [RAGEOT Pierre (@pierrert3)](https://github.com/pierrert3)
 
-Auteurs de la publication
+Publication authors:
 
 - RAFFAELE GAETANO
 - DINO IENCO
@@ -60,4 +108,4 @@ Auteurs de la publication
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the 'GNU GENERAL PUBLIC LICENSE' License. See `LICENSE` for more information.
