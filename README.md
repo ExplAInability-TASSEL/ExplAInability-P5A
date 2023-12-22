@@ -74,6 +74,22 @@ This project is organized into several key files and directories:
   - `data.json`: Contains the data for the map.
   - `segment_lat_long.json`: Contains the data for the map.
 
+## Installation
+
+Python 3.10.13 was used for this project.
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/pierrert3/ExplAInability-P5A.git
+    ```
+2. Install the required packages
+    ```sh
+    pip install -r requirements.txt
+    ```
+3. Run the notebooks to train and test the model
+4. Run the map
+5. If you want to use the map with your own data, you can use the `index.html` and `segment_lat_long.json` file as a template.
+  
 <!-- Authors -->
 ## Authors
 
