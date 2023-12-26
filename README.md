@@ -35,7 +35,7 @@ The use of time series of high-resolution satellite images opens up new opportun
 ## MAP VIEW
 
 GOOGLE API
-https://pierrert3.github.io/ExplAInability-P5A/
+https://explainability-tassel.github.io/ExplAInability-P5A/
 
 MapBox API
 https://thibault-gillard.github.io/Explainability/
