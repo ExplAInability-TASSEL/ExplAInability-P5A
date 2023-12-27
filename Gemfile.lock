@@ -127,8 +127,6 @@ GEM
       rouge (>= 2.0, < 5.0)
     jekyll-default-layout (0.1.4)
       jekyll (~> 3.0)
-    jekyll-environment-variables (1.0.1)
-      jekyll (>= 3.0, < 5.x)
     jekyll-feed (0.15.1)
       jekyll (>= 3.7, < 5.0)
     jekyll-gist (1.5.0)
@@ -278,6 +276,7 @@ GEM
       unf_ext
     unf_ext (0.0.9.1)
     unicode-display_width (1.8.0)
+    webrick (1.8.1)
 
 PLATFORMS
   x86_64-darwin-23
@@ -285,10 +284,10 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
-  jekyll-environment-variables
   nokogiri
   rack (~> 2.2.4)
   rspec
+  webrick (~> 1.8)
 
 BUNDLED WITH
    2.3.26

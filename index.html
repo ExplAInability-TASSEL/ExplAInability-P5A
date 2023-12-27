@@ -1,4 +1,3 @@
-
 ---
 ---
 <!DOCTYPE html>
@@ -289,14 +288,6 @@
 
         
     </script>
-    <script>
-        const api_key = "{{ site.env.GOOGLE_MAP_API_KEY }}";
-        const scriptSrc = 'https://maps.googleapis.com/maps/api/js?key=${api_key}&callback=initMap';
-        const script = document.createElement('script');
-        script.src = scriptSrc;
-        script.async = true;
-        script.defer = true;
-        document.head.appendChild(script);
-    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ site.GOOGLE_MAP_API_KEY }}&callback=initMap" async defer></script>
 </body>
 </html>
