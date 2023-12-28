@@ -219,32 +219,32 @@
                         });
 
 
-                        // Create a marker for each pixel with alpha values
-                        const numPixelsToShow = 200; // Set the number of pixels you want to display
-                        const pixelsToDisplay = areaData.pixel_coordinates.slice(0, numPixelsToShow);
-                        pixelsToDisplay.forEach((pixel, index) => {
-                            const marker = new google.maps.Marker({
-                                position: { lat: pixel.latitude, lng: pixel.longitude },
-                                map: map,
-                                label: {
-                                    text: index.toString(), // Display index as label
-                                    color: 'white',
-                                    fontWeight: 'bold',
-                                },
-                                icon: {
-                                    path: google.maps.SymbolPath.CIRCLE,
-                                    fillColor: `rgba(255, 0, 0, ${areaData.alphas[index]})`, // Use alpha value from the array
-                                    fillOpacity: 1,
-                                    strokeWeight: 0,
-                                    scale: 5, // Adjust the size of the marker as needed
-                                },
-                            });
+                        // // Create a marker for each pixel with alpha values
+                        // const numPixelsToShow = 200; // Set the number of pixels you want to display
+                        // const pixelsToDisplay = areaData.pixel_coordinates.slice(0, numPixelsToShow);
+                        // pixelsToDisplay.forEach((pixel, index) => {
+                        //     const marker = new google.maps.Marker({
+                        //         position: { lat: pixel.latitude, lng: pixel.longitude },
+                        //         map: map,
+                        //         label: {
+                        //             text: index.toString(), // Display index as label
+                        //             color: 'white',
+                        //             fontWeight: 'bold',
+                        //         },
+                        //         icon: {
+                        //             path: google.maps.SymbolPath.CIRCLE,
+                        //             fillColor: `rgba(255, 0, 0, ${areaData.alphas[index]})`, // Use alpha value from the array
+                        //             fillOpacity: 1,
+                        //             strokeWeight: 0,
+                        //             scale: 5, // Adjust the size of the marker as needed
+                        //         },
+                        //     });
 
-                            // Add click event listener to the marker (if needed)
-                            marker.addListener("click", () => {
-                                // Handle marker click event if needed
-                            });
-                        });
+                        //     // Add click event listener to the marker (if needed)
+                        //     marker.addListener("click", () => {
+                        //         // Handle marker click event if needed
+                        //     });
+                        // });
 
 
                         // Add click event listener to the polygon
