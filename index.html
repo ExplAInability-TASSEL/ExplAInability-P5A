@@ -207,7 +207,7 @@
                 .then(data => {
                     // Loop through the data and create polygons for each area
                     data.forEach((areaData) => {
-                        const polygonCoordinates = areaData.coordinates.map(coord => ({
+                        const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
                             lat: parseFloat(coord.latitude),
                             lng: parseFloat(coord.longitude),
                             intensity: parseFloat(coord.intensity)
@@ -229,7 +229,7 @@
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
 
                             // Récupérer les coordonnées du polygone cliqué
-                            const polygonCoordinates = areaData.coordinates.map(coord => ({
+                            const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
                                 lat: parseFloat(coord.lat),
                                 lng: parseFloat(coord.lng),
                                 intensity: parseFloat(coord.intensity)
@@ -253,7 +253,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V0016:', polygonCoordinates);
+                            console.log('polygonCoordinates V1510:', polygonCoordinates);
                             console.log('heatmapData:', heatmapData);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
