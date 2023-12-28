@@ -200,7 +200,7 @@
             });
 
             // recupérer les coordonnées des segments à partir du fichier JSON (requête fetch)
-            fetch('./sources/segment_lat_long.json')
+            fetch('./sources/final_segment_lat_long.json')
                 // convertit la réponse en JSON
                 .then(response => response.json())
                 // traitement des donnnées récupérées
@@ -253,7 +253,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1510:', polygonCoordinates);
+                            console.log('polygonCoordinates V1700:', polygonCoordinates);
                             console.log('heatmapData:', heatmapData);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
