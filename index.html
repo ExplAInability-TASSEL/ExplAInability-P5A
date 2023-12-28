@@ -154,7 +154,6 @@
         let mapInPanel;
         let map;
         let heatmap;
-        console.log("1157")
 
         function toggleInfoPanel() {
             const infoPanel = document.getElementById("info-panel");
@@ -203,7 +202,7 @@
             fetch('./sources/final_segment_lat_long.json')
                 // convertit la réponse en JSON
                 .then(response => response.json())
-                // traitement des donnnées récupérées
+                // traitement des données récupérées
                 .then(data => {
                     // Loop through the data and create polygons for each area
                     data.forEach((areaData) => {
@@ -219,11 +218,36 @@
                             map: map,
                         });
 
+
+                        // Create a marker for each pixel with alpha values
+                        areaData.pixel_coordinates.forEach((pixel, index) => {
+                            const marker = new google.maps.Marker({
+                                position: { lat: pixel.latitude, lng: pixel.longitude },
+                                map: map,
+                                label: {
+                                    text: index.toString(), // Display index as label
+                                    color: 'white',
+                                    fontWeight: 'bold',
+                                },
+                                icon: {
+                                    path: google.maps.SymbolPath.CIRCLE,
+                                    fillColor: `rgba(255, 0, 0, ${areaData.alphas[index]})`, // Use alpha value from the array
+                                    fillOpacity: 1,
+                                    strokeWeight: 0,
+                                    scale: 5, // Adjust the size of the marker as needed
+                                },
+                            });
+                            marker.addListener("click", () => {
+                                // Handle marker click event if needed
+                            });
+                        });
+
+
                         // Add click event listener to the polygon
                         polygon.addListener("click", () => {
                             const infoContent = `
-                                <h3>Segment ID: ${areaData.segment_id} -</h3>
-                                <h3>- Class ID: ${areaData.class_id}</h3>
+                                <h3>Segment ID: ${areaData.segment_id}</h3>
+                                <h3>Class ID: ${areaData.class_id}</h3>
                             `;
                             document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
