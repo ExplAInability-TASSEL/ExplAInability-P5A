@@ -168,10 +168,20 @@
 
 
 
-        // Function to dynamically convert alpha value to grayscale color
+        // Function to dynamically convert alpha value to heatmap color
         function getColorFromAlpha(alpha) {
-            const grayscaleValue = Math.round(alpha * 255);
-            return `rgb(${grayscaleValue}, ${grayscaleValue}, ${grayscaleValue})`;
+            const colors = [
+                "#0000FF", // Blue
+                "#00FFFF", // Cyan
+                "#00FF00", // Green
+                "#FFFF00", // Yellow
+                "#FFA500", // Orange
+                "#FF0000"  // Red
+            ];
+
+            // Interpolate between colors based on the alpha value
+            const colorIndex = Math.round(alpha * (colors.length - 1));
+            return colors[colorIndex];
         }
 
 
