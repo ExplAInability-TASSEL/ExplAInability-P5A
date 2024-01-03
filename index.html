@@ -259,12 +259,15 @@
                                 const minAlpha = Math.min(...areaData.alphas);
                                 const maxAlpha = Math.max(...areaData.alphas);
 
+                                const gradientValue = (alpha - minAlpha) / (maxAlpha - minAlpha); // Normalize alpha value
+                                const pixelColor = chroma.scale(['blue', 'red'])(gradientValue).hex(); // Use chroma for color interpolation
+
                                 const pixelMarker = new google.maps.Marker({
                                     position: new google.maps.LatLng(pixelCoord.latitude, pixelCoord.longitude),
                                     map: map,
                                     icon: {
                                         path: google.maps.SymbolPath.CIRCLE,
-                                        fillColor: getColorFromAlpha(alpha, minAlpha, maxAlpha),
+                                        fillColor: pixelColor,
                                         fillOpacity: 1,
                                         strokeWeight: 0,
                                         scale: 5 
