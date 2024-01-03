@@ -114,6 +114,40 @@
             text-align: center;
         }
 
+
+
+
+
+
+
+        #class-legend {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        background-color: #fff;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        }
+
+        .legend-item {
+        margin-bottom: 5px;
+        }
+
+        .legend-color {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        margin-right: 5px;
+        border: 1px solid #ccc;
+        }
+
+
+
+
+
     </style>
 
 </head>
@@ -126,6 +160,11 @@
             <li><a href="#infos" style="text-decoration: none; color: #fff;">Infos</a></li>
             <li><a href="#contact" style="text-decoration: none; color: #fff;">Contact</a></li>
         </ul>
+    </div>
+
+    <!-- Legend for class colors -->
+    <div id="class-legend">
+        <!-- Legend items will be added dynamically using JavaScript -->
     </div>
 
     <!-- map  -->
@@ -168,16 +207,12 @@
             }
         }
 
-
-
-
         // Function to dynamically convert alpha value to color
         function getColorFromAlpha(alpha) {
             const red = Math.floor(255 * (1 - alpha));
             const blue = Math.floor(255 * alpha);
             return `rgb(${red}, 0, ${blue})`;
         }
-
 
         // Function to map class_id to a color
         function getColorFromClass(classId) {
@@ -203,13 +238,6 @@
                     return "#000000"; 
                 }
             }
-
-
-
-
-
-
-
 
         // fonction qui est appelée lorsque l'API google map est chargée (javascript)
         function initMap() {
@@ -242,6 +270,46 @@
                 fillColor: '#FF0000',
                 fillOpacity: 0.2
             });
+
+
+
+
+
+
+            // Function to create legend items dynamically
+            function createLegend() {
+            const legendContainer = document.getElementById("class-legend");
+
+            // Define class names and corresponding colors
+            const classColors = {
+                1: "#58d68d", // Green
+                2: "#e67e22", // Orange
+                3: "#145a32", // Forest
+                4: "#f4d03f", // Savannah
+                5: "#5dade2", // Grassland
+                6: "#566573", // Rocks
+                7: "#1b2631", // Built-up
+                8: "#162ef3", // Water
+            };
+
+            // Loop through class colors and create legend items
+            for (const [classId, color] of Object.entries(classColors)) {
+                const legendItem = document.createElement("div");
+                legendItem.className = "legend-item";
+                legendItem.innerHTML = `<span class="legend-color" style="background-color: ${color};"></span> Class ${classId}`;
+                legendContainer.appendChild(legendItem);
+            }
+            }
+
+            // Call the createLegend function
+            createLegend();
+
+            
+
+
+
+
+
 
             // recupérer les coordonnées des segments à partir du fichier JSON (requête fetch)
             fetch('./sources/final_segment_lat_long.json')
@@ -333,7 +401,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V2347:', polygonCoordinates);
+                            console.log('polygonCoordinates V0027:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
