@@ -113,6 +113,23 @@
             padding: 0px; /* Ajustez la marge selon vos besoins */
             text-align: center;
         }
+
+
+
+
+
+
+
+        #legend-items {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
     </style>
 
 </head>
@@ -180,6 +197,17 @@
 
 
 
+        function generateLegendItems(alphas) {
+        const legendItems = alphas.map((alpha, index) => {
+            const color = getColorFromAlpha(alpha);
+            const label = `Alpha ${index + 1}`;
+            return `<div class="legend-item" style="background-color: ${color};"></div><span>${label}</span>`;
+        });
+
+        return legendItems.join('');
+}
+
+
 
 
         // fonction qui est appelée lorsque l'API google map est chargée (javascript)
@@ -243,6 +271,25 @@
                             document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
 
+
+
+
+
+                            // Update legend content
+                            const legendContent2 = `
+                                <h4>Segment Legend</h4>
+                                <div id="legend-items">
+                                    ${generateLegendItems(areaData.alphas)}
+                                </div>
+                                <!-- Add other legend information as needed -->
+                            `;
+                            document.getElementById("legend-content").innerHTML = legendContent2;
+
+
+
+
+
+
                             // Récupérer les coordonnées du polygone cliqué
                             const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
                                 lat: parseFloat(coord.lat),
@@ -251,6 +298,10 @@
                             }));
 
 
+
+
+
+                            
 
 
 
