@@ -170,18 +170,16 @@
 
 
 
-        // Function for linear interpolation
-        function lerp(start, end, t) {
-            return start * (1 - t) + end * t;
+        // Function to dynamically convert alpha value to binary color (blue/red) based on a dynamic threshold
+        function getBinaryColorFromAlpha(alpha, threshold) {
+            return alpha > threshold ? 'blue' : 'red';
         }
 
-        // Function to dynamically convert alpha value to color using linear interpolation
-        function getColorFromAlpha(alpha) {
-            // Linear interpolation between red (#FF0000) and blue (#0000FF)
-            const red = Math.round(lerp(255, 0, alpha));
-            const blue = Math.round(lerp(0, 255, alpha));
-
-            return `rgb(${red}, 0, ${blue})`;
+        // Function to calculate a dynamic threshold based on the alphas array
+        function calculateDynamicThreshold(alphas) {
+            // Use a simple average as the dynamic threshold
+            const sum = alphas.reduce((acc, alpha) => acc + alpha, 0);
+            return sum / alphas.length;
         }
 
 
@@ -259,7 +257,8 @@
 
 
 
-
+                            // Determine a dynamic threshold for each segment
+                            const dynamicThreshold = calculateDynamicThreshold(areaData.alphas);
                             // Loop through pixel_coordinates and display them on the map with alpha values from the alphas list
                             areaData.pixel_coordinates.forEach((pixelCoord, index) => {
                                 const alpha = areaData.alphas[index];
@@ -268,10 +267,10 @@
                                     map: map,
                                     icon: {
                                         path: google.maps.SymbolPath.CIRCLE,
-                                        fillColor: getColorFromAlpha(alpha),
+                                        fillColor: getBinaryColorFromAlpha(alpha, dynamicThreshold),
                                         fillOpacity: 1,
                                         strokeWeight: 0,
-                                        scale: 5 // Adjust the scale as needed
+                                        scale: 5 
                                     }
                                 });
                             });
@@ -300,7 +299,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1806:', polygonCoordinates);
+                            console.log('polygonCoordinates V1836:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
