@@ -168,20 +168,13 @@
 
 
 
-        // Function to dynamically convert alpha value to heatmap color
+        // Function to dynamically convert alpha value to hsl color
         function getColorFromAlpha(alpha) {
-            const colors = [
-                "#0000FF", // Blue
-                "#00FFFF", // Cyan
-                "#00FF00", // Green
-                "#FFFF00", // Yellow
-                "#FFA500", // Orange
-                "#FF0000"  // Red
-            ];
+            const hue = (1 - alpha) * 240; // Map alpha to hue (0: red, 120: green, 240: blue)
+            const saturation = 100; // 100% saturation
+            const lightness = 50; // 50% lightness
 
-            // Interpolate between colors based on the alpha value
-            const colorIndex = Math.round(alpha * (colors.length - 1));
-            return colors[colorIndex];
+            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         }
 
 
@@ -299,7 +292,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1746:', polygonCoordinates);
+                            console.log('polygonCoordinates V1806:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
