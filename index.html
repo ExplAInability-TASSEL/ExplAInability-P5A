@@ -168,14 +168,11 @@
 
 
 
-        // Function to dynamically convert alpha value to color
+        // Function to dynamically convert alpha value to grayscale color
         function getColorFromAlpha(alpha) {
-            const red = Math.round(alpha * 255);
-            const green = Math.round((1 - alpha) * 255);
-            const blue = 0; // Assuming blue channel is always 0
-
-            return `rgb(${red}, ${green}, ${blue})`;
-}
+            const grayscaleValue = Math.round(alpha * 255);
+            return `rgb(${grayscaleValue}, ${grayscaleValue}, ${grayscaleValue})`;
+        }
 
 
 
