@@ -115,8 +115,6 @@
         }
     </style>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js"></script>
-
 </head>
 <body>
     <!-- section menu de la page -->
@@ -171,11 +169,21 @@
 
 
 
-        // Function to dynamically convert alpha value to color using Chroma.js interpolation
+
+        // Function for linear interpolation
+        function lerp(start, end, t) {
+            return start * (1 - t) + end * t;
+        }
+
+        // Function to dynamically convert alpha value to color using linear interpolation
         function getColorFromAlpha(alpha) {
-            const colorScale = chroma.scale(['#FF0000', '#0000FF']).domain([0, 1]);
-            return colorScale(alpha).hex();
-}
+            // Linear interpolation between red (#FF0000) and blue (#0000FF)
+            const red = Math.round(lerp(255, 0, alpha));
+            const blue = Math.round(lerp(0, 255, alpha));
+
+            return `rgb(${red}, 0, ${blue})`;
+        }
+
 
 
 
