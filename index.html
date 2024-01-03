@@ -256,7 +256,7 @@
 
 
 
-                            
+
 
                             // Determine a dynamic threshold for each segment
                             const dynamicScale = calculateDynamicScale(areaData.alphas);
@@ -313,8 +313,8 @@
                             //heatmap.setMap(mapInPanel);
 
                             // Obtenir les valeurs minimale et maximale de l'intensité
-                            const minIntensity = Math.min(...polygonCoordinates.map(coord => coord.intensity));
-                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => coord.intensity));
+                            const minIntensity = Math.min(...polygonCoordinates.map(coord => areaData.alphas));
+                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => areaData.alphas));
 
                             // Mise à jour de la légende
                             const legendContent = `
