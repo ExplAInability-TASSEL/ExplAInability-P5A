@@ -168,10 +168,14 @@
 
 
 
+        // Function to dynamically convert alpha value to color
         function getColorFromAlpha(alpha) {
-            const binaryColor = alpha === 0.67 ? "#000000" : "#FFFFFF"; // You can customize colors based on your requirements
-            return binaryColor;
-        }
+            const red = Math.round(alpha * 255);
+            const green = Math.round((1 - alpha) * 255);
+            const blue = 0; // Assuming blue channel is always 0
+
+            return `rgb(${red}, ${green}, ${blue})`;
+}
 
 
 
@@ -288,7 +292,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V2200:', polygonCoordinates);
+                            console.log('polygonCoordinates V1746:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
