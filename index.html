@@ -114,22 +114,6 @@
             text-align: center;
         }
 
-
-
-
-
-
-
-        #legend-items {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.legend-item {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-}
     </style>
 
 </head>
@@ -195,17 +179,34 @@
         }
 
 
+        // Function to map class_id to a color
+        function getColorFromClass(classId) {
+
+                switch (classId) {
+                case 1:
+                    return "#ff0000"; // Red
+                case 2:
+                    return "#00ff00"; // Green
+                case 3:
+                    return "#0000ff"; // Blue
+                case 4:
+                    return "#ffff00"; // Yellow
+                case 5:
+                    return "#ff00ff"; // Magenta
+                case 6:
+                    return "#00ffff"; // Cyan
+                case 7:
+                    return "#ffa500"; // Orange
+                case 8:
+                    return "#008000"; // Dark Green
+                default:
+                    return "#000000"; 
+                }
+            }
 
 
-        function generateLegendItems(alphas) {
-        const legendItems = alphas.map((alpha, index) => {
-            const color = getColorFromAlpha(alpha);
-            const label = `Alpha ${index + 1}`;
-            return `<div class="legend-item" style="background-color: ${color};"></div><span>${label}</span>`;
-        });
 
-        return legendItems.join('');
-}
+
 
 
 
@@ -256,10 +257,17 @@
                             intensity: parseFloat(coord.intensity)
                         }));
 
+                        const areaColor = getColorFromClass(areaData.class_id);
+
                         // Create a polygon with ordered coordinates
                         const polygon = new google.maps.Polygon({
                             paths: polygonCoordinates,
                             map: map,
+                            strokeColor: areaColor,
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+                            fillColor: areaColor,
+                            fillOpacity: 0.2
                         });
 
                         // Add click event listener to the polygon
@@ -269,25 +277,6 @@
                             `;
                             document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
-
-
-
-
-
-                            // Update legend content
-                            const legendContent2 = `
-                                <h4>Segment Legend</h4>
-                                <div id="legend-items">
-                                    ${generateLegendItems(areaData.alphas)}
-                                </div>
-                                <!-- Add other legend information as needed -->
-                            `;
-                            document.getElementById("legend-content").innerHTML = legendContent2;
-
-
-
-
-
 
                             // Récupérer les coordonnées du polygone cliqué
                             const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
@@ -344,7 +333,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1934:', polygonCoordinates);
+                            console.log('polygonCoordinates V2347:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
