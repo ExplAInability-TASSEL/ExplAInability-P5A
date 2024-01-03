@@ -166,6 +166,16 @@
             }
         }
 
+
+
+        function getColorFromAlpha(alpha) {
+            const binaryColor = alpha === 0.67 ? "#000000" : "#FFFFFF"; // You can customize colors based on your requirements
+            return binaryColor;
+        }
+
+
+
+
         // fonction qui est appelée lorsque l'API google map est chargée (javascript)
         function initMap() {
             // study area = 2000 km^2 in Burkina Faso around the town of Koumbia
@@ -186,36 +196,6 @@
                 zoom: 10,
                 center: centerCoordinates
             });
-
-
-
-
-
-
-
-
-            function createMarker(lat, lng, alpha) {
-            const marker = new google.maps.Marker({
-                position: new google.maps.LatLng(lat, lng),
-                map: map,  // assuming 'map' is your Google Map object
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    fillColor: `rgba(255, 0, 0, ${alpha})`,  // You can customize the color based on alpha
-                    fillOpacity: 1,
-                    strokeColor: 'white',
-                    strokeWeight: 1,
-                    scale: 8  // You can adjust the size of the marker
-                }
-            });
-            return marker;
-        }
-
-
-
-
-
-
-
 
             // Créer une forme de rectangle pour représenter la bounding box
             var boundingBox = new google.maps.Polygon({
@@ -268,13 +248,21 @@
 
 
 
-
-                            polygonCoordinates.forEach((coord, index) => {
-                            const marker = createMarker(coord.lat, coord.lng, areaData.alphas[index]);
-                            // You can store the markers in an array if you need to access them later
-                            // markers.push(marker);
-                        });
-
+                            // Loop through pixel_coordinates and display them on the map with alpha values from the alphas list
+                            areaData.pixel_coordinates.forEach((pixelCoord, index) => {
+                                const alpha = areaData.alphas[index];
+                                const pixelMarker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(pixelCoord.latitude, pixelCoord.longitude),
+                                    map: map,
+                                    icon: {
+                                        path: google.maps.SymbolPath.CIRCLE,
+                                        fillColor: getColorFromAlpha(alpha),
+                                        fillOpacity: 1,
+                                        strokeWeight: 0,
+                                        scale: 5 // Adjust the scale as needed
+                                    }
+                                });
+                            });
 
 
 
