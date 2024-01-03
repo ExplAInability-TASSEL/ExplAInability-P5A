@@ -170,19 +170,19 @@
 
 
 
-        // Function to dynamically convert alpha value to binary color (blue/red) based on a dynamic threshold
-        function getBinaryColorFromAlpha(alpha, threshold) {
-            return alpha > threshold ? 'blue' : 'red';
+        // Function to dynamically convert alpha value to color based on a dynamic scale
+        function getColorFromAlpha(alpha, scale) {
+            const hue = scale(alpha);
+            return `hsl(${hue}, 100%, 50%)`; // Use HSL color model for easy hue adjustment
         }
 
-        // Function to calculate a dynamic threshold based on the alphas array
-        function calculateDynamicThreshold(alphas) {
-            // Use a simple average as the dynamic threshold
-            const sum = alphas.reduce((acc, alpha) => acc + alpha, 0);
-            return sum / alphas.length;
+        // Function to calculate a dynamic scale based on the alphas array
+        function calculateDynamicScale(alphas) {
+            // Use a simple linear scale from red (0) to blue (240) based on the alpha range
+            const minAlpha = Math.min(...alphas);
+            const maxAlpha = Math.max(...alphas);
+            return (alpha) => (alpha - minAlpha) / (maxAlpha - minAlpha) * 240;
         }
-
-
 
 
 
@@ -256,9 +256,11 @@
 
 
 
+                            
 
                             // Determine a dynamic threshold for each segment
-                            const dynamicThreshold = calculateDynamicThreshold(areaData.alphas);
+                            const dynamicScale = calculateDynamicScale(areaData.alphas);
+
                             // Loop through pixel_coordinates and display them on the map with alpha values from the alphas list
                             areaData.pixel_coordinates.forEach((pixelCoord, index) => {
                                 const alpha = areaData.alphas[index];
@@ -267,7 +269,7 @@
                                     map: map,
                                     icon: {
                                         path: google.maps.SymbolPath.CIRCLE,
-                                        fillColor: getBinaryColorFromAlpha(alpha, dynamicThreshold),
+                                        fillColor: getColorFromAlpha(alpha, dynamicScale),
                                         fillOpacity: 1,
                                         strokeWeight: 0,
                                         scale: 5 
