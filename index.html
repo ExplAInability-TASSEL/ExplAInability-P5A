@@ -171,8 +171,8 @@
         // Function to dynamically convert alpha value to hsl color
         function getColorFromAlpha(alpha) {
             const hue = (1 - alpha) * 240; // Map alpha to hue (0: red, 120: green, 240: blue)
-            const saturation = 100; // 100% saturation
-            const lightness = 50; // 50% lightness
+            const saturation = 5; // 100% saturation
+            const lightness = 20; // 50% lightness
 
             return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         }
