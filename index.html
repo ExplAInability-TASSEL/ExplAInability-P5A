@@ -114,6 +114,9 @@
             text-align: center;
         }
     </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js"></script>
+
 </head>
 <body>
     <!-- section menu de la page -->
@@ -154,6 +157,7 @@
         let mapInPanel;
         let map;
         let heatmap;
+        const chroma = require('chroma-js');
 
         function toggleInfoPanel() {
             const infoPanel = document.getElementById("info-panel");
@@ -168,14 +172,11 @@
 
 
 
-        // Function to dynamically convert alpha value to hsl color
+        // Function to dynamically convert alpha value to color using Chroma.js interpolation
         function getColorFromAlpha(alpha) {
-            const hue = (1 - alpha) * 240; // Map alpha to hue (0: red, 120: green, 240: blue)
-            const saturation = 5; // 100% saturation
-            const lightness = 20; // 50% lightness
-
-            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-        }
+            const colorScale = chroma.scale(['#FF0000', '#0000FF']).domain([0, 1]);
+            return colorScale(alpha).hex();
+}
 
 
 
