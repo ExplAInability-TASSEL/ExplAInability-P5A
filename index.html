@@ -170,10 +170,13 @@
 
 
 
-        // Function to dynamically convert alpha value to color based on a gradient scale
-        function getColorFromAlpha(alpha, minAlpha, maxAlpha) {
-            const hue = (alpha - minAlpha) / (maxAlpha - minAlpha) * 240;
-            return `hsl(${hue}, 100%, 50%)`; // Use HSL color model for easy hue adjustment
+        // Function to dynamically convert alpha value to hsl color
+        function getColorFromAlpha(alpha) {
+            const hue = (1 - alpha) * 240; // Map alpha to hue (0: red, 120: green, 240: blue)
+            const saturation = 10; 
+            const lightness = 20; 
+
+            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         }
 
 
@@ -253,21 +256,18 @@
 
 
 
-                            // Loop through pixel_coordinates and display them on the map with alpha values from the alphas list
+                            // Loop through pixel_coordinates and display them on the map with dynamic alpha values
                             areaData.pixel_coordinates.forEach((pixelCoord, index) => {
                                 const alpha = areaData.alphas[index];
-                                const minAlpha = Math.min(...areaData.alphas);
-                                const maxAlpha = Math.max(...areaData.alphas);
-
                                 const pixelMarker = new google.maps.Marker({
                                     position: new google.maps.LatLng(pixelCoord.latitude, pixelCoord.longitude),
                                     map: map,
                                     icon: {
                                         path: google.maps.SymbolPath.CIRCLE,
-                                        fillColor: getColorFromAlpha(alpha, minAlpha, maxAlpha),
+                                        fillColor: getColorFromAlpha(alpha),
                                         fillOpacity: 1,
                                         strokeWeight: 0,
-                                        scale: 5 
+                                        scale: 5 // Adjust the scale as needed
                                     }
                                 });
                             });
