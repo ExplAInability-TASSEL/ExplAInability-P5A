@@ -343,14 +343,6 @@
                                 intensity: parseFloat(coord.intensity)
                             }));
 
-
-
-
-
-                            
-
-
-
                             // Loop through pixel_coordinates and display them on the map with dynamic alpha values
                             areaData.pixel_coordinates.forEach((pixelCoord, index) => {
                                 const alpha = areaData.alphas[index];
@@ -387,11 +379,11 @@
                             // Initialize the heatmap layer
                             const heatmapData = polygonCoordinates.map(coord => ({
                                 location: new google.maps.LatLng(coord.lat, coord.lng),
-                                weight: coord.intensity
+                                weight: areaData.alphas[index]
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V0128:', polygonCoordinates);
+                            console.log('polygonCoordinates V0152:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
@@ -403,8 +395,8 @@
                             //heatmap.setMap(mapInPanel);
 
                             // Obtenir les valeurs minimale et maximale de l'intensité
-                            const minIntensity = Math.min(...polygonCoordinates.map(coord => coord.intensity));
-                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => coord.intensity));
+                            const minIntensity = Math.min(...polygonCoordinates.map(coord => areaData.alphas));
+                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => areaData.alphas));
 
                             // Mise à jour de la légende
                             const legendContent = `
