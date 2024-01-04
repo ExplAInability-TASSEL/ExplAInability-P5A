@@ -242,28 +242,40 @@
 
         // Function to create legend items dynamically
         function createLegend() {
-            const legendContainer = document.getElementById("class-legend");
+        const legendContainer = document.getElementById("class-legend");
 
-            // Define class names and corresponding colors
-            const classColors = {
-                1: "#58d68d", // Green
-                2: "#e67e22", // Orange
-                3: "#145a32", // Forest
-                4: "#f4d03f", // Savannah
-                5: "#5dade2", // Grassland
-                6: "#566573", // Rocks
-                7: "#1b2631", // Built-up
-                8: "#162ef3", // Water
-            };
+        // Define class names and corresponding colors
+        const classColors = {
+            1: "#58d68d", // Annual Cropland
+            2: "#e67e22", // Fallows
+            3: "#145a32", // Natural Forest
+            4: "#f4d03f", // Savannah
+            5: "#5dade2", // Grassland
+            6: "#566573", // Rocks
+            7: "#1b2631", // Built-up
+            8: "#162ef3", // Water
+        };
 
-            // Loop through class colors and create legend items
-            for (const [classId, color] of Object.entries(classColors)) {
-                const legendItem = document.createElement("div");
-                legendItem.className = "legend-item";
-                legendItem.innerHTML = `<span class="legend-color" style="background-color: ${color};"></span> Class ${classId}`;
-                legendContainer.appendChild(legendItem);
-            }
-            }
+        const classNames = {
+            1: "Annual Cropland",
+            2: "Fallows",
+            3: "Natural Forest",
+            4: "Savannah",
+            5: "Grassland",
+            6: "Rocks",
+            7: "Built-up",
+            8: "Water",
+        };
+
+        // Loop through class colors and create legend items
+        for (const [classId, color] of Object.entries(classColors)) {
+            const legendItem = document.createElement("div");
+            legendItem.className = "legend-item";
+            legendItem.innerHTML = `<span class="legend-color" style="background-color: ${color};"></span> ${classNames[classId]}`;
+            legendContainer.appendChild(legendItem);
+        }
+    }
+
 
         // fonction qui est appelée lorsque l'API google map est chargée (javascript)
         function initMap() {
@@ -397,7 +409,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V0103:', polygonCoordinates);
+                            console.log('polygonCoordinates V0116:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
