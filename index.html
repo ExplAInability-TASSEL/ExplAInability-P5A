@@ -114,12 +114,6 @@
             text-align: center;
         }
 
-
-
-
-
-
-
         #class-legend {
         position: absolute;
         bottom: 10px;
@@ -144,10 +138,6 @@
         margin-right: 5px;
         border: 1px solid #ccc;
         }
-
-
-
-
 
     </style>
 
@@ -311,14 +301,6 @@
 
             createLegend();
             
-
-            
-
-
-
-
-
-
             // recupérer les coordonnées des segments à partir du fichier JSON (requête fetch)
             fetch('./sources/final_segment_lat_long.json')
                 // convertit la réponse en JSON
@@ -360,6 +342,20 @@
                                 lng: parseFloat(coord.lng),
                                 intensity: parseFloat(coord.intensity)
                             }));
+
+
+
+
+
+
+
+
+
+                            const polygonBounds = new google.maps.LatLngBounds();
+                            polygonCoordinates.forEach(coord => polygonBounds.extend(coord));
+
+                            // Zoom to the bounds of the clicked polygon
+                            map.fitBounds(polygonBounds);
 
 
 
@@ -409,7 +405,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V0116:', polygonCoordinates);
+                            console.log('polygonCoordinates V0128:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
