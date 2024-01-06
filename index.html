@@ -196,8 +196,6 @@
                 infoPanel.style.transform = "translateX(0)"; // Show the panel
             } else {
                 infoPanel.style.transform = "translateX(100%)"; // Hide the panel
-                document.getElementById("info-content").innerHTML = ""; // Reset the info content
-                document.getElementById("map-in-panel").innerHTML = ""; // Reset the map content
             }
         }
 
@@ -334,9 +332,21 @@
                         polygon.addListener("click", () => {
                             const infoContent = `
                                 <h3>Class of the segment: ${areaData.class_id}</h3>
+                                <p>Alpha Values:</p>
+                                <ul>
+                                    ${areaData.alphas.map((alpha, index) => `<li>Pixel ${index + 1}: ${alpha}</li>`).join('')}
+                                </ul>
                             `;
                             document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
+
+                            // Create a legend for alpha values
+                            const legendContent2 = `
+                                <h4>Alpha Value Legend</h4>
+                                <div id="gradient"></div>
+                                <p>Alpha Range: ${Math.min(...areaData.alphas)} - ${Math.max(...areaData.alphas)}</p>
+                            `;
+                            document.getElementById("legend-content").innerHTML = legendContent2;
 
                             // Récupérer les coordonnées du polygone cliqué
                             const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
@@ -379,7 +389,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V0025:', polygonCoordinates);
+                            console.log('polygonCoordinates V0034:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
