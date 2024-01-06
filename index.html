@@ -199,12 +199,32 @@
             }
         }
 
-        // Function to dynamically convert alpha value to color
-        function getColorFromAlpha(alpha) {
-            const red = Math.floor(255 * (1 - alpha));
-            const blue = Math.floor(255 * alpha);
-            return `rgb(${red}, 0, ${blue})`;
-        }
+        // // Function to dynamically convert alpha value to color
+        // function getColorFromAlpha(alpha) {
+        //     const red = Math.floor(255 * (1 - alpha));
+        //     const blue = Math.floor(255 * alpha);
+        //     return `rgb(${red}, 0, ${blue})`;
+        // }
+
+
+
+        function getColorFromAlpha(alpha, predominantAlpha) {
+        const threshold = 0.5; // Adjust the threshold as needed
+
+        // Determine whether the alpha value is the predominant one
+        const isPredominant = alpha >= threshold * predominantAlpha;
+
+        // Use red for the predominant alpha and blue for others
+        return isPredominant ? "red" : "blue";
+    }
+
+
+
+
+
+
+
+
 
         // Function to map class_id to a color
         function getColorFromClass(classId) {
@@ -266,7 +286,6 @@
             legendContainer.appendChild(legendItem);
         }
     }
-
 
         // fonction qui est appelée lorsque l'API google map est chargée (javascript)
         function initMap() {
@@ -344,6 +363,13 @@
                                 intensity: parseFloat(coord.intensity)
                             }));
 
+
+
+
+
+
+
+
                             // Loop through pixel_coordinates and display them on the map with dynamic alpha values
                             areaData.pixel_coordinates.forEach((pixelCoord, index) => {
                                 const alpha = areaData.alphas[index];
@@ -352,7 +378,7 @@
                                     map: map,
                                     icon: {
                                         path: google.maps.SymbolPath.CIRCLE,
-                                        fillColor: getColorFromAlpha(alpha),
+                                        fillColor: getColorFromAlpha(alpha, predominantAlpha),
                                         fillOpacity: 1,
                                         strokeWeight: 0,
                                         scale: 5 // Adjust the scale as needed
@@ -384,7 +410,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1725:', polygonCoordinates);
+                            console.log('polygonCoordinates V1803:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
