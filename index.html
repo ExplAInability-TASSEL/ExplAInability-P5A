@@ -271,10 +271,10 @@
         function initMap() {
             // study area = 2000 km^2 in Burkina Faso around the town of Koumbia
             // objets avec les propriétés lat et lng
-            var topLeft = {lat: 11.37, lng: -3.89};
+            var topLeft = {lat: 11.37, lng: -3.8926602024009886};
             var topRight = {lat: 11.37, lng: -3.42};
             var bottomRight = {lat: 10.96, lng: -3.42};
-            var bottomLeft = {lat: 10.96, lng: -3.89};
+            var bottomLeft = {lat: 10.96, lng: -3.8926602024009886};
 
             // Calculer le centre de la bounding box
             var centerCoordinates = {
@@ -391,7 +391,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1814:', polygonCoordinates);
+                            console.log('polygonCoordinates V1820:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
