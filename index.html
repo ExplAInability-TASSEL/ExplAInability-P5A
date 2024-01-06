@@ -378,7 +378,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1825:', polygonCoordinates);
+                            console.log('polygonCoordinates V1844:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
@@ -408,7 +408,7 @@
 
 
                 // recupérer les coordonnées des segments à partir du fichier JSON init (requête fetch)
-            fetch('./sources/water_segment_lat_long.json')
+            fetch('./sources/final_segment_lat_long.json')
                 // convertit la réponse en JSON
                 .then(response => response.json())
                 // traitement des données récupérées
@@ -482,9 +482,6 @@
                                 location: new google.maps.LatLng(coord.lat, coord.lng),
                                 weight: areaData.alphas[index]
                             }));
-
-                            // Add console.log for debugging
-                            console.log('polygonCoordinates V1825:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
