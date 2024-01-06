@@ -303,7 +303,7 @@
             createLegend();
             
             // recupérer les coordonnées des segments à partir du fichier JSON (requête fetch)
-            fetch('./sources/final_segment_lat_long.json')
+            fetch('./sources/water_segment_lat_long.json')
                 // convertit la réponse en JSON
                 .then(response => response.json())
                 // traitement des données récupérées
@@ -384,7 +384,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V0152:', polygonCoordinates);
+                            console.log('polygonCoordinates V1725:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
