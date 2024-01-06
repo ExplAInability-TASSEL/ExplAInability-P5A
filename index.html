@@ -199,32 +199,12 @@
             }
         }
 
-        // // Function to dynamically convert alpha value to color
-        // function getColorFromAlpha(alpha) {
-        //     const red = Math.floor(255 * (1 - alpha));
-        //     const blue = Math.floor(255 * alpha);
-        //     return `rgb(${red}, 0, ${blue})`;
-        // }
-
-
-
-        function getColorFromAlpha(alpha, predominantAlpha) {
-        const threshold = 0.5; // Adjust the threshold as needed
-
-        // Determine whether the alpha value is the predominant one
-        const isPredominant = alpha >= threshold * predominantAlpha;
-
-        // Use red for the predominant alpha and blue for others
-        return isPredominant ? "red" : "blue";
-    }
-
-
-
-
-
-
-
-
+        // Function to dynamically convert alpha value to color
+        function getColorFromAlpha(alpha) {
+            const red = Math.floor(255 * (1 - alpha));
+            const blue = Math.floor(255 * alpha);
+            return `rgb(${red}, 0, ${blue})`;
+        }
 
         // Function to map class_id to a color
         function getColorFromClass(classId) {
@@ -315,7 +295,7 @@
                 strokeColor: '#FF0000', // rouge
                 strokeOpacity: 1,
                 strokeWeight: 2,
-                fillColor: '#FF0000',
+                fillColor: 'transparent',
                 fillOpacity: 0.2
             });
 
@@ -352,6 +332,7 @@
                         polygon.addListener("click", () => {
                             const infoContent = `
                                 <h3>Class of the segment: ${areaData.class_id}</h3>
+                                <h3>Segment ID: ${areaData.segment_id}</h3>
                             `;
                             document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
@@ -378,10 +359,10 @@
                                     map: map,
                                     icon: {
                                         path: google.maps.SymbolPath.CIRCLE,
-                                        fillColor: getColorFromAlpha(alpha, predominantAlpha),
+                                        fillColor: getColorFromAlpha(alpha),
                                         fillOpacity: 1,
                                         strokeWeight: 0,
-                                        scale: 5 // Adjust the scale as needed
+                                        scale: 5 
                                     }
                                 });
                             });
@@ -410,7 +391,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1803:', polygonCoordinates);
+                            console.log('polygonCoordinates V1814:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
