@@ -196,6 +196,8 @@
                 infoPanel.style.transform = "translateX(0)"; // Show the panel
             } else {
                 infoPanel.style.transform = "translateX(100%)"; // Hide the panel
+                document.getElementById("info-content").innerHTML = ""; // Reset the info content
+                document.getElementById("map-in-panel").innerHTML = ""; // Reset the map content
             }
         }
 
@@ -377,7 +379,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V2338:', polygonCoordinates);
+                            console.log('polygonCoordinates V0025:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
@@ -519,4 +521,5 @@
     <script src="https://maps.googleapis.com/maps/api/js?key={{ site.GOOGLE_MAP_API_KEY }}&callback=initMap" async defer></script>
 </body>
 </html>
+
 
