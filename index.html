@@ -332,7 +332,6 @@
                         polygon.addListener("click", () => {
                             const infoContent = `
                                 <h3>Class of the segment: ${areaData.class_id}</h3>
-                                <h3>Segment ID: ${areaData.segment_id}</h3>
                             `;
                             document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
@@ -407,7 +406,9 @@
                 })
 
 
-                // recupérer les coordonnées des segments à partir du fichier JSON init (requête fetch)
+
+
+                // recupérer les coordonnées des segments à partir du fichier JSON haut-gauche (requête fetch)
             fetch('./sources/final_segment_lat_long.json')
                 // convertit la réponse en JSON
                 .then(response => response.json())
@@ -438,7 +439,6 @@
                         polygon.addListener("click", () => {
                             const infoContent = `
                                 <h3>Class of the segment: ${areaData.class_id}</h3>
-                                <h3>Segment ID: ${areaData.segment_id}</h3>
                             `;
                             document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
@@ -509,9 +509,6 @@
                     });
                 })
 
-
-
-
                 .catch(error => {
                     console.error('Error fetching data:', error);
                 });
@@ -522,3 +519,4 @@
     <script src="https://maps.googleapis.com/maps/api/js?key={{ site.GOOGLE_MAP_API_KEY }}&callback=initMap" async defer></script>
 </body>
 </html>
+
