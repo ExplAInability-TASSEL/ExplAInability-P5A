@@ -328,10 +328,10 @@
                 .then(data => {
                     // Loop through the data and create polygons for each area
                     data.forEach((areaData) => {
-                        const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(areaData => ({
-                            lat: parseFloat(areaData.latitude),
-                            lng: parseFloat(areaData.longitude),
-                            intensity: parseFloat(areaData.intensity)
+                        const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
+                            lat: parseFloat(coord.latitude),
+                            lng: parseFloat(coord.longitude),
+                            intensity: parseFloat(coord.intensity)
                         }));
 
                         const areaColor = getColorFromClass(areaData.class_id);
@@ -372,15 +372,15 @@
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
 
                             // Récupérer les coordonnées du polygone cliqué
-                            const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(areaData => ({
-                                lat: parseFloat(areaData.lat),
-                                lng: parseFloat(areaData.lng),
-                                intensity: parseFloat(areaData.intensity)
+                            const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
+                                lat: parseFloat(coord.lat),
+                                lng: parseFloat(coord.lng),
+                                intensity: parseFloat(coord.intensity)
                             }));
 
                             // Calculer le centre géométrique du polygone
-                            const centerLat = polygonCoordinates.reduce((sum, areaData) => sum + areaData.lat, 0) / polygonCoordinates.length;
-                            const centerLng = polygonCoordinates.reduce((sum, areaData) => sum + areaData.lng, 0) / polygonCoordinates.length;
+                            const centerLat = polygonCoordinates.reduce((sum, coord) => sum + coord.lat, 0) / polygonCoordinates.length;
+                            const centerLng = polygonCoordinates.reduce((sum, coord) => sum + coord.lng, 0) / polygonCoordinates.length;
 
                             // Create a new map in the panel centered on the clicked area -> ON VEUT HEAT MAP
                             const mapOptions = {
@@ -390,12 +390,10 @@
                             mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
 
                             // // Initialize the heatmap layer
-                            // const heatmapData = polygonCoordinates.map(areaData => ({
+                            // const heatmapData = polygonCoordinates.map(coord => ({
                             //     location: new google.maps.LatLng(coord.lat, coord.lng),
                             //     weight: areaData.alphas[index]
                             // }));
-
-
 
                             // heatmap = new google.maps.visualization.HeatmapLayer({
                             //     data: heatmapData,
@@ -409,8 +407,8 @@
 
 
                             // Obtenir les valeurs minimale et maximale des alpha pour la legende
-                            const minIntensity = Math.min(...polygonCoordinates.map(areaData => areaData.alphas));
-                            const maxIntensity = Math.max(...polygonCoordinates.map(areaData => areaData.alphas));
+                            const minIntensity = Math.min(...polygonCoordinates.map(coord => areaData.alphas));
+                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => areaData.alphas));
 
                             // Mise à jour de la légende
                             const legendContent = `
@@ -422,8 +420,8 @@
 
 
 
-                            // console.log for debugging
-                            console.log('polygonCoordinates V0047:', polygonCoordinates);
+                            // Add console.log for debugging
+                            console.log('polygonCoordinates V0054:', polygonCoordinates);
                         });
                     });
                 })
