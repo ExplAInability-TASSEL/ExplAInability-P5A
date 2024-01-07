@@ -247,6 +247,15 @@
         function createLegend() {
         const legendContainer = document.getElementById("class-legend");
 
+
+
+        function toggleHeatmap() {
+        heatmap.setMap(heatmap.getMap() ? null : map);
+        }
+
+
+
+
         // Define class names and corresponding colors
         const classColors = {
             1: "#58d68d", // Annual Cropland
@@ -389,7 +398,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1925:', polygonCoordinates);
+                            console.log('polygonCoordinates V1939:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
@@ -412,6 +421,9 @@
                             `;
                             document.getElementById("legend-content").innerHTML = legendContent;
 
+
+
+                            document.getElementById("toggle-heatmap").addEventListener("click", toggleHeatmap);
                         });
                     });
                 })
@@ -527,7 +539,7 @@
 
         
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ site.GOOGLE_MAP_API_KEY }}&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ site.GOOGLE_MAP_API_KEY }}&callback=initMap&libraries=visualization" async defer></script>
 </body>
 </html>
 
