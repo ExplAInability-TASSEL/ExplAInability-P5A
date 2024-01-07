@@ -76,7 +76,7 @@
             width: 100%;
             height: calc(100% - 80px);
         }
-        /* bandeau info segment ID */
+        /* bandeau info class ID */
         #info-content {
         width: 100%;
         height: 40px;
@@ -103,9 +103,19 @@
         /* degradé de couleur barre de la heatmap */
         #gradient {
             width: 100%;
-            height: 20px; /* Ajustez la hauteur selon vos besoins */
+            height: 20px; 
             /*background: linear-gradient(to right, #ff0000, #00ff00);*/
         }
+
+
+
+        #alphalegend {
+            width: 100%;
+            height: 20px; 
+        }
+
+
+
         #legend-content {
             position: absolute;
             top: 0;
@@ -174,8 +184,10 @@
             <!-- <div id="gradient"></div> -->
             <div id="legend-content">
                 <!-- <h4>Heatmap LegendSS</h4> -->
-                <div id="gradient"></div>
-                <p>Intensity RangeSS: ${maxIntensity} - ${minIntensity}</p>
+                <!-- <div id="gradient"></div> -->
+                <!-- <p>Intensity RangeSS: ${maxIntensity} - ${minIntensity}</p> -->
+                <div id="alphalegend"></div>
+                <h1>Attention weight</h1>
                 <!-- Ajoutez d'autres éléments de légende selon vos besoins -->
             </div>
         </div>
@@ -377,7 +389,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1832:', polygonCoordinates);
+                            console.log('polygonCoordinates V1844:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
