@@ -187,7 +187,7 @@
                 <!-- <div id="gradient"></div> -->
                 <!-- <p>Intensity RangeSS: ${maxIntensity} - ${minIntensity}</p> -->
                 <div id="alphalegend"></div>
-                <h1>Attention weight</h1>
+                <p>Attention weight</p>
                 <!-- Ajoutez d'autres éléments de légende selon vos besoins -->
             </div>
         </div>
@@ -389,7 +389,7 @@
                             }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1844:', polygonCoordinates);
+                            console.log('polygonCoordinates V1852:', polygonCoordinates);
 
                             heatmap = new google.maps.visualization.HeatmapLayer({
                                 data: heatmapData,
@@ -400,18 +400,17 @@
                             });
                             //heatmap.setMap(mapInPanel);
 
-                            // Obtenir les valeurs minimale et maximale de l'intensité
+                            // Obtenir les valeurs minimale et maximale des alpha pour la legende
                             const minIntensity = Math.min(...polygonCoordinates.map(coord => areaData.alphas));
                             const maxIntensity = Math.max(...polygonCoordinates.map(coord => areaData.alphas));
 
                             // Mise à jour de la légende
-                            // const legendContent = `
-                            //     <h4>Heatmap Legend</h4>
-                            //     <div id="gradient"></div>
-                            //     <p>Intensity Range: ${maxIntensity} - ${minIntensity}</p>
-                            //     <!-- Ajoutez d'autres informations de légende selon vos besoins -->
-                            // `;
-                            // document.getElementById("legend-content").innerHTML = legendContent;
+                            const legendContent = `
+                                <h4>Alpha Legend</h4>
+                                <div id="alphalegend"></div>
+                                <p>Attention weight: ${maxIntensity} - ${minIntensity}</p>
+                            `;
+                            document.getElementById("legend-content").innerHTML = legendContent;
 
                         });
                     });
