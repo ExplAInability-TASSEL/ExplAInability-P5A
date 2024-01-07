@@ -118,7 +118,7 @@
 
         #legend-content {
             position: absolute;
-            top: 5;
+            top: 3;
             left: 10;
             width: 100%;
             padding: 0px; /* Ajustez la marge selon vos besoins */
@@ -249,9 +249,7 @@
 
 
 
-        function toggleHeatmap() {
-        heatmap.setMap(heatmap.getMap() ? null : map);
-        }
+        
 
 
 
@@ -330,10 +328,10 @@
                 .then(data => {
                     // Loop through the data and create polygons for each area
                     data.forEach((areaData) => {
-                        const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
-                            lat: parseFloat(coord.latitude),
-                            lng: parseFloat(coord.longitude),
-                            intensity: parseFloat(coord.intensity)
+                        const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(areaData => ({
+                            lat: parseFloat(areaData.latitude),
+                            lng: parseFloat(areaData.longitude),
+                            intensity: parseFloat(areaData.intensity)
                         }));
 
                         const areaColor = getColorFromClass(areaData.class_id);
@@ -349,23 +347,8 @@
                             fillOpacity: 0.2
                         });
 
-                        // Add click event listener to the polygon
-                        polygon.addListener("click", () => {
-                            const infoContent = `
-                                <h3>Class of the segment: ${areaData.class_id}</h3>
-                            `;
-                            document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
-                            toggleInfoPanel(); // Open or hide the panel when an area is clicked
-
-                            // Récupérer les coordonnées du polygone cliqué
-                            const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
-                                lat: parseFloat(coord.lat),
-                                lng: parseFloat(coord.lng),
-                                intensity: parseFloat(coord.intensity)
-                            }));
-
-                            // Loop through pixel_coordinates and display them on the map with dynamic alpha values
-                            areaData.pixel_coordinates.forEach((pixelCoord, index) => {
+                        // Loop through pixel_coordinates and display them on the map with dynamic alpha values
+                        areaData.pixel_coordinates.forEach((pixelCoord, index) => {
                                 const alpha = areaData.alphas[index];
                                 const pixelMarker = new google.maps.Marker({
                                     position: new google.maps.LatLng(pixelCoord.latitude, pixelCoord.longitude),
@@ -380,9 +363,24 @@
                                 });
                             });
 
+                        // Add click event listener to the polygon
+                        polygon.addListener("click", () => {
+                            const infoContent = `
+                                <h3>Class of the segment: ${areaData.class_id}</h3>
+                            `;
+                            document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
+                            toggleInfoPanel(); // Open or hide the panel when an area is clicked
+
+                            // Récupérer les coordonnées du polygone cliqué
+                            const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(areaData => ({
+                                lat: parseFloat(areaData.lat),
+                                lng: parseFloat(areaData.lng),
+                                intensity: parseFloat(areaData.intensity)
+                            }));
+
                             // Calculer le centre géométrique du polygone
-                            const centerLat = polygonCoordinates.reduce((sum, coord) => sum + coord.lat, 0) / polygonCoordinates.length;
-                            const centerLng = polygonCoordinates.reduce((sum, coord) => sum + coord.lng, 0) / polygonCoordinates.length;
+                            const centerLat = polygonCoordinates.reduce((sum, areaData) => sum + areaData.lat, 0) / polygonCoordinates.length;
+                            const centerLng = polygonCoordinates.reduce((sum, areaData) => sum + areaData.lng, 0) / polygonCoordinates.length;
 
                             // Create a new map in the panel centered on the clicked area -> ON VEUT HEAT MAP
                             const mapOptions = {
@@ -391,27 +389,28 @@
                             };
                             mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
 
-                            // Initialize the heatmap layer
-                            const heatmapData = polygonCoordinates.map(coord => ({
-                                location: new google.maps.LatLng(coord.lat, coord.lng),
-                                weight: areaData.alphas[index]
-                            }));
+                            // // Initialize the heatmap layer
+                            // const heatmapData = polygonCoordinates.map(areaData => ({
+                            //     location: new google.maps.LatLng(coord.lat, coord.lng),
+                            //     weight: areaData.alphas[index]
+                            // }));
 
-                            // Add console.log for debugging
-                            console.log('polygonCoordinates V1939:', polygonCoordinates);
 
-                            heatmap = new google.maps.visualization.HeatmapLayer({
-                                data: heatmapData,
-                                dissipating: true,
-                                radius: 50,
-                                opacity: 0.7,
-                                map: mapInPanel,
-                            });
-                            heatmap.setMap(mapInPanel);
+
+                            // heatmap = new google.maps.visualization.HeatmapLayer({
+                            //     data: heatmapData,
+                            //     dissipating: true,
+                            //     radius: 50,
+                            //     opacity: 0.7,
+                            //     map: mapInPanel,
+                            // });
+                            // heatmap.setMap(mapInPanel);
+
+
 
                             // Obtenir les valeurs minimale et maximale des alpha pour la legende
-                            const minIntensity = Math.min(...polygonCoordinates.map(coord => areaData.alphas));
-                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => areaData.alphas));
+                            const minIntensity = Math.min(...polygonCoordinates.map(areaData => areaData.alphas));
+                            const maxIntensity = Math.max(...polygonCoordinates.map(areaData => areaData.alphas));
 
                             // Mise à jour de la légende
                             const legendContent = `
@@ -423,7 +422,8 @@
 
 
 
-                            document.getElementById("toggle-heatmap").addEventListener("click", toggleHeatmap);
+                            // console.log for debugging
+                            console.log('polygonCoordinates V0047:', polygonCoordinates);
                         });
                     });
                 })
