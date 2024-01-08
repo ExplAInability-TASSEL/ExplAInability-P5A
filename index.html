@@ -243,15 +243,6 @@
         function createLegend() {
         const legendContainer = document.getElementById("class-legend");
 
-
-
-        function toggleHeatmap() {
-        heatmap.setMap(heatmap.getMap() ? null : map);
-        }
-
-
-
-
         // Define class names and corresponding colors
         const classColors = {
             1: "#58d68d", // Annual Cropland
@@ -394,7 +385,7 @@
                             // }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1223:', polygonCoordinates);
+                            console.log('polygonCoordinates V0030:', polygonCoordinates);
 
                             // heatmap = new google.maps.visualization.HeatmapLayer({
                             //     data: heatmapData,
@@ -406,8 +397,8 @@
                             // heatmap.setMap(mapInPanel);
 
                             // Obtenir les valeurs minimale et maximale des alpha pour la legende
-                            const minIntensity = Math.min(...polygonCoordinates.map(coord => areaData.alphas));
-                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => areaData.alphas));
+                            const minIntensity = Math.min(...polygonCoordinates.map(coord => coord.alphas));
+                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => coord.alphas));
 
                             // Mise à jour de la légende
                             const legendContent = `
@@ -416,12 +407,6 @@
                                 <p>Attention weight: ${maxIntensity} - ${minIntensity}</p>
                             `;
                             document.getElementById("legend-content").innerHTML = legendContent;
-
-
-
-
-
-                            document.getElementById("toggle-heatmap").addEventListener("click", toggleHeatmap);
                         });
                     });
                 })
