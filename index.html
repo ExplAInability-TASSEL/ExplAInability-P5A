@@ -214,6 +214,10 @@
             return `rgb(${red}, 0, ${blue})`;
         }
 
+        // Function to create legend items dynamically
+        function createLegend() {
+        const legendContainer = document.getElementById("class-legend");
+
         // Function to map class_id to a color
         function getColorFromClass(classId) {
 
@@ -269,10 +273,6 @@
             legendItem.innerHTML = `<span class="legend-color" style="background-color: ${color};"></span> ${classNames[classId]}`;
             legendContainer.appendChild(legendItem);
         }
-
-        // Function to create legend items dynamically
-        function createLegend() {
-        const legendContainer = document.getElementById("class-legend");
 
     }
 
@@ -386,7 +386,7 @@
                             // }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V2353:', polygonCoordinates);
+                            console.log('polygonCoordinates V2357:', polygonCoordinates);
 
                             // heatmap = new google.maps.visualization.HeatmapLayer({
                             //     data: heatmapData,
