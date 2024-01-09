@@ -179,12 +179,12 @@
         </div>
         <div id="legend">
             <!-- <div id="gradient"></div> -->
-            <!-- <div id="legend-content"> -->
+            <div id="legend-content">
                 <!-- <h4>Heatmap LegendSS</h4> -->
                 <!-- <div id="gradient"></div> -->
-            <p>Attention weight: ${maxIntensity} - ${minIntensity}</p>
+                <p>Attention weight: ${maxIntensity} - ${minIntensity}</p>
                 <!-- Ajoutez d'autres éléments de légende selon vos besoins -->
-            <!-- </div> -->
+            </div>
         </div>
         <div id="info-panel-arrow" onclick="toggleInfoPanel()"></div>
     </div>
@@ -385,7 +385,7 @@
                             // }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1755:', polygonCoordinates);
+                            console.log('polygonCoordinates V1758:', polygonCoordinates);
 
                             // heatmap = new google.maps.visualization.HeatmapLayer({
                             //     data: heatmapData,
@@ -416,7 +416,7 @@
                                     `).join('')}
                                 </div>
                             `;
-                            document.getElementById("legend").innerHTML = legendContent;
+                            document.getElementById("legend-content").innerHTML = legendContent;
                         });
                     });
                 })
