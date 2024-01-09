@@ -182,7 +182,6 @@
                 <!-- <h4>Heatmap LegendSS</h4> -->
                 <!-- <div id="gradient"></div> -->
                 <!-- <p>Intensity RangeSS: ${maxIntensity} - ${minIntensity}</p> -->
-                <div id="alphalegend"></div>
                 <p>Attention weight: ${maxIntensity} - ${minIntensity}</p>
                 <!-- Ajoutez d'autres éléments de légende selon vos besoins -->
             </div>
@@ -386,7 +385,7 @@
                             // }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V0114:', polygonCoordinates);
+                            console.log('polygonCoordinates V0121:', polygonCoordinates);
 
                             // heatmap = new google.maps.visualization.HeatmapLayer({
                             //     data: heatmapData,
@@ -407,7 +406,6 @@
                             // Update the #legend-content with the unique alpha values
                             const legendContent = `
                                 <h4>Alpha Legend</h4>
-                                <div id="alphalegend"></div>
                                 <p>Attention weight: ${uniqueAlphaValues.join(', ')}</p>
                             `;
                             document.getElementById("legend-content").innerHTML = legendContent;
