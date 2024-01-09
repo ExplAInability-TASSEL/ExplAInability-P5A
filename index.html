@@ -195,6 +195,7 @@
         let map;
         let heatmap;
         let uniqueAlphaColors = {};
+        let pixelMarkers = [];
 
         function toggleInfoPanel() {
             const infoPanel = document.getElementById("info-panel");
@@ -206,6 +207,38 @@
                 infoPanel.style.transform = "translateX(100%)"; // Hide the panel
             }
         }
+
+
+
+
+        // Function to create pixel markers on the map
+        function createPixelMarkers(pixelCoordinates) {
+            // Clear existing pixel markers
+            pixelMarkers.forEach(marker => marker.setMap(null));
+            pixelMarkers = [];
+
+            // Loop through pixel_coordinates and create markers
+            pixelCoordinates.forEach(pixelCoord => {
+                const alpha = pixelCoord.intensity;
+                const pixelMarker = new google.maps.Marker({
+                    position: new google.maps.LatLng(pixelCoord.lat, pixelCoord.lng),
+                    map: map,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        fillColor: getColorFromAlpha(alpha),
+                        fillOpacity: 1,
+                        strokeWeight: 0,
+                        scale: 5
+                    }
+                });
+                pixelMarkers.push(pixelMarker);
+            });
+}
+
+
+
+
+
 
         // Function to dynamically convert alpha value to color
         function getColorFromAlpha(alpha) {
@@ -367,6 +400,22 @@
                                 });
                             });
 
+
+
+                            // Loop through pixel_coordinates and display them on the map with dynamic alpha values
+                            const pixelCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
+                                lat: parseFloat(coord.latitude),
+                                lng: parseFloat(coord.longitude),
+                                intensity: parseFloat(coord.intensity)
+                            }));
+
+                            createPixelMarkers(pixelCoordinates);
+
+
+
+
+
+
                             // Calculer le centre géométrique du polygone
                             const centerLat = polygonCoordinates.reduce((sum, coord) => sum + coord.lat, 0) / polygonCoordinates.length;
                             const centerLng = polygonCoordinates.reduce((sum, coord) => sum + coord.lng, 0) / polygonCoordinates.length;
@@ -385,7 +434,7 @@
                             // }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1711:', polygonCoordinates);
+                            console.log('polygonCoordinates V1735:', polygonCoordinates);
 
                             // heatmap = new google.maps.visualization.HeatmapLayer({
                             //     data: heatmapData,
@@ -420,6 +469,8 @@
                         });
                     });
                 })
+
+
 
 
 
