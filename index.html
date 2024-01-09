@@ -179,7 +179,7 @@
         </div>
         <div id="legend">
             <!-- <div id="gradient"></div> -->
-            <div id="legend-content"> 
+            <!-- <div id="legend-content"> --> 
                 <!-- <h4>Heatmap LegendSS</h4> -->
                 <!-- <div id="gradient"></div> -->
                 <p>Attention weight: ${maxIntensity} - ${minIntensity}</p>
@@ -424,7 +424,7 @@
 
 
 
-                // recupérer les coordonnées des segments à partir du fichier JSON haut-gauche (requête fetch)
+                // recupérer les coordonnées des segments à partir du fichier JSON water (requête fetch)
             fetch('./sources/final_segment_lat_long.json')
                 // convertit la réponse en JSON
                 .then(response => response.json())
@@ -493,34 +493,45 @@
                             };
                             mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
 
-                            // Initialize the heatmap layer
-                            const heatmapData = polygonCoordinates.map(coord => ({
-                                location: new google.maps.LatLng(coord.lat, coord.lng),
-                                weight: areaData.alphas[index]
-                            }));
+                            // // Initialize the heatmap layer
+                            // const heatmapData = polygonCoordinates.map(coord => ({
+                            //     location: new google.maps.LatLng(coord.lat, coord.lng),
+                            //     weight: areaData.alphas[index]
+                            // }));
 
-                            heatmap = new google.maps.visualization.HeatmapLayer({
-                                data: heatmapData,
-                                dissipating: true,
-                                radius: 50,
-                                opacity: 0.7,
-                                map: mapInPanel,
+                            // Add console.log for debugging
+                            console.log('polygonCoordinates V0207:', polygonCoordinates);
+
+                            // heatmap = new google.maps.visualization.HeatmapLayer({
+                            //     data: heatmapData,
+                            //     dissipating: true,
+                            //     radius: 50,
+                            //     opacity: 0.7,
+                            //     map: mapInPanel,
+                            // });
+                            // heatmap.setMap(mapInPanel);
+
+                            // Obtenir les valeurs minimale et maximale des alpha pour la legende
+                            const minIntensity = Math.min(...polygonCoordinates.map(coord => coord.alphas));
+                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => coord.alphas));
+
+                            // Get unique alpha values and their associated colors for the clicked polygon
+                            areaData.alphas.forEach((alpha, index) => {
+                                uniqueAlphaColors[alpha] = uniqueAlphaColors[alpha] || getColorFromAlpha(alpha);
                             });
-                            //heatmap.setMap(mapInPanel);
+                            
 
-                            // Obtenir les valeurs minimale et maximale de l'intensité
-                            const minIntensity = Math.min(...polygonCoordinates.map(coord => areaData.alphas));
-                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => areaData.alphas));
-
-                            // Mise à jour de la légende
+                            // Update the #legend-content with the unique alpha values and colored boxes
                             const legendContent = `
-                                <h4>Heatmap Legend</h4>
-                                <div id="gradient"></div>
-                                <p>Intensity Range: ${maxIntensity} - ${minIntensity}</p>
-                                <!-- Ajoutez d'autres informations de légende selon vos besoins -->
+                                <h4>Alpha Legend</h4>
+                                <div id="alphalegend">
+                                    ${Object.entries(uniqueAlphaColors).map(([alpha, color]) => `
+                                        <span class="legend-color-box" style="background-color: ${color};"></span>
+                                        <span>${alpha}</span>
+                                    `).join('')}
+                                </div>
                             `;
                             document.getElementById("legend-content").innerHTML = legendContent;
-
                         });
                     });
                 })
@@ -529,7 +540,7 @@
 
 
 
-                // recupérer les coordonnées des segments à partir du fichier JSON training (requête fetch)
+                // recupérer les coordonnées des segments à partir du fichier JSON water (requête fetch)
             fetch('./sources/training_segment_lat_long.json')
                 // convertit la réponse en JSON
                 .then(response => response.json())
@@ -598,34 +609,45 @@
                             };
                             mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
 
-                            // Initialize the heatmap layer
-                            const heatmapData = polygonCoordinates.map(coord => ({
-                                location: new google.maps.LatLng(coord.lat, coord.lng),
-                                weight: areaData.alphas[index]
-                            }));
+                            // // Initialize the heatmap layer
+                            // const heatmapData = polygonCoordinates.map(coord => ({
+                            //     location: new google.maps.LatLng(coord.lat, coord.lng),
+                            //     weight: areaData.alphas[index]
+                            // }));
 
-                            heatmap = new google.maps.visualization.HeatmapLayer({
-                                data: heatmapData,
-                                dissipating: true,
-                                radius: 50,
-                                opacity: 0.7,
-                                map: mapInPanel,
+                            // Add console.log for debugging
+                            console.log('polygonCoordinates V0207:', polygonCoordinates);
+
+                            // heatmap = new google.maps.visualization.HeatmapLayer({
+                            //     data: heatmapData,
+                            //     dissipating: true,
+                            //     radius: 50,
+                            //     opacity: 0.7,
+                            //     map: mapInPanel,
+                            // });
+                            // heatmap.setMap(mapInPanel);
+
+                            // Obtenir les valeurs minimale et maximale des alpha pour la legende
+                            const minIntensity = Math.min(...polygonCoordinates.map(coord => coord.alphas));
+                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => coord.alphas));
+
+                            // Get unique alpha values and their associated colors for the clicked polygon
+                            areaData.alphas.forEach((alpha, index) => {
+                                uniqueAlphaColors[alpha] = uniqueAlphaColors[alpha] || getColorFromAlpha(alpha);
                             });
-                            //heatmap.setMap(mapInPanel);
+                            
 
-                            // Obtenir les valeurs minimale et maximale de l'intensité
-                            const minIntensity = Math.min(...polygonCoordinates.map(coord => areaData.alphas));
-                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => areaData.alphas));
-
-                            // Mise à jour de la légende
+                            // Update the #legend-content with the unique alpha values and colored boxes
                             const legendContent = `
-                                <h4>Heatmap Legend</h4>
-                                <div id="gradient"></div>
-                                <p>Intensity Range: ${maxIntensity} - ${minIntensity}</p>
-                                <!-- Ajoutez d'autres informations de légende selon vos besoins -->
+                                <h4>Alpha Legend</h4>
+                                <div id="alphalegend">
+                                    ${Object.entries(uniqueAlphaColors).map(([alpha, color]) => `
+                                        <span class="legend-color-box" style="background-color: ${color};"></span>
+                                        <span>${alpha}</span>
+                                    `).join('')}
+                                </div>
                             `;
                             document.getElementById("legend-content").innerHTML = legendContent;
-
                         });
                     });
                 })
