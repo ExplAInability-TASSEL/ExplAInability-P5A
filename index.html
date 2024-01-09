@@ -347,8 +347,8 @@
 
                             // Récupérer les coordonnées du polygone cliqué
                             const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
-                                lat: parseFloat(coord.lat),
-                                lng: parseFloat(coord.lng),
+                                lat: parseFloat(coord.latitude),
+                                lng: parseFloat(coord.longitude),
                                 intensity: parseFloat(coord.intensity)
                             }));
 
@@ -386,7 +386,7 @@
                             // }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1651:', polygonCoordinates);
+                            console.log('polygonCoordinates V1704:', polygonCoordinates);
 
                             // heatmap = new google.maps.visualization.HeatmapLayer({
                             //     data: heatmapData,
