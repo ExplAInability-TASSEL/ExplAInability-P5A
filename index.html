@@ -195,6 +195,7 @@
         let mapInPanel;
         let map;
         let heatmap;
+        let uniqueAlphas = [];
 
         function toggleInfoPanel() {
             const infoPanel = document.getElementById("info-panel");
@@ -385,7 +386,7 @@
                             // }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V0030:', polygonCoordinates);
+                            console.log('polygonCoordinates V0114:', polygonCoordinates);
 
                             // heatmap = new google.maps.visualization.HeatmapLayer({
                             //     data: heatmapData,
@@ -400,11 +401,14 @@
                             const minIntensity = Math.min(...polygonCoordinates.map(coord => coord.alphas));
                             const maxIntensity = Math.max(...polygonCoordinates.map(coord => coord.alphas));
 
-                            // Mise à jour de la légende
+                            // Get unique alpha values for the clicked polygon
+                            const uniqueAlphaValues = Array.from(new Set(areaData.alphas));
+
+                            // Update the #legend-content with the unique alpha values
                             const legendContent = `
                                 <h4>Alpha Legend</h4>
                                 <div id="alphalegend"></div>
-                                <p>Attention weight: ${maxIntensity} - ${minIntensity}</p>
+                                <p>Attention weight: ${uniqueAlphaValues.join(', ')}</p>
                             `;
                             document.getElementById("legend-content").innerHTML = legendContent;
                         });
