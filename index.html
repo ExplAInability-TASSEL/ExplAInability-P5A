@@ -310,7 +310,7 @@
             createLegend();
             
             // recupérer les coordonnées des segments à partir du fichier JSON water (requête fetch)
-            fetch('./sources/final_water_segment_lat_long.json')
+            fetch('./sources/water_segment_lat_long.json')
                 // convertit la réponse en JSON
                 .then(response => response.json())
                 // traitement des données récupérées
@@ -425,7 +425,7 @@
 
 
                 // recupérer les coordonnées des segments à partir du fichier JSON water (requête fetch)
-            fetch('./sources/final_segment_lat_long.json')
+            fetch('./sources/up_left_corner_segment_lat_long.json')
                 // convertit la réponse en JSON
                 .then(response => response.json())
                 // traitement des données récupérées

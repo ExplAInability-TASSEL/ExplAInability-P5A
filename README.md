@@ -61,8 +61,6 @@ The requiered packages are listed in the `requirements.txt` file.
 
 The preprocessing can also be done with the `preprocessing.py` file, hence can be launched with a command line.
 
-
-
 ### 2. Training and Inference
 
 - `main_inference.ipynb` and `main_train.ipynb`: These Jupyter notebooks contain the main code for training and inference.
@@ -81,12 +79,13 @@ The preprocessing can also be done with the `preprocessing.py` file, hence can b
 
 ### 3. The Map
 
-- `index.html`: This file contains the code for the map.
+- `index.html`: This file contains the html/css/javascript code for the map. The map is displayed using GitHub Pages. GitHub Pages is a static site hosting service that takes HTML, CSS, and JavaScript files straight from a repository on GitHub, optionally runs the files through a build process, and publishes a website.
 
 - `sources/`: This directory contains the source code for the map. It includes:
 
-  - `data.json`: Contains the data for the map.
-  - `segment_lat_long.json`: Contains the data for the map.
+  - `up_left_corner_segment_lat_long.json`: Contains the data (pixels, class_id and alpha) for the up left corner map.
+  - `water_segment_lat_long.json`: Contains the data (pixels, class_id and alpha) for the water map.
+  - `training_segment_lat_long.json`: Contains the data (pixels, class_id and alpha) for the training map.
 
 ## Installation
 
