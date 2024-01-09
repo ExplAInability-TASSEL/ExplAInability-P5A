@@ -385,7 +385,7 @@
                             // }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V0121:', polygonCoordinates);
+                            console.log('polygonCoordinates V0139:', polygonCoordinates);
 
                             // heatmap = new google.maps.visualization.HeatmapLayer({
                             //     data: heatmapData,
@@ -400,13 +400,22 @@
                             const minIntensity = Math.min(...polygonCoordinates.map(coord => coord.alphas));
                             const maxIntensity = Math.max(...polygonCoordinates.map(coord => coord.alphas));
 
-                            // Get unique alpha values for the clicked polygon
-                            const uniqueAlphaValues = Array.from(new Set(areaData.alphas));
+                            // Get unique alpha values and their associated colors for the clicked polygon
+                            areaData.alphas.forEach((alpha, index) => {
+                                uniqueAlphaColors[alpha] = uniqueAlphaColors[alpha] || getColorFromAlpha(alpha);
+                            });
+                            
 
-                            // Update the #legend-content with the unique alpha values
+                            // Update the #legend-content with the unique alpha values and colored boxes
                             const legendContent = `
                                 <h4>Alpha Legend</h4>
-                                <p>Attention weight: ${uniqueAlphaValues.join(', ')}</p>
+                                <div id="alphalegend">
+                                    ${Object.entries(uniqueAlphaColors).map(([alpha, color]) => `
+                                        <span class="legend-color-box" style="background-color: ${color};"></span>
+                                        <span>${alpha}</span>
+                                    `).join('')}
+                                </div>
+                                <p>Attention weight: ${Object.keys(uniqueAlphaColors).join(', ')}</p>
                             `;
                             document.getElementById("legend-content").innerHTML = legendContent;
                         });
