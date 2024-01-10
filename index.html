@@ -344,6 +344,9 @@
                             document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
                             toggleInfoPanel(); // Open or hide the panel when an area is clicked
 
+                            clickedPolygon = polygon;
+                            clickedPixelMarkers = [];
+
                             // Récupérer les coordonnées du polygone cliqué
                             const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
                                 lat: parseFloat(coord.latitude),
@@ -365,6 +368,7 @@
                                         scale: 5 
                                     }
                                 });
+                                clickedPixelMarkers.push(pixelMarker);
                             });
 
                             // Calculer le centre géométrique du polygone
@@ -378,20 +382,18 @@
                             };
                             mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
 
-                            polygonCoordinates.forEach(pixelCoord => {
-                                const alpha = pixelCoord.intensity;
-                                const pixelMarker = new google.maps.Marker({
-                                    position: new google.maps.LatLng(pixelCoord.lat, pixelCoord.lng),
-                                    map: mapInPanel,
-                                    icon: {
-                                        path: google.maps.SymbolPath.CIRCLE,
-                                        fillColor: getColorFromAlpha(alpha),
-                                        fillOpacity: 1,
-                                        strokeWeight: 0,
-                                        scale: 5
-                                    }
-                                });
-                            })
+                            if (mapInPanel) {
+
+                            // Add the saved polygon to the existing map
+                            if (clickedPolygon) {
+                                clickedPolygon.setMap(mapInPanel);
+                            }
+
+                            // Add the saved pixel markers to the existing map
+                            clickedPixelMarkers.forEach(marker => {
+                                marker.setMap(mapInPanel);
+                            });
+                        }
 
                             // // Initialize the heatmap layer
                             // const heatmapData = polygonCoordinates.map(coord => ({
@@ -400,7 +402,7 @@
                             // }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1814:', polygonCoordinates);
+                            console.log('polygonCoordinates V1828:', polygonCoordinates);
 
                             // heatmap = new google.maps.visualization.HeatmapLayer({
                             //     data: heatmapData,
@@ -509,24 +511,6 @@
                                 zoom: 30,
                             };
                             mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
-
-
-
-
-                            polygonCoordinates.forEach(pixelCoord => {
-                                const alpha = pixelCoord.intensity;
-                                const pixelMarker = new google.maps.Marker({
-                                    position: new google.maps.LatLng(pixelCoord.lat, pixelCoord.lng),
-                                    map: mapInPanel,
-                                    icon: {
-                                        path: google.maps.SymbolPath.CIRCLE,
-                                        fillColor: getColorFromAlpha(alpha),
-                                        fillOpacity: 1,
-                                        strokeWeight: 0,
-                                        scale: 5
-                                    }
-                                });
-                            })
 
                             // // Initialize the heatmap layer
                             // const heatmapData = polygonCoordinates.map(coord => ({
@@ -643,24 +627,6 @@
                                 zoom: 30,
                             };
                             mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
-
-
-
-
-                            polygonCoordinates.forEach(pixelCoord => {
-                                const alpha = pixelCoord.intensity;
-                                const pixelMarker = new google.maps.Marker({
-                                    position: new google.maps.LatLng(pixelCoord.lat, pixelCoord.lng),
-                                    map: mapInPanel,
-                                    icon: {
-                                        path: google.maps.SymbolPath.CIRCLE,
-                                        fillColor: getColorFromAlpha(alpha),
-                                        fillOpacity: 1,
-                                        strokeWeight: 0,
-                                        scale: 5
-                                    }
-                                });
-                            })
 
                             // // Initialize the heatmap layer
                             // const heatmapData = polygonCoordinates.map(coord => ({
