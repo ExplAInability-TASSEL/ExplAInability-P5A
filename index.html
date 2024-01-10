@@ -378,6 +378,21 @@
                             };
                             mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
 
+                            polygonCoordinates.forEach(pixelCoord => {
+                                const alpha = pixelCoord.intensity;
+                                const pixelMarker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(pixelCoord.lat, pixelCoord.lng),
+                                    map: mapInPanel,
+                                    icon: {
+                                        path: google.maps.SymbolPath.CIRCLE,
+                                        fillColor: getColorFromAlpha(alpha),
+                                        fillOpacity: 1,
+                                        strokeWeight: 0,
+                                        scale: 5
+                                    }
+                                });
+                            })
+
                             // // Initialize the heatmap layer
                             // const heatmapData = polygonCoordinates.map(coord => ({
                             //     location: new google.maps.LatLng(coord.lat, coord.lng),
@@ -385,7 +400,7 @@
                             // }));
 
                             // Add console.log for debugging
-                            console.log('polygonCoordinates V1802:', polygonCoordinates);
+                            console.log('polygonCoordinates V1814:', polygonCoordinates);
 
                             // heatmap = new google.maps.visualization.HeatmapLayer({
                             //     data: heatmapData,
@@ -494,6 +509,24 @@
                                 zoom: 30,
                             };
                             mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
+
+
+
+
+                            polygonCoordinates.forEach(pixelCoord => {
+                                const alpha = pixelCoord.intensity;
+                                const pixelMarker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(pixelCoord.lat, pixelCoord.lng),
+                                    map: mapInPanel,
+                                    icon: {
+                                        path: google.maps.SymbolPath.CIRCLE,
+                                        fillColor: getColorFromAlpha(alpha),
+                                        fillOpacity: 1,
+                                        strokeWeight: 0,
+                                        scale: 5
+                                    }
+                                });
+                            })
 
                             // // Initialize the heatmap layer
                             // const heatmapData = polygonCoordinates.map(coord => ({
@@ -610,6 +643,24 @@
                                 zoom: 30,
                             };
                             mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
+
+
+
+
+                            polygonCoordinates.forEach(pixelCoord => {
+                                const alpha = pixelCoord.intensity;
+                                const pixelMarker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(pixelCoord.lat, pixelCoord.lng),
+                                    map: mapInPanel,
+                                    icon: {
+                                        path: google.maps.SymbolPath.CIRCLE,
+                                        fillColor: getColorFromAlpha(alpha),
+                                        fillOpacity: 1,
+                                        strokeWeight: 0,
+                                        scale: 5
+                                    }
+                                });
+                            })
 
                             // // Initialize the heatmap layer
                             // const heatmapData = polygonCoordinates.map(coord => ({
