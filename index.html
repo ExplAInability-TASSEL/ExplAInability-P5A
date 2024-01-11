@@ -7,173 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koumbia Map</title>
-    <!-- CSS, mise en page -->
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        /* carte de base */
-        #map-container {
-            position: absolute;
-            top: 40px;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 40px);
-            overflow: visible;
-        }
-
-        /* menu en haut (menu info contact) */
-        #nav-menu {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 40px;
-            background-color: #333;
-            /* Background color for the navigation menu */
-            color: #fff;
-            /* Text color for the menu items */
-            z-index: 999;
-        }
-
-        /* liste des 3 element menus info et contact */
-        #nav-menu ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-        }
-
-        /* chaque element de la liste de la barre */
-        #nav-menu li {
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-
-        /* panel segment à droite */
-        #info-panel {
-            position: absolute;
-            top: 40px;
-            right: 0;
-            width: 40%;
-            height: 100%;
-            background-color: #fff;
-            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
-            transform: translateX(100%);
-            /* Adjusted initial position */
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* petite fleche du panel */
-        #info-panel-arrow {
-            position: absolute;
-            top: 50%;
-            left: -20px;
-            /* Adjusted left position to the left side of the panel */
-            transform: translateY(-50%) rotate(90deg);
-            /* Rotated to face right */
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 10px solid #3a1414;
-            cursor: pointer;
-        }
-
-        /* map google API dans le panel*/
-        #map-in-panel {
-            width: 100%;
-            height: calc(100% - 80px);
-        }
-
-        /* bandeau info class ID */
-        #info-content {
-            width: 100%;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #fff;
-        }
-
-        /* segment ID définit plus bas, on enlève la marge */
-        #info-content h3 {
-            margin: 0;
-        }
-
-        /* legend de la heatmap -> barre blanche en bas */
-        #legend {
-            width: 100%;
-            height: 180px;
-            /* Hauteur de la légende */
-            background-color: #fff;
-            position: relative;
-            /* Position relative pour placer les éléments internes absolus */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-
-        /* degradé de couleur barre de la heatmap */
-        #gradient {
-            width: 100%;
-            height: 20px;
-            /*background: linear-gradient(to right, #ff0000, #00ff00);*/
-        }
-
-        #alphalegend {
-            width: 100%;
-            height: 20px;
-        }
-
-        #legend-content {
-            position: absolute;
-            top: 5;
-            left: 10;
-            width: 100%;
-            padding: 0px;
-            /* Ajustez la marge selon vos besoins */
-            text-align: left;
-        }
-
-        #class-legend {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            background-color: #fff;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            display: flex;
-            flex-direction: column;
-            z-index: 1000;
-        }
-
-        .legend-color-box {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            margin-right: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .legend-item {
-            margin-bottom: 5px;
-        }
-
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            display: inline-block;
-            margin-right: 5px;
-            border: 1px solid #ccc;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
 </head>
 
 <body>
@@ -212,30 +46,20 @@
             <!-- Ajoutez d'autres éléments de légende selon vos besoins -->
             <!-- </div> -->
         </div>
-        <div id="info-panel-arrow" onclick="toggleInfoPanel()"></div>
-    </div>
+        <!-- Ligne un peu longue mais qui evite d'ajouter un listener pour deux actions -->
+        <div id="info-panel-arrow" onclick="document.getElementById('info-panel').style.transform = 'translateX(100%)'; this.style.display = 'none';"></div>    </div>
 
     <script>
         console.log('V2116:')
 
-        let infoPanelVisible = false;
+
         let mapInPanel;
         let map;
         let heatmap;
         let uniqueAlphaColors = {};
         let clickedPolygon; // Variable to store the clicked polygon
         let clickedPixelMarkers = []; // Array to store the clicked pixel markers
-
-        function toggleInfoPanel() {
-            const infoPanel = document.getElementById("info-panel");
-            infoPanelVisible = !infoPanelVisible;
-
-            if (infoPanelVisible) {
-                infoPanel.style.transform = "translateX(0)"; // Show the panel
-            } else {
-                infoPanel.style.transform = "translateX(100%)"; // Hide the panel
-            }
-        }
+        
 
         // Function to dynamically convert alpha value to color
         function getColorFromAlpha(alpha) {
@@ -244,66 +68,41 @@
             return `rgb(${red}, 0, ${blue})`;
         }
 
-        // Function to map class_id to a color
-        function getColorFromClass(classId) {
+        // Function to map class_id to a property (color or name)
+        function getClassProperty(classId, property) {
+            const classProperties = {
+                1: { color: "#f1c40f", name: "Cereals" },
+                2: { color: "#a6acaf", name: "Cotton" },
+                3: { color: "#2c3e50", name: "Oleag./Legum." },
+                4: { color: "#5dade2", name: "Grassland" },
+                5: { color: "#abebc6", name: "Shrubland" },
+                6: { color: "#196f3d", name: "Forest" },
+                7: { color: "#e74c3c", name: "Baresoil" },
+                8: { color: "#162ef3", name: "Water" },
+            };
 
-            switch (classId) {
-            case 1:
-                return "#f1c40f"; // Cereals
-            case 2:
-                return "#a6acaf"; // Cotton
-            case 3:
-                return "#2c3e50"; // Oleag./Legum.
-            case 4:
-                return "#5dade2"; // Grassland
-            case 5:
-                return "#abebc6"; // Shrubland
-            case 6:
-                return "#196f3d"; // Forest
-            case 7:
-                return "#e74c3c"; // Baresoil
-            case 8:
-                return "#162ef3"; // Water
-            default:
-                return "#000000";
-            }
+            const defaultProperties = { color: "#000000", name: "Unknown" };
+
+            return (classProperties[classId] || defaultProperties)[property];
         }
+
 
         // Function to create legend items dynamically
         function createLegend() {
             const legendContainer = document.getElementById("class-legend");
 
-            // Define class names and corresponding colors
-            const classColors = {
-                1: "#f1c40f", // Cereals
-                2: "#a6acaf", // Cotton
-                3: "#2c3e50", // Oleag./Legum.
-                4: "#5dade2", // Grassland
-                5: "#abebc6", // Shrubland
-                6: "#196f3d", // Forest
-                7: "#e74c3c", // Baresoil
-                8: "#162ef3", // Water
-            };
-
-            const classNames = {
-                1: "Cereals",
-                2: "Cotton",
-                3: "Oleag./Legum.",
-                4: "Grassland",
-                5: "Shrubland",
-                6: "Forest",
-                7: "Baresoil",
-                8: "Water",
-            };
-
-            // Loop through class colors and create legend items
-            for (const [classId, color] of Object.entries(classColors)) {
+            // Loop through class IDs and create legend items
+            for (let classId = 1; classId <= 8; classId++) {
+                const color = getClassProperty(classId, "color");
+                const className = getClassProperty(classId, "name");
                 const legendItem = document.createElement("div");
                 legendItem.className = "legend-item";
-                legendItem.innerHTML = `<span class="legend-color" style="background-color: ${color};"></span> ${classNames[classId]}`;
+                legendItem.innerHTML = `<span class="legend-color" style="background-color: ${color};"></span> ${className}`;
                 legendContainer.appendChild(legendItem);
             }
         }
+        // Call the function to create the legend
+        createLegend();
 
         // Function to fetch and concatenate multiple JSON files
         function fetchAndConcatJSON(filePaths) {
@@ -346,7 +145,6 @@
                 fillOpacity: 0.2
             });
 
-            createLegend();
 
             const jsonFilesToFetch = [
                 './sources/up_left_corner_segment_lat_long.json',
@@ -354,10 +152,8 @@
             ];
 
             // recupérer les coordonnées des segments à partir du fichier JSON water (requête fetch)
-            fetchAndConcatJSON(jsonFilesToFetch)
-                // convertit la réponse en JSON
-                // .then(response => response.json())
-                // traitement des données récupérées
+            fetch('./sources/input_file.json')
+                .then(response => response.json())
                 .then(data => {
                     // Loop through the data and create polygons for each area
                     data.forEach((areaData) => {
@@ -367,7 +163,7 @@
                             intensity: parseFloat(coord.intensity)
                         }));
 
-                        const areaColor = getColorFromClass(areaData.class_id);
+                        const areaColor = getClassProperty(areaData.class_id, "color");
 
                         // Create a polygon with ordered coordinates
                         const polygon = new google.maps.Polygon({
@@ -383,10 +179,12 @@
                         // Add click event listener to the polygon
                         polygon.addListener("click", () => {
                             const infoContent = `
-                                <h3>Class of the segment: ${areaData.class_id}</h3>
+                            <h3>Class of the segment: ${getClassProperty(areaData.class_id, "name")}</h3>
                             `;
                             document.getElementById("info-content").innerHTML = infoContent; // affiche la classe ID dans info-panel -> info-content
-                            toggleInfoPanel(); // Open or hide the panel when an area is clicked
+                            
+                            document.getElementById('info-panel').style.transform = "translateX(0)"; // affiche le right side panel
+                            document.getElementById('info-panel-arrow').style.display = "block"; // show the arrow
 
                             clickedPolygon = polygon;
                             clickedPixelMarkers = [];
@@ -487,132 +285,13 @@
                 .catch(error => {
                     console.error('Error fetching and concatenating data:', error);
                 });
-
-
-            // recupérer les coordonnées des segments à partir du fichier JSON water (requête fetch)
-            fetch('./sources/training_segment_lat_long.json')
-                // convertit la réponse en JSON
-                .then(response => response.json())
-                // traitement des données récupérées
-                .then(data => {
-                    // Loop through the data and create polygons for each area
-                    data.forEach((areaData) => {
-                        const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
-                            lat: parseFloat(coord.latitude),
-                            lng: parseFloat(coord.longitude),
-                            intensity: parseFloat(coord.intensity)
-                        }));
-
-                        const areaColor = getColorFromClass(areaData.class_id);
-
-                        // Create a polygon with ordered coordinates
-                        const polygon = new google.maps.Polygon({
-                            paths: polygonCoordinates,
-                            map: map,
-                            strokeColor: areaColor,
-                            strokeOpacity: 1,
-                            strokeWeight: 2,
-                            fillColor: areaColor,
-                            fillOpacity: 0.2
-                        });
-
-                        // Add click event listener to the polygon
-                        polygon.addListener("click", () => {
-                            const infoContent = `
-                                <h3>Class of the segment: ${areaData.class_id}</h3>
-                            `;
-                            document.getElementById("info-content").innerHTML = infoContent; // affiche le segment ID dans info-panel -> info-content
-                            toggleInfoPanel(); // Open or hide the panel when an area is clicked
-
-                            clickedPolygon = polygon;
-                            clickedPixelMarkers = [];
-
-                            // Récupérer les coordonnées du polygone cliqué
-                            const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
-                                lat: parseFloat(coord.latitude),
-                                lng: parseFloat(coord.longitude),
-                                intensity: parseFloat(coord.intensity)
-                            }));
-
-                            // Loop through pixel_coordinates and display them on the map with dynamic alpha values
-                            areaData.pixel_coordinates.forEach((pixelCoord, index) => {
-                                const alpha = areaData.alphas[index];
-                                const pixelMarker = new google.maps.Marker({
-                                    position: new google.maps.LatLng(pixelCoord.latitude, pixelCoord.longitude),
-                                    map: map,
-                                    icon: {
-                                        path: google.maps.SymbolPath.CIRCLE,
-                                        fillColor: getColorFromAlpha(alpha),
-                                        fillOpacity: 1,
-                                        strokeWeight: 0,
-                                        scale: 5
-                                    }
-                                });
-                            });
-
-                            // Calculer le centre géométrique du polygone
-                            const centerLat = polygonCoordinates.reduce((sum, coord) => sum + coord.lat, 0) / polygonCoordinates.length;
-                            const centerLng = polygonCoordinates.reduce((sum, coord) => sum + coord.lng, 0) / polygonCoordinates.length;
-
-                            // Create a new map in the panel centered on the clicked area -> ON VEUT HEAT MAP
-                            const mapOptions = {
-                                center: new google.maps.LatLng(centerLat, centerLng),
-                                zoom: 20,
-                            };
-                            mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
-
-                            if (mapInPanel) {
-
-                                // Add the saved polygon to the existing map
-                                if (clickedPolygon) {
-                                    clickedPolygon.setMap(mapInPanel);
-                                }
-
-                                // Add the saved pixel markers to the existing map
-                                clickedPixelMarkers.forEach(marker => {
-                                    marker.setMap(mapInPanel);
-                                });
-                                }
-
-
-                            // Add console.log for debugging
-                            console.log('polygonCoordinates V0207:', polygonCoordinates);
-
-
-                            // Obtenir les valeurs minimale et maximale des alpha pour la legende
-                            const minIntensity = Math.min(...polygonCoordinates.map(coord => coord.alphas));
-                            const maxIntensity = Math.max(...polygonCoordinates.map(coord => coord.alphas));
-
-                            // Get unique alpha values and their associated colors for the clicked polygon
-                            areaData.alphas.forEach((alpha, index) => {
-                                uniqueAlphaColors[alpha] = uniqueAlphaColors[alpha] || getColorFromAlpha(alpha);
-                            });
-
-
-                            // Update the #legend-content with the unique alpha values and colored boxes
-                            const legendContent = `
-                                <h4>Attention Weight</h4>
-                                <div id="alphalegend">
-                                    ${Object.entries(uniqueAlphaColors).map(([alpha, color]) => `
-                                        <span class="legend-color-box" style="background-color: ${color};"></span>
-                                        <span>${alpha}</span>
-                                    `).join('')}
-                                </div>
-                            `;
-                            document.getElementById("legend").innerHTML = legendContent;
-                        });
-                    });
-                })
-
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                });
         }
 
-
+// src="https://maps.googleapis.com/maps/api/js?key={{ site.GOOGLE_MAP_API_KEY }}&callback=initMap&libraries=visualization"
     </script>
     <script
-        src="https://maps.googleapis.com/maps/api/js?key={{ site.GOOGLE_MAP_API_KEY }}&callback=initMap&libraries=visualization"
+        
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEKcJxXZ9Hr_T97zsoed5Q2RMX_5X1ph0&callback=initMap&libraries=visualization"
         async defer></script>
 </body>
 

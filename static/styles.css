@@ -1,0 +1,166 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif; /* Add this line */
+}
+
+/* carte de base */
+#map-container {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow: visible;
+}
+
+/* menu en haut (menu info contact) */
+#nav-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #333;
+    /* Background color for the navigation menu */
+    color: #fff;
+    /* Text color for the menu items */
+    z-index: 999;
+}
+
+/* liste des 3 element menus info et contact */
+#nav-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+/* chaque element de la liste de la barre */
+#nav-menu li {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* panel segment à droite */
+#info-panel {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    transform: translateX(100%);
+    /* Adjusted initial position */
+    display: flex;
+    flex-direction: column;
+}
+
+/* petite fleche du panel */
+#info-panel-arrow {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    /* Adjusted left position to the left side of the panel */
+    transform: translateY(-50%) rotate(-90deg);
+    /* Rotated to face right */
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #000000;
+    cursor: pointer;
+}
+
+/* map google API dans le panel*/
+#map-in-panel {
+    width: 100%;
+    height: calc(100% - 80px);
+}
+
+/* bandeau info class ID */
+#info-content {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+}
+
+/* segment ID définit plus bas, on enlève la marge */
+#info-content h3 {
+    margin: 0;
+}
+
+/* legend de la heatmap -> barre blanche en bas */
+#legend {
+    width: 100%;
+    height: 180px;
+    /* Hauteur de la légende */
+    background-color: #fff;
+    position: relative;
+    /* Position relative pour placer les éléments internes absolus */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* degradé de couleur barre de la heatmap */
+#gradient {
+    width: 100%;
+    height: 20px;
+    /*background: linear-gradient(to right, #ff0000, #00ff00);*/
+}
+
+#alphalegend {
+    width: 100%;
+    height: 20px;
+}
+
+#legend-content {
+    position: absolute;
+    top: 5;
+    left: 10;
+    width: 100%;
+    padding: 0px;
+    /* Ajustez la marge selon vos besoins */
+    text-align: left;
+}
+
+#class-legend {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.legend-color-box {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+}
+
+.legend-item {
+    margin-bottom: 5px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+}
