@@ -295,3 +295,346 @@
 </body>
 
 </html>
+
+
+
+
+
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koumbia Map</title>
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+</head>
+
+<body>
+    <!-- section menu de la page -->
+    <div id="nav-menu">
+        <ul>
+            <!-- lien hypertextes qui renvoient vers les sections dont l'ID est #menu, #infos et #contact. A DEFINIR -->
+            <!-- <li><a href="#menu" style="text-decoration: none; color: #fff;">Menu</a></li> -->
+            <li><a href="#infos" style="text-decoration: none; color: #fff;">Infos</a></li>
+            <li><a href="#contact" style="text-decoration: none; color: #fff;">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Legend for class colors -->
+    <div id="class-legend">
+        <!-- Legend items will be added dynamically using JavaScript -->
+    </div>
+
+    <!-- show/hide segments -->
+    <button id="toggleSegmentsButton" onclick="toggleSegments()">Toggle Segments</button>
+    <!-- show/hide pixels -->
+    <button id="toggleGlobalPixelLayerButton" onclick="toggleGlobalPixelLayer()">Toggle Global Pixel Layer</button>
+
+    <!-- map  -->
+    <div id="map-container"></div>
+
+    <!-- panel qui apparait quand on clique sur segment -->
+    <div id="info-panel">
+        <div id="info-content">
+            <!-- Data will be displayed here when an area is clicked -->
+        </div>
+        <div id="map-in-panel">
+            <!-- New map will be displayed here when an area is clicked -->
+        </div>
+        <div id="legend">
+            <!-- <div id="gradient"></div> -->
+            <!-- <div id="legend-content"> -->
+            <!-- <h4>Heatmap LegendSS</h4> -->
+            <!-- <div id="gradient"></div> -->
+            <!-- Ajoutez d'autres éléments de légende selon vos besoins -->
+            <!-- </div> -->
+        </div>
+        <!-- Ligne un peu longue mais qui evite d'ajouter un listener pour deux actions -->
+        <div id="info-panel-arrow" onclick="document.getElementById('info-panel').style.transform = 'translateX(100%)'; this.style.display = 'none';"></div>    </div>
+        
+    <script>
+        // console.log('V2116:')
+        let mapInPanel;
+        let map;
+        let heatmap;
+        let uniqueAlphaColors = {};
+        let clickedPolygon; // Variable to store the clicked polygon
+        let clickedPixelMarkers = []; // Array to store the clicked pixel markers
+        let allPolygons = []; // for hide/show
+        const heatmapData = [];
+
+        // Function to show/hide segments, linked to button
+        function toggleSegments() {
+            allPolygons.forEach(polygon => {
+                const currentVisibility = polygon.getMap() !== null;
+                polygon.setMap(currentVisibility ? null : map);
+            });
+        }
+
+        // Function to show/hide pixels, linked to button
+        function toggleGlobalPixelLayer() {
+            if (allPixelMarkers[0] && allPixelMarkers[0].getMap() !== null) {
+                // If the markers are currently displayed, hide them
+                allPixelMarkers.forEach(marker => marker.setMap(null));
+            } else {
+                // Otherwise, display the markers
+                allPixelMarkers.forEach(marker => marker.setMap(map));
+            }
+        }
+
+        // Function to dynamically convert alpha value to color
+        function getColorFromAlpha(alpha) {
+            return alpha > 0.5 ? 'red' : 'blue';
+        }
+        // Function to dynamically convert alpha value to color continuously
+        function getContinuousColorFromAlpha(alpha) {
+            const blue = [0, 0, 255]; // RGB value for blue
+            const red = [255, 0, 0]; // RGB value for red
+
+            const interpolatedColor = blue.map((value, index) =>
+                Math.round(value + alpha * (red[index] - value))
+            );
+
+            return `rgb(${interpolatedColor.join(',')})`;
+        }
+
+        // Function to map class_id to a property (color or name)
+        function getClassProperty(classId, property) {
+            const classProperties = {
+                1: { color: "#f1c40f", name: "Cereals" },
+                2: { color: "#a6acaf", name: "Cotton" },
+                3: { color: "#2c3e50", name: "Oleag./Legum." },
+                4: { color: "#5dade2", name: "Grassland" },
+                5: { color: "#abebc6", name: "Shrubland" },
+                6: { color: "#196f3d", name: "Forest" },
+                7: { color: "#e74c3c", name: "Baresoil" },
+                8: { color: "#162ef3", name: "Water" },
+            };
+
+            const defaultProperties = { color: "#000000", name: "Unknown" };
+
+            return (classProperties[classId] || defaultProperties)[property];
+        }
+
+
+        // Function to create legend items dynamically
+        function createLegend() {
+            const legendContainer = document.getElementById("class-legend");
+
+            // Loop through class IDs and create legend items
+            for (let classId = 1; classId <= 8; classId++) {
+                const color = getClassProperty(classId, "color");
+                const className = getClassProperty(classId, "name");
+                const legendItem = document.createElement("div");
+                legendItem.className = "legend-item";
+                legendItem.innerHTML = `<span class="legend-color" style="background-color: ${color};"></span> ${className}`;
+                legendContainer.appendChild(legendItem);
+            }
+        }
+        // Call the function to create the legend
+        createLegend();
+
+        // Function to fetch and concatenate multiple JSON files
+        function fetchAndConcatJSON(filePaths) {
+            return Promise.all(filePaths.map(filePath =>
+                fetch(filePath)
+                    .then(response => response.json())
+            ))
+            .then(jsonDataArray => jsonDataArray.flat());
+        }
+
+        function clonePolygon(originalPolygon) {
+            return new google.maps.Polygon({
+                paths: originalPolygon.getPaths().getArray().map(path => path.getArray()),
+                strokeColor: originalPolygon.strokeColor,
+                strokeOpacity: originalPolygon.strokeOpacity,
+                strokeWeight: originalPolygon.strokeWeight,
+                fillColor: originalPolygon.fillColor,
+                fillOpacity: originalPolygon.fillOpacity
+            });
+        }
+
+        // fonction qui est appelée lorsque l'API google map est chargée (javascript)
+        function initMap() {
+            // study area = 2000 km^2 in Burkina Faso around the town of Koumbia
+            // objets avec les propriétés lat et lng
+            var topLeft = { lat: 11.371305048234298, lng: -3.8928232831763268 };
+            var topRight = { lat: 11.371305048234298, lng: -3.42 };
+            var bottomRight = { lat: 10.96, lng: -3.42 };
+            var bottomLeft = { lat: 10.96, lng: -3.8928232831763268 };
+
+            // Calculer le centre de la bounding box
+            var centerCoordinates = {
+                lat: (topLeft.lat + bottomRight.lat) / 2,
+                lng: (topLeft.lng + bottomRight.lng) / 2
+            };
+
+            // charger la carte
+            map = new google.maps.Map(document.getElementById('map-container'), {
+                zoom: 10,
+                center: centerCoordinates
+            });
+
+            // Créer une forme de rectangle pour représenter la bounding box
+            var boundingBox = new google.maps.Polygon({
+                map: map,
+                paths: [topLeft, topRight, bottomRight, bottomLeft],
+                strokeColor: '#FF0000', // rouge
+                strokeOpacity: 1,
+                strokeWeight: 2,
+                fillColor: 'transparent',
+                fillOpacity: 0.2
+            });
+
+
+            const jsonFilesToFetch = [
+                './sources/up_left_corner_segment_lat_long.json',
+                './sources/water_segment_lat_long.json'
+            ];
+
+            // recupérer les coordonnées des segments à partir du fichier JSON water (requête fetch)
+            fetch('./sources/input_file.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Loop through the data and create polygons for each area
+                    data.forEach((areaData) => {
+                        const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
+                            lat: parseFloat(coord.latitude),
+                            lng: parseFloat(coord.longitude),
+                            intensity: parseFloat(coord.intensity)
+                        }));
+
+                        const areaColor = getClassProperty(areaData.class_id, "color");
+
+                        // Create a polygon with ordered coordinates
+                        const polygon = new google.maps.Polygon({
+                            paths: polygonCoordinates,
+                            map: map,
+                            strokeColor: areaColor,
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+                            fillColor: areaColor,
+                            fillOpacity: 0.2
+                        });
+
+                        // Add click event listener to the polygon
+                        polygon.addListener("click", () => {
+                            const infoContent = `
+                            <h3>Class of the segment: ${getClassProperty(areaData.class_id, "name")}</h3>
+                            `;
+                            document.getElementById("info-content").innerHTML = infoContent; // affiche la classe ID dans info-panel -> info-content
+                            document.getElementById('info-panel').style.transform = "translateX(0)"; // affiche le right side panel
+                            document.getElementById('info-panel-arrow').style.display = "block"; // show the arrow
+
+                            clickedPolygon = polygon;
+                            clickedPixelMarkers = [];
+
+                            // Récupérer les coordonnées du polygone cliqué
+                            const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
+                                lat: parseFloat(coord.latitude),
+                                lng: parseFloat(coord.longitude),
+                                intensity: parseFloat(coord.intensity)
+                            }));
+
+                            // Loop through pixel_coordinates and display them on the map with dynamic alpha values
+                            areaData.pixel_coordinates.forEach((pixelCoord, index) => {
+                                const alpha = areaData.alphas[index];
+                                const pixelMarker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(pixelCoord.latitude, pixelCoord.longitude),
+                                    map: map,
+                                    icon: {
+                                        path: google.maps.SymbolPath.CIRCLE,
+                                        fillColor: getColorFromAlpha(alpha),
+                                        fillOpacity: 1,
+                                        strokeWeight: 0,
+                                        scale: 5
+                                    }
+                                });
+                                clickedPixelMarkers.push(pixelMarker);
+                            });
+
+
+                            // Calculer le centre géométrique du polygone
+                            const centerLat = polygonCoordinates.reduce((sum, coord) => sum + coord.lat, 0) / polygonCoordinates.length;
+                            const centerLng = polygonCoordinates.reduce((sum, coord) => sum + coord.lng, 0) / polygonCoordinates.length;
+
+                            // Create a new map in the panel centered on the clicked area
+                            const mapOptions = {
+                                center: new google.maps.LatLng(centerLat, centerLng),
+                                zoom: 20,
+                                mapTypeId: google.maps.MapTypeId.SATELLITE
+                            };
+                            
+                            mapInPanel = new google.maps.Map(document.getElementById("map-in-panel"), mapOptions);
+                            
+                            // Create a clone of the clicked polygon
+                            const clonedPolygon = clonePolygon(polygon);
+
+                            // Add the cloned polygon to the right side panel map
+                            clonedPolygon.setMap(mapInPanel);
+
+                            // Add the saved pixel markers to the existing map
+                            clickedPixelMarkers.forEach(marker => {
+                                marker.setMap(mapInPanel);
+                            });
+
+                            // Clear the previous weights
+                            document.getElementById("legend").innerHTML = '';
+
+                            // Calculate the weights for the two categories
+                            const redWeight = Math.max(...areaData.alphas.map(alpha => parseFloat(alpha)));
+                            const blueWeight = 1 - redWeight;
+
+                            // Update the #legend-content with the weights and colored boxes
+                            const legendContent = `
+                                <h4>Attention Weight</h4>
+                                <div id="alphalegend">
+                                    <span class="legend-color-box" style="background-color: red;"></span>
+                                    <span>${redWeight.toFixed(2)}</span>
+                                    <span class="legend-color-box" style="background-color: blue;"></span>
+                                    <span>${blueWeight.toFixed(2)}</span>
+                                </div>
+                            `;
+                            document.getElementById("legend").innerHTML = legendContent;
+                        });
+                        // Add the created polygon to the array
+                        allPolygons.push(polygon);
+
+
+                        // Loop through pixel_coordinates and add data to the heatmap array
+                        areaData.pixel_coordinates.forEach((pixelCoord, index) => {
+                            const alpha = areaData.alphas[index];
+                            const location = new google.maps.LatLng(pixelCoord.latitude, pixelCoord.longitude);
+                            // Add the location and intensity to the heatmap data array
+                            heatmapData.push({ location: location, weight: alpha });
+                        });
+
+                        // Create a heatmap layer
+                        const heatmap = new google.maps.visualization.HeatmapLayer({
+                            data: heatmapData,
+                            map: map
+                        });
+
+                        // Set heatmap options (optional)
+                        heatmap.setOptions({
+                            dissipating: true,
+                            radius: 20
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching and concatenating data:', error);
+                });
+        }
+
+// src="https://maps.googleapis.com/maps/api/js?key={{ site.GOOGLE_MAP_API_KEY }}&callback=initMap&libraries=visualization"
+    </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEKcJxXZ9Hr_T97zsoed5Q2RMX_5X1ph0&libraries=visualization&callback=initMap"
+        async defer></script>
+</body>
+
+</html>

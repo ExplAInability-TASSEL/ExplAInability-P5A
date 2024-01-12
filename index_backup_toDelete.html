@@ -266,5 +266,18 @@ if (mapInPanel) {
         marker.setMap(mapInPanel);
     });
 }
+// Listen to the zoom_changed event
+                    google.maps.event.addListener(map, 'zoom_changed', function() {
+                        var zoom = map.getZoom();
+                        // console.log(zoom)
+                        // Change maxIntensity and radius based on zoom level
+                        // These are just example calculations, adjust them to suit your needs
+                        var maxIntensity = Math.pow(2, zoom);
+                        var radius = zoom * 10;
 
+                        heatmap.setOptions({
+                            maxIntensity: maxIntensity,
+                            radius: radius
+                        });
+                    });
 AIzaSyBEKcJxXZ9Hr_T97zsoed5Q2RMX_5X1ph0

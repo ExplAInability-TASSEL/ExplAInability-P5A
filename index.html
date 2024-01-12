@@ -12,13 +12,28 @@
 
 <body>
     <!-- section menu de la page -->
+    <!-- Navigation bar -->
     <div id="nav-menu">
         <ul>
-            <!-- lien hypertextes qui renvoient vers les sections dont l'ID est #menu, #infos et #contact. A DEFINIR -->
-            <!-- <li><a href="#menu" style="text-decoration: none; color: #fff;">Menu</a></li> -->
-            <li><a href="#infos" style="text-decoration: none; color: #fff;">Infos</a></li>
-            <li><a href="#contact" style="text-decoration: none; color: #fff;">Contact</a></li>
+            <li><a href="#" onclick="openModal('infosModal')" style="text-decoration: none; color: #fff;">Infos</a></li>
+            <li><a href="#" onclick="openModal('contactModal')" style="text-decoration: none; color: #fff;">Contact</a></li>
         </ul>
+    </div>
+
+    <!-- Modal for Infos -->
+    <div id="infosModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('infosModal')">&times;</span>
+            <p>This is the information. There are not many, but they are useful.</p>
+        </div>
+    </div>
+
+    <!-- Modal for Contact -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('contactModal')">&times;</span>
+            <p>These are the contact details. There is this email and this one and this one. Hope you had a great day!</p>
+        </div>
     </div>
 
     <!-- Legend for class colors -->
@@ -27,9 +42,9 @@
     </div>
 
     <!-- show/hide segments -->
-    <button id="toggleSegmentsButton" onclick="toggleSegments()">Toggle Segments</button>
-    <!-- show/hide pixels -->
-    <button id="toggleGlobalPixelLayerButton" onclick="toggleGlobalPixelLayer()">Toggle Global Pixel Layer</button>
+    <button id="toggleSegmentsButton" onclick="toggleSegments()">Segments</button>
+    <!-- show/hide heatmap -->
+    <button id="toggleHeatmapButton" onclick="toggleHeatmap()">Heatmap</button>
 
     <!-- map  -->
     <div id="map-container"></div>
@@ -54,7 +69,34 @@
         <div id="info-panel-arrow" onclick="document.getElementById('info-panel').style.transform = 'translateX(100%)'; this.style.display = 'none';"></div>    </div>
 
     <script>
-        console.log('V2116:')
+        // Function to open the modal
+        function openModal(modalId) {
+            // Hide the other modal
+            const otherModalId = modalId === 'infosModal' ? 'contactModal' : 'infosModal';
+            document.getElementById(otherModalId).style.display = "none";
+
+            // Show the selected modal
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        // Function to close the modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        // Close the modal if the user clicks outside of it
+        window.onclick = function (event) {
+            if (event.target.className === "modal") {
+                event.target.style.display = "none";
+            }
+        };
+
+        // Show only the Infos modal when the page is loaded
+        window.onload = function () {
+            openModal('infosModal');
+        };
+
+        console.log('V2116:');
 
 
         let mapInPanel;
@@ -64,69 +106,23 @@
         let clickedPolygon; // Variable to store the clicked polygon
         let clickedPixelMarkers = []; // Array to store the clicked pixel markers
         let allPolygons = []; // for hide/show
+        let minWeight; // Variable to store the current minimum weight
+        let maxWeight; // Variable to store the current maximum weight
 
-        // Function to show/hide segments, linked to button
         function toggleSegments() {
             allPolygons.forEach(polygon => {
                 const currentVisibility = polygon.getMap() !== null;
                 polygon.setMap(currentVisibility ? null : map);
             });
         }
-
-        // Function to show/hide pixels, linked to button
-        function toggleGlobalPixelLayer() {
-            const allPixelMarkers = getAllPixelMarkers();
-            allPixelMarkers.forEach(marker => {
-                const currentVisibility = marker.getMap() !== null;
-                marker.setMap(currentVisibility ? null : map);
-            });
-        }
-        function getAllPixelMarkers() {
-            const allPixelMarkers = [];
-            // Loop through allPolygons to gather pixel markers
-            allPolygons.forEach(polygon => {
-                const pixelMarkers = getPixelMarkersForPolygon(polygon);
-                allPixelMarkers.push(...pixelMarkers);
-            });
-            return allPixelMarkers;
-        }
-        function getPixelMarkersForPolygon(polygon) {
-            const pixelMarkers = [];
-
-            // Loop through polygon's pixel_coordinates and create markers for each pixel
-            polygon.pixel_coordinates.forEach((pixelCoord, index) => {
-                const alpha = polygon.alphas[index];
-                const pixelMarker = new google.maps.Marker({
-                    position: new google.maps.LatLng(pixelCoord.latitude, pixelCoord.longitude),
-                    map: map,
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        fillColor: getContinuousColorFromAlpha(alpha),
-                        fillOpacity: 1,
-                        strokeWeight: 0,
-                        scale: 5
-                    }
-                });
-                pixelMarkers.push(pixelMarker);
-            });
-
-            return pixelMarkers;
+        // Function to toggle the visibility of the heatmap
+        function toggleHeatmap() {
+            heatmap.setMap(heatmap.getMap() ? null : map);
         }
 
         // Function to dynamically convert alpha value to color
         function getColorFromAlpha(alpha) {
             return alpha > 0.5 ? 'red' : 'blue';
-        }
-        // Function to dynamically convert alpha value to color continuously
-        function getContinuousColorFromAlpha(alpha) {
-            const blue = [0, 0, 255]; // RGB value for blue
-            const red = [255, 0, 0]; // RGB value for red
-
-            const interpolatedColor = blue.map((value, index) =>
-                Math.round(value + alpha * (red[index] - value))
-            );
-
-            return `rgb(${interpolatedColor.join(',')})`;
         }
 
         // Function to map class_id to a property (color or name)
@@ -205,6 +201,9 @@
                 zoom: 10,
                 center: centerCoordinates
             });
+
+            let heatmapData = [];
+
 
             // Créer une forme de rectangle pour représenter la bounding box
             var boundingBox = new google.maps.Polygon({
@@ -333,13 +332,54 @@
                         });
                         // Add the created polygon to the array
                         allPolygons.push(polygon);
+
+                        // Loop through pixel_coordinates and add each pixel's location and alpha value to heatmapData
+                        areaData.pixel_coordinates.forEach((pixelCoord, index) => {
+                            const alpha = areaData.alphas[index];
+                            const location = new google.maps.LatLng(pixelCoord.latitude, pixelCoord.longitude);
+                            heatmapData.push({location: location, weight: alpha});
+                        });
                     });
+                    heatmap = new google.maps.visualization.HeatmapLayer({
+                        data: heatmapData,
+                        maxIntensity: 0.51,
+                        minIntensity: 0.49,
+                        //dissipating: false,
+                        map: map,
+                        radius: 10
+                    });
+                    // Add listener for zoom change event
+                    google.maps.event.addListener(map, 'zoom_changed', function () {
+                        // Update the heatmap weights when the zoom level changes
+                        updateHeatmapWeights();
+                    });
+                    
                 })
                 .catch(error => {
                     console.error('Error fetching and concatenating data:', error);
                 });
         }
+        function updateMinMaxWeights() {
+            // Calculate the initial min and max weights
+            minWeight = Math.min(...heatmapData.map(dataPoint => dataPoint.weight));
+            maxWeight = Math.max(...heatmapData.map(dataPoint => dataPoint.weight));
+        }
 
+        function updateHeatmapWeights() {
+            // Get the current zoom level
+            const currentZoom = map.getZoom();
+
+            // Calculate the factor to adjust weights based on the zoom level
+            const adjustmentFactor = Math.pow(2, currentZoom - 10); // Adjust 10 as needed based on your initial zoom
+
+            // Scale the min and max weights based on the adjustment factor
+            const scaledMinWeight = minWeight * adjustmentFactor;
+            const scaledMaxWeight = maxWeight * adjustmentFactor;
+
+            // Update the heatmap options with the scaled min and max weights
+            heatmap.set('maxIntensity', scaledMaxWeight);
+            heatmap.set('minIntensity', scaledMinWeight);
+        }
 // src="https://maps.googleapis.com/maps/api/js?key={{ site.GOOGLE_MAP_API_KEY }}&callback=initMap&libraries=visualization"
     </script>
     <script
