@@ -5,6 +5,32 @@ body {
     font-family: Arial, sans-serif; /* Add this line */
 }
 
+#toggleSegmentsButton {
+    position: absolute;
+    top: 8px;
+    left: 200px;
+    padding: 5px 10px;
+    background-color: #000000; /* Change the background color as needed */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 1001; /* Set a higher z-index */
+    font: Arial, sans-serif;
+}
+
+#toggleGlobalPixelLayerButton {
+    position: absolute;
+    top: 8px;
+    left: 500px;
+    padding: 5px 10px;
+    background-color: #000000; /* Change the background color as needed */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 1001; /* Set a higher z-index */
+    font: Arial, sans-serif;
+}
+
 /* carte de base */
 #map-container {
     position: absolute;
@@ -99,7 +125,7 @@ body {
 /* legend de la heatmap -> barre blanche en bas */
 #legend {
     width: 100%;
-    height: 180px;
+    height: 150px;
     /* Hauteur de la légende */
     background-color: #fff;
     position: relative;
@@ -108,6 +134,27 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    align-items: flex-start;
+}
+
+#alphalegend {
+    width: 100%;
+    height: 100%;
+}
+
+#alphalegend h4 {
+    position: relative;
+    top: 0;
+}
+
+#legend-content {
+    position: absolute;
+    top: 5px;
+    left: 10;
+    width: 100%;
+    padding: 0px;
+    /* Ajustez la marge selon vos besoins */
+    text-align: left;
 }
 
 /* degradé de couleur barre de la heatmap */
@@ -117,21 +164,6 @@ body {
     /*background: linear-gradient(to right, #ff0000, #00ff00);*/
 }
 
-#alphalegend {
-    width: 100%;
-    height: 20px;
-}
-
-#legend-content {
-    position: absolute;
-    top: 5;
-    left: 10;
-    width: 100%;
-    padding: 0px;
-    /* Ajustez la marge selon vos besoins */
-    text-align: left;
-}
-
 #class-legend {
     position: absolute;
     bottom: 10px;
@@ -139,7 +171,7 @@ body {
     background-color: #fff;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     z-index: 1000;

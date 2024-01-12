@@ -28,8 +28,6 @@
 
     <!-- show/hide segments -->
     <button id="toggleSegmentsButton" onclick="toggleSegments()">Toggle Segments</button>
-    <!-- show/hide pixels -->
-    <button id="toggleGlobalPixelLayerButton" onclick="toggleGlobalPixelLayer()">Toggle Global Pixel Layer</button>
 
     <!-- map  -->
     <div id="map-container"></div>
@@ -65,7 +63,6 @@
         let clickedPixelMarkers = []; // Array to store the clicked pixel markers
         let allPolygons = []; // for hide/show
 
-        // Function to show/hide segments, linked to button
         function toggleSegments() {
             allPolygons.forEach(polygon => {
                 const currentVisibility = polygon.getMap() !== null;
@@ -73,60 +70,9 @@
             });
         }
 
-        // Function to show/hide pixels, linked to button
-        function toggleGlobalPixelLayer() {
-            const allPixelMarkers = getAllPixelMarkers();
-            allPixelMarkers.forEach(marker => {
-                const currentVisibility = marker.getMap() !== null;
-                marker.setMap(currentVisibility ? null : map);
-            });
-        }
-        function getAllPixelMarkers() {
-            const allPixelMarkers = [];
-            // Loop through allPolygons to gather pixel markers
-            allPolygons.forEach(polygon => {
-                const pixelMarkers = getPixelMarkersForPolygon(polygon);
-                allPixelMarkers.push(...pixelMarkers);
-            });
-            return allPixelMarkers;
-        }
-        function getPixelMarkersForPolygon(polygon) {
-            const pixelMarkers = [];
-
-            // Loop through polygon's pixel_coordinates and create markers for each pixel
-            polygon.pixel_coordinates.forEach((pixelCoord, index) => {
-                const alpha = polygon.alphas[index];
-                const pixelMarker = new google.maps.Marker({
-                    position: new google.maps.LatLng(pixelCoord.latitude, pixelCoord.longitude),
-                    map: map,
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        fillColor: getContinuousColorFromAlpha(alpha),
-                        fillOpacity: 1,
-                        strokeWeight: 0,
-                        scale: 5
-                    }
-                });
-                pixelMarkers.push(pixelMarker);
-            });
-
-            return pixelMarkers;
-        }
-
         // Function to dynamically convert alpha value to color
         function getColorFromAlpha(alpha) {
             return alpha > 0.5 ? 'red' : 'blue';
-        }
-        // Function to dynamically convert alpha value to color continuously
-        function getContinuousColorFromAlpha(alpha) {
-            const blue = [0, 0, 255]; // RGB value for blue
-            const red = [255, 0, 0]; // RGB value for red
-
-            const interpolatedColor = blue.map((value, index) =>
-                Math.round(value + alpha * (red[index] - value))
-            );
-
-            return `rgb(${interpolatedColor.join(',')})`;
         }
 
         // Function to map class_id to a property (color or name)
@@ -344,7 +290,7 @@
     </script>
     <script
         
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEKcJxXZ9Hr_T97zsoed5Q2RMX_5X1ph0&callback=initMap&libraries=visualization"
+        src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap&libraries=visualization"
         async defer></script>
 </body>
 

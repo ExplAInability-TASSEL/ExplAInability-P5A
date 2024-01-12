@@ -167,6 +167,104 @@ function toggleInfoPanel() {
                         }));
 
 
+// Function to dynamically convert alpha value to color
+function getColorFromAlpha(alpha) {
+    const red = Math.floor(255 * (1 - alpha));
+    const blue = Math.floor(255 * alpha);
+    return `rgb(${red}, 0, ${blue})`;
+}
 
+
+// areaData.pixel_coordinates.forEach((pixelCoord, index) => {
+    //     const alpha = areaData.alphas[index];
+    //     const pixelMarkerInPanel = new google.maps.Marker({
+    //         position: new google.maps.LatLng(pixelCoord.latitude, pixelCoord.longitude),
+    //         map: mapInPanel,
+    //         icon: {
+    //             path: google.maps.SymbolPath.CIRCLE,
+    //             fillColor: getColorFromAlpha(alpha),
+    //             fillOpacity: 1,
+    //             strokeWeight: 0,
+    //             scale: 5
+    //         }
+    //     });
+    //     clickedPixelMarkersInPanel.push(pixelMarkerInPanel);
+    // });
+
+
+
+
+
+<p>Attention weight: ${maxIntensity} - ${minIntensity}</p>
+
+// Obtenir les valeurs minimale et maximale des alpha pour la legende
+const minIntensity = Math.min(...polygonCoordinates.map(coord => coord.alphas));
+const maxIntensity = Math.max(...polygonCoordinates.map(coord => coord.alphas));
+
+// Get unique alpha values and their associated colors for the clicked polygon
+areaData.alphas.forEach((alpha, index) => {
+    uniqueAlphaColors[alpha] = uniqueAlphaColors[alpha] || getColorFromAlpha(alpha);
+});
+
+
+// Update the #legend-content with the unique alpha values and colored boxes
+const legendContent = `
+    <h4>Attention Weight</h4>
+    <div id="alphalegend">
+        ${Object.entries(uniqueAlphaColors).map(([alpha, color]) => `
+            <span class="legend-color-box" style="background-color: ${color};"></span>
+            <span>${alpha}</span>
+        `).join('')}
+    </div>
+`;
+document.getElementById("legend").innerHTML = legendContent;
+
+
+// Create a variable to store the state of the layer
+let isLayerVisible = true;
+
+// Function to toggle the visibility of the layer
+function toggleLayerVisibility() {
+    isLayerVisible = !isLayerVisible;
+
+    // Loop through the data and create polygons for each area
+    data.forEach((areaData) => {
+        const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
+            lat: parseFloat(coord.latitude),
+            lng: parseFloat(coord.longitude),
+            intensity: parseFloat(coord.intensity)
+        }));
+
+        const areaColor = getClassProperty(areaData.class_id, "color");
+
+        // Create a polygon with ordered coordinates
+        const polygon = new google.maps.Polygon({
+            paths: polygonCoordinates,
+            map: isLayerVisible ? map : null, // Set the map to null if the layer should be hidden
+            strokeColor: areaColor,
+            strokeOpacity: 1,
+            strokeWeight: 2,
+            fillColor: areaColor,
+            fillOpacity: 0.2
+        });
+    });
+}
+
+// Call the function to toggle the visibility of the layer when a button is clicked
+document.getElementById("toggle-layer-button").addEventListener("click", toggleLayerVisibility);
+
+
+if (mapInPanel) {
+
+    // Add the saved polygon to the existing map
+    if (clickedPolygon) {
+        clickedPolygon.setMap(mapInPanel);
+    }
+
+    // Add the saved pixel markers to the existing map
+    clickedPixelMarkers.forEach(marker => {
+        marker.setMap(mapInPanel);
+    });
+}
 
 AIzaSyBEKcJxXZ9Hr_T97zsoed5Q2RMX_5X1ph0
