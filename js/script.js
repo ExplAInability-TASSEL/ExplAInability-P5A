@@ -1,3 +1,4 @@
+console.log('V1906');
 // variables
 let mapInPanel;
 let map;
@@ -5,8 +6,6 @@ let heatmap;
 let clickedPolygon; // Variable to store the clicked polygon
 let clickedPixelMarkers = []; // Array to store the clicked pixel markers
 let allPolygons = []; // for hide/show
-let minWeight; // Variable to store the current minimum weight
-let maxWeight; // Variable to store the current maximum weight
 let segmentsButtonClicked = true;
 let heatmapClicked = true;
 
@@ -152,24 +151,6 @@ function clonePolygon(originalPolygon) {
     });
 }
 
-function updateHeatmapWeights() {
-    // Input/Output: None
-    
-    // Get the current zoom level
-    const currentZoom = map.getZoom();
-
-    // Calculate the factor to adjust weights based on the zoom level
-    const adjustmentFactor = Math.pow(2, currentZoom - 10); // Adjust 10 as needed based on your initial zoom
-
-    // Scale the min and max weights based on the adjustment factor
-    const scaledMinWeight = minWeight * adjustmentFactor;
-    const scaledMaxWeight = maxWeight * adjustmentFactor;
-
-    // Update the heatmap options with the scaled min and max weights
-    heatmap.set('maxIntensity', scaledMaxWeight);
-    heatmap.set('minIntensity', scaledMinWeight);
-}
-
 // called on Google map API load
 function initMap() {
     // bounding box
@@ -184,7 +165,7 @@ function initMap() {
         lng: (topLeft.lng + bottomRight.lng) / 2
     };
 
-    // Créer une forme de rectangle pour représenter la bounding box
+    // create suared bounding box
     var boundingBox = new google.maps.Polygon({
         map: map,
         paths: [topLeft, topRight, bottomRight, bottomLeft],
@@ -328,11 +309,6 @@ function initMap() {
                 //dissipating: false,
                 map: map,
                 radius: 10
-            });
-            // Add listener for zoom change event
-            google.maps.event.addListener(map, 'zoom_changed', function () {
-                // Update the heatmap weights when the zoom level changes
-                updateHeatmapWeights();
             });
             
         })
