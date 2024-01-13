@@ -46,29 +46,33 @@ body {
 #toggleSegmentsButton {
     position: absolute;
     top: 50px;
-    left: 179px;
+    left: 178px;
     padding: 11px 5px;
     background-color: #ffffff; /* Change the background color as needed */
-    color: #070707;
+    color: #000000;
     border: none;
     cursor: pointer;
     z-index: 1001; /* Set a higher z-index */
-    font: bold Helvetica, sans-serif; /* Add bold font */
+    font: bold 16px Helvetica, sans-serif; /* Add bold font */
     font-size: 16px; /* Increase font size */
+    border-radius: 2px;
+    box-shadow: 0 0 5px rgba(151, 151, 151, 0.315)/* box shadow */
 }
 
 #toggleHeatmapButton {
     position: absolute;
     top: 50px;
-    left: 262px;
+    left: 264px;
     padding: 11px 5px;
     background-color: #ffffff; /* Change the background color as needed */
-    color: rgb(0, 0, 0)000;
+    color: #000000;
     border: none;
     cursor: pointer;
     z-index: 1001; /* Set a higher z-index */
-    font: bold Helvetica, sans-serif; /* Add bold font */
+    font: bold 16px Helvetica, sans-serif; /* Add bold font */
     font-size: 16px; /* Increase font size */
+    border-radius: 2px;
+    box-shadow: 0 0 5px rgba(151, 151, 151, 0.315)/* box shadow */
 }
 
 /* Add hover styles */

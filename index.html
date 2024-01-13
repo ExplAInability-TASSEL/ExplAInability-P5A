@@ -137,8 +137,24 @@
         let allPolygons = []; // for hide/show
         let minWeight; // Variable to store the current minimum weight
         let maxWeight; // Variable to store the current maximum weight
+        let segmentsButtonClicked = true;
+        let heatmapClicked = true;
 
         function toggleSegments() {
+            // Toggle the variable indicating whether the segments button is clicked
+            segmentsButtonClicked = !segmentsButtonClicked;
+
+            // Get the segments button element
+            const segmentsButton = document.getElementById('toggleSegmentsButton');
+
+            // Update the font style based on whether the button is clicked
+            if (segmentsButtonClicked) {
+                segmentsButton.style.font = 'bold 16px Helvetica, sans-serif';
+                segmentsButton.style.color = '#070707';
+            } else {
+                segmentsButton.style.font = ' 17px Helvetica, sans-serif';
+                segmentsButton.style.color = '#7c7b7b';
+            }
             allPolygons.forEach(polygon => {
                 const currentVisibility = polygon.getMap() !== null;
                 polygon.setMap(currentVisibility ? null : map);
@@ -146,6 +162,20 @@
         }
         // Function to toggle the visibility of the heatmap
         function toggleHeatmap() {
+            // Toggle the variable indicating whether the segments button is clicked
+            heatmapClicked = !heatmapClicked;
+
+            // Get the segments button element
+            const heatmap_button = document.getElementById('toggleHeatmapButton');
+
+            // Update the font style based on whether the button is clicked
+            if (heatmapClicked) {
+                heatmap_button.style.font = 'bold 16px Helvetica, sans-serif';
+                heatmap_button.style.color = '#070707';
+            } else {
+                heatmap_button.style.font = '17px Helvetica, sans-serif';
+                heatmap_button.style.color = '#7c7b7b';
+            }
             heatmap.setMap(heatmap.getMap() ? null : map);
         }
 
@@ -409,11 +439,11 @@
             heatmap.set('maxIntensity', scaledMaxWeight);
             heatmap.set('minIntensity', scaledMinWeight);
         }
-        // src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEKcJxXZ9Hr_T97zsoed5Q2RMX_5X1ph0&callback=initMap&libraries=visualization"
+        // src="https://maps.googleapis.com/maps/api/js?key={{ site.GOOGLE_MAP_API_KEY }}&callback=initMap&libraries=visualization"
 
     </script>
     <script
-        src="https://maps.googleapis.com/maps/api/js?key={{ site.GOOGLE_MAP_API_KEY }}&callback=initMap&libraries=visualization"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEKcJxXZ9Hr_T97zsoed5Q2RMX_5X1ph0&callback=initMap&libraries=visualization"
         async defer></script>
 </body>
 
