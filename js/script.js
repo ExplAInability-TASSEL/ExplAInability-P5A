@@ -12,6 +12,8 @@ let heatmapClicked = true;
 
 // Function to open the modal
 function openModal(modalId) {
+    // Input: modalId - ID of the modal to be opened
+    // Output: None
     // Hide the other modal
     const otherModalId = modalId === 'infosModal' ? 'contactModal' : 'infosModal';
     document.getElementById(otherModalId).style.display = "none";
@@ -22,11 +24,15 @@ function openModal(modalId) {
 
 // Function to close the modal
 function closeModal(modalId) {
+    // Input: modalId - ID of the modal to be closed
+    // Output: None
     document.getElementById(modalId).style.display = "none";
 }
 
 // Close the modal if the user clicks outside of it
 window.onclick = function (event) {
+    // Input: event - Click event
+    // Output: None
     if (event.target.className === "modal") {
         event.target.style.display = "none";
     }
@@ -34,11 +40,15 @@ window.onclick = function (event) {
 
 // Show only the Infos modal when the page is loaded
 window.onload = function () {
+    // Input: None
+    // Output: None
     openModal('infosModal');
 };
 
 // Function to toggle the visibility of the segments
 function toggleSegments() {
+    // Input/Output: None
+
     // Toggle the variable indicating whether the segments button is clicked
     segmentsButtonClicked = !segmentsButtonClicked;
 
@@ -61,6 +71,8 @@ function toggleSegments() {
 
 // Function to toggle the visibility of the heatmap
 function toggleHeatmap() {
+    // Input/Output: None
+
     // Toggle the variable indicating whether the segments button is clicked
     heatmapClicked = !heatmapClicked;
 
@@ -80,11 +92,16 @@ function toggleHeatmap() {
 
 // Function to dynamically convert alpha value to color
 function getColorFromAlpha(alpha) {
+    // Input: alpha - Alpha value
+    // Output: Color value (string)
     return alpha > 0.5 ? 'red' : 'blue';
 }
 
 // Function to map class_id to a property (color or name)
 function getClassProperty(classId, property) {
+    // Input: classId - Class ID, property - 'color' or 'name'
+    // Output: Color value or class name (string)
+
     const classProperties = {
         1: { color: "#f1c40f", name: "Cereals" },
         2: { color: "#a6acaf", name: "Cotton" },
@@ -103,6 +120,8 @@ function getClassProperty(classId, property) {
 
 // Function to create legend items dynamically
 function createLegend() {
+    // Input/Output: None
+
     const legendContainer = document.getElementById("class-legend");
 
     // Loop through class IDs and create legend items
@@ -119,16 +138,10 @@ function createLegend() {
 // Call the function to create the legend
 createLegend();
 
-// Function to fetch and concatenate multiple JSON files
-function fetchAndConcatJSON(filePaths) {
-    return Promise.all(filePaths.map(filePath =>
-        fetch(filePath)
-            .then(response => response.json())
-    ))
-    .then(jsonDataArray => jsonDataArray.flat());
-}
-
 function clonePolygon(originalPolygon) {
+    // Input: originalPolygon - Original Google Maps Polygon object
+    // Output: Cloned Google Maps Polygon object
+
     return new google.maps.Polygon({
         paths: originalPolygon.getPaths().getArray().map(path => path.getArray()),
         strokeColor: originalPolygon.strokeColor,
@@ -140,6 +153,8 @@ function clonePolygon(originalPolygon) {
 }
 
 function updateHeatmapWeights() {
+    // Input/Output: None
+    
     // Get the current zoom level
     const currentZoom = map.getZoom();
 
@@ -179,7 +194,7 @@ function initMap() {
         fillColor: 'transparent',
         fillOpacity: 0.2
     });
-    
+
     // load the map
     map = new google.maps.Map(document.getElementById('map-container'), {
         zoom: 10,
