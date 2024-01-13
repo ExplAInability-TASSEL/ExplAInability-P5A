@@ -169,6 +169,17 @@ function initMap() {
         lng: (topLeft.lng + bottomRight.lng) / 2
     };
 
+    // Créer une forme de rectangle pour représenter la bounding box
+    var boundingBox = new google.maps.Polygon({
+        map: map,
+        paths: [topLeft, topRight, bottomRight, bottomLeft],
+        strokeColor: '#FF0000', // rouge
+        strokeOpacity: 1,
+        strokeWeight: 2,
+        fillColor: 'transparent',
+        fillOpacity: 0.2
+    });
+    
     // load the map
     map = new google.maps.Map(document.getElementById('map-container'), {
         zoom: 10,
