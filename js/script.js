@@ -1,3 +1,15 @@
+// variables
+let mapInPanel;
+let map;
+let heatmap;
+let clickedPolygon; // Variable to store the clicked polygon
+let clickedPixelMarkers = []; // Array to store the clicked pixel markers
+let allPolygons = []; // for hide/show
+let minWeight; // Variable to store the current minimum weight
+let maxWeight; // Variable to store the current maximum weight
+let segmentsButtonClicked = true;
+let heatmapClicked = true;
+
 // Function to open the modal
 function openModal(modalId) {
     // Hide the other modal
@@ -25,21 +37,7 @@ window.onload = function () {
     openModal('infosModal');
 };
 
-console.log('V2116:');
-
-
-let mapInPanel;
-let map;
-let heatmap;
-let uniqueAlphaColors = {};
-let clickedPolygon; // Variable to store the clicked polygon
-let clickedPixelMarkers = []; // Array to store the clicked pixel markers
-let allPolygons = []; // for hide/show
-let minWeight; // Variable to store the current minimum weight
-let maxWeight; // Variable to store the current maximum weight
-let segmentsButtonClicked = true;
-let heatmapClicked = true;
-
+// Function to toggle the visibility of the segments
 function toggleSegments() {
     // Toggle the variable indicating whether the segments button is clicked
     segmentsButtonClicked = !segmentsButtonClicked;
@@ -60,6 +58,7 @@ function toggleSegments() {
         polygon.setMap(currentVisibility ? null : map);
     });
 }
+
 // Function to toggle the visibility of the heatmap
 function toggleHeatmap() {
     // Toggle the variable indicating whether the segments button is clicked
@@ -102,7 +101,6 @@ function getClassProperty(classId, property) {
     return (classProperties[classId] || defaultProperties)[property];
 }
 
-
 // Function to create legend items dynamically
 function createLegend() {
     const legendContainer = document.getElementById("class-legend");
@@ -117,6 +115,7 @@ function createLegend() {
         legendContainer.appendChild(legendItem);
     }
 }
+
 // Call the function to create the legend
 createLegend();
 
@@ -140,22 +139,37 @@ function clonePolygon(originalPolygon) {
     });
 }
 
-// fonction qui est appelée lorsque l'API google map est chargée (javascript)
+function updateHeatmapWeights() {
+    // Get the current zoom level
+    const currentZoom = map.getZoom();
+
+    // Calculate the factor to adjust weights based on the zoom level
+    const adjustmentFactor = Math.pow(2, currentZoom - 10); // Adjust 10 as needed based on your initial zoom
+
+    // Scale the min and max weights based on the adjustment factor
+    const scaledMinWeight = minWeight * adjustmentFactor;
+    const scaledMaxWeight = maxWeight * adjustmentFactor;
+
+    // Update the heatmap options with the scaled min and max weights
+    heatmap.set('maxIntensity', scaledMaxWeight);
+    heatmap.set('minIntensity', scaledMinWeight);
+}
+
+// called on Google map API load
 function initMap() {
-    // study area = 2000 km^2 in Burkina Faso around the town of Koumbia
-    // objets avec les propriétés lat et lng
+    // bounding box
     var topLeft = { lat: 11.371305048234298, lng: -3.8928232831763268 };
     var topRight = { lat: 11.371305048234298, lng: -3.42 };
     var bottomRight = { lat: 10.96, lng: -3.42 };
     var bottomLeft = { lat: 10.96, lng: -3.8928232831763268 };
 
-    // Calculer le centre de la bounding box
+    // calculate the center of the bounding box
     var centerCoordinates = {
         lat: (topLeft.lat + bottomRight.lat) / 2,
         lng: (topLeft.lng + bottomRight.lng) / 2
     };
 
-    // charger la carte
+    // load the map
     map = new google.maps.Map(document.getElementById('map-container'), {
         zoom: 10,
         center: centerCoordinates
@@ -163,25 +177,7 @@ function initMap() {
 
     let heatmapData = [];
 
-
-    // Créer une forme de rectangle pour représenter la bounding box
-    var boundingBox = new google.maps.Polygon({
-        map: map,
-        paths: [topLeft, topRight, bottomRight, bottomLeft],
-        strokeColor: '#FF0000', // rouge
-        strokeOpacity: 1,
-        strokeWeight: 2,
-        fillColor: 'transparent',
-        fillOpacity: 0.2
-    });
-
-
-    const jsonFilesToFetch = [
-        './sources/up_left_corner_segment_lat_long.json',
-        './sources/water_segment_lat_long.json'
-    ];
-
-    // recupérer les coordonnées des segments à partir du fichier JSON water (requête fetch)
+    // start by fetching the input file
     fetch('./sources/input_file.json')
         .then(response => response.json())
         .then(data => {
@@ -211,14 +207,14 @@ function initMap() {
                     const infoContent = `
                     <h3>Class of the segment: ${getClassProperty(areaData.class_id, "name")}</h3>
                     `;
-                    document.getElementById("info-content").innerHTML = infoContent; // affiche la classe ID dans info-panel -> info-content
-                    document.getElementById('info-panel').style.transform = "translateX(0)"; // affiche le right side panel
+                    document.getElementById("info-content").innerHTML = infoContent; // display class name on right side panel
+                    document.getElementById('info-panel').style.transform = "translateX(0)"; // display right side panel
                     document.getElementById('info-panel-arrow').style.display = "block"; // show the arrow
 
                     clickedPolygon = polygon;
                     clickedPixelMarkers = [];
 
-                    // Récupérer les coordonnées du polygone cliqué
+                    // get clicked segment coordinates
                     const polygonCoordinates = areaData.perimeter_pixel_coordinates.map(coord => ({
                         lat: parseFloat(coord.latitude),
                         lng: parseFloat(coord.longitude),
@@ -243,7 +239,7 @@ function initMap() {
                     });
 
 
-                    // Calculer le centre géométrique du polygone
+                    // calculate geometric center of the clicked segment
                     const centerLat = polygonCoordinates.reduce((sum, coord) => sum + coord.lat, 0) / polygonCoordinates.length;
                     const centerLng = polygonCoordinates.reduce((sum, coord) => sum + coord.lng, 0) / polygonCoordinates.length;
 
@@ -317,25 +313,4 @@ function initMap() {
         .catch(error => {
             console.error('Error fetching and concatenating data:', error);
         });
-}
-function updateMinMaxWeights() {
-    // Calculate the initial min and max weights
-    minWeight = Math.min(...heatmapData.map(dataPoint => dataPoint.weight));
-    maxWeight = Math.max(...heatmapData.map(dataPoint => dataPoint.weight));
-}
-
-function updateHeatmapWeights() {
-    // Get the current zoom level
-    const currentZoom = map.getZoom();
-
-    // Calculate the factor to adjust weights based on the zoom level
-    const adjustmentFactor = Math.pow(2, currentZoom - 10); // Adjust 10 as needed based on your initial zoom
-
-    // Scale the min and max weights based on the adjustment factor
-    const scaledMinWeight = minWeight * adjustmentFactor;
-    const scaledMaxWeight = maxWeight * adjustmentFactor;
-
-    // Update the heatmap options with the scaled min and max weights
-    heatmap.set('maxIntensity', scaledMaxWeight);
-    heatmap.set('minIntensity', scaledMinWeight);
 }

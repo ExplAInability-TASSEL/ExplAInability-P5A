@@ -6,12 +6,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koumbia Map</title>
+    <title>ExplAInability Map</title>
     <link rel="stylesheet" type="text/css" href="static/styles.css">
 </head>
 
 <body>
-    <!-- section menu de la page -->
     <!-- Navigation bar -->
     <div id="nav-menu">
         <ul>
@@ -78,7 +77,7 @@
     <!-- map  -->
     <div id="map-container"></div>
 
-    <!-- panel qui apparait quand on clique sur segment -->
+    <!-- right side panel -->
     <div id="info-panel">
         <div id="info-content">
             <!-- Data will be displayed here when an area is clicked -->
@@ -87,18 +86,15 @@
             <!-- New map will be displayed here when an area is clicked -->
         </div>
         <div id="legend">
-            <!-- <div id="gradient"></div> -->
-            <!-- <div id="legend-content"> -->
-            <!-- <h4>Heatmap LegendSS</h4> -->
-            <!-- <div id="gradient"></div> -->
-            <!-- Ajoutez d'autres éléments de légende selon vos besoins -->
-            <!-- </div> -->
+            <!-- right side panel legend -->
         </div>
-        <!-- Ligne un peu longue mais qui evite d'ajouter un listener pour deux actions -->
+        <!-- right side panel arrow -->
         <div id="info-panel-arrow" onclick="document.getElementById('info-panel').style.transform = 'translateX(100%)'; this.style.display = 'none';"></div>    </div>
 
     <script src="js/script.js"></script>
     <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEKcJxXZ9Hr_T97zsoed5Q2RMX_5X1ph0&callback=initMap&libraries=visualization"
+
         src="https://maps.googleapis.com/maps/api/js?key={{ site.GOOGLE_MAP_API_KEY }}&callback=initMap&libraries=visualization"
         async defer></script>
 </body>
