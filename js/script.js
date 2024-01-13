@@ -165,7 +165,13 @@ function initMap() {
         lng: (topLeft.lng + bottomRight.lng) / 2
     };
 
-    // create suared bounding box
+    // load the map
+    map = new google.maps.Map(document.getElementById('map-container'), {
+        zoom: 10,
+        center: centerCoordinates
+    });
+
+    // create squared bounding box
     var boundingBox = new google.maps.Polygon({
         map: map,
         paths: [topLeft, topRight, bottomRight, bottomLeft],
@@ -174,12 +180,6 @@ function initMap() {
         strokeWeight: 2,
         fillColor: 'transparent',
         fillOpacity: 0.2
-    });
-
-    // load the map
-    map = new google.maps.Map(document.getElementById('map-container'), {
-        zoom: 10,
-        center: centerCoordinates
     });
 
     let heatmapData = [];
