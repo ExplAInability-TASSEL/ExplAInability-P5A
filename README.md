@@ -37,8 +37,7 @@ The use of time series of high-resolution satellite images opens up new opportun
 GOOGLE API
 https://explainability-tassel.github.io/ExplAInability-P5A/
 
-MapBox API
-https://thibault-gillard.github.io/Explainability/
+Overview
 
 ![Alt Text](https://github.com/pierrert3/ExplAInability-P5A/blob/main/assets/Enregistrement%20de%20l%E2%80%99%C3%A9cran%202023-09-22%20%C3%A0%2023.52.46.gif)
 
@@ -79,10 +78,19 @@ The preprocessing can also be done with the `preprocessing.py` file, hence can b
 
 ### 3. The Map
 
-- `index.html`: This file contains the html/css/javascript code for the map. The map is displayed using GitHub Pages. GitHub Pages is a static site hosting service that takes HTML, CSS, and JavaScript files straight from a repository on GitHub, optionally runs the files through a build process, and publishes a website.
+- `index.html`: This file contains the html code for the map. The map is displayed using GitHub Pages. GitHub Pages is a static site hosting service that takes HTML, CSS, and JavaScript files straight from a repository on GitHub, optionally runs the files through a build process, and publishes a website.
+
+- `js/`: This directory contains the javascript code for the map.
+
+  - `script.js`
+
+- `static/`: This directory contains the css code for the map.
+
+  - `styles.css`
 
 - `sources/`: This directory contains the source code for the map. It includes:
 
+  - `input_file.json`: Contain all the data (pixels, class_id and alpha) for the map.
   - `up_left_corner_segment_lat_long.json`: Contains the data (pixels, class_id and alpha) for the up left corner map.
   - `water_segment_lat_long.json`: Contains the data (pixels, class_id and alpha) for the water map.
   - `training_segment_lat_long.json`: Contains the data (pixels, class_id and alpha) for the training map.
@@ -122,3 +130,4 @@ Publication authors:
 ## License
 
 Distributed under the 'GNU GENERAL PUBLIC LICENSE' License. See `LICENSE` for more information.
+
