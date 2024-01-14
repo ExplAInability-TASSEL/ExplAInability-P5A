@@ -96,11 +96,11 @@ The preprocessing can also be done with the `preprocessing.py` file, hence can b
 
 ## Installation
 
-Python 3.10.13 was used for this project.
+Python 3.10.13 was used for this project. 
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/pierrert3/ExplAInability-P5A.git
+   git clone https://github.com/ExplAInability-TASSEL/ExplAInability-P5A.git
     ```
 2. Install the required packages
     ```sh
