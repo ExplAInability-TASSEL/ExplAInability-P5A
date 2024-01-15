@@ -57,7 +57,7 @@ The preprocessing is done in the numbered notebooks, following the numerical ord
 
 The requiered packages are listed in the `requirements.txt` file.
 
-The preprocessing can also be done with the `preprocessing.py` file, hence can be launched with a command line.
+The preprocessing can also be done with the `process_data.py` file, hence can be launched with a command line.
 
 ### 2. Training and Inference
 
