@@ -311,14 +311,27 @@ function initMap() {
                     // Calculate the weights for the two categories
                     const redWeight = Math.max(...areaData.alphas.map(alpha => parseFloat(alpha)));
                     const blueWeight = 1 - redWeight;
+                    var red_color = "#f1c40f";
+                    var blue_color = "#2c3e50";
+
+                    if (BinaryClicked) {
+                        red_color = 'red';
+                        blue_color = 'blue';
+                    } else {
+                        // Convert alpha to a value between 0 and 255 for RGB
+                        let alphaScaled_red = Math.floor(redWeight * 255);
+                        let alphaScaled_blue = Math.floor(blueWeight * 255);
+                        red_color = `rgb(${255 - alphaScaled_red}, 0, ${alphaScaled_red})`;
+                        blue_color = `rgb(${255 - alphaScaled_blue}, 0, ${alphaScaled_blue})`;
+                    }
 
                     // Update the #legend-content with the weights and colored boxes
                     const legendContent = `
                         <h4>Attention Weight</h4>
                         <div id="alphalegend">
-                            <span class="legend-color-box" style="background-color: red;"></span>
+                            <span class="legend-color-box" style="background-color: ${red_color};"></span>
                             <span>${redWeight.toFixed(2)}</span>
-                            <span class="legend-color-box" style="background-color: blue;"></span>
+                            <span class="legend-color-box" style="background-color: ${blue_color};"></span>
                             <span>${blueWeight.toFixed(2)}</span>
                         </div>
                     `;
