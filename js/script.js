@@ -1,4 +1,3 @@
-console.log('V1522');
 // variables
 let mapInPanel;
 let map;
