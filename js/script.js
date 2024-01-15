@@ -7,7 +7,7 @@ let clickedPixelMarkers = []; // Array to store the clicked pixel markers
 let allPolygons = []; // for hide/show
 let segmentsButtonClicked = true;
 let heatmapClicked = true;
-let BinaryClicked = true
+let BinaryClicked = false;
 
 // Function to open the modal
 function openModal(modalId) {
@@ -59,7 +59,7 @@ function toggleSegments() {
         segmentsButton.style.font = 'bold 16px Helvetica, sans-serif';
         segmentsButton.style.color = '#070707';
     } else {
-        segmentsButton.style.font = ' 17px Helvetica, sans-serif';
+        segmentsButton.style.font = ' 16px Helvetica, sans-serif';
         segmentsButton.style.color = '#7c7b7b';
     }
     allPolygons.forEach(polygon => {
@@ -83,7 +83,7 @@ function toggleHeatmap() {
         heatmap_button.style.font = 'bold 16px Helvetica, sans-serif';
         heatmap_button.style.color = '#070707';
     } else {
-        heatmap_button.style.font = '17px Helvetica, sans-serif';
+        heatmap_button.style.font = '16px Helvetica, sans-serif';
         heatmap_button.style.color = '#7c7b7b';
     }
     heatmap.setMap(heatmap.getMap() ? null : map);
@@ -101,11 +101,11 @@ function toggleBinary() {
 
     // Update the font style based on whether the button is clicked
     if (BinaryClicked) {
+        binary_button.style.font = '16px Helvetica, sans-serif';
+        binary_button.style.color = '#7c7b7b';
+    } else {
         binary_button.style.font = 'bold 16px Helvetica, sans-serif';
         binary_button.style.color = '#070707';
-    } else {
-        binary_button.style.font = '17px Helvetica, sans-serif';
-        binary_button.style.color = '#7c7b7b';
     }
 }
 
