@@ -1,4 +1,4 @@
-console.log('V1906');
+console.log('V1459');
 // variables
 let mapInPanel;
 let map;
@@ -8,6 +8,7 @@ let clickedPixelMarkers = []; // Array to store the clicked pixel markers
 let allPolygons = []; // for hide/show
 let segmentsButtonClicked = true;
 let heatmapClicked = true;
+let BinaryClicked = true
 
 // Function to open the modal
 function openModal(modalId) {
@@ -89,11 +90,42 @@ function toggleHeatmap() {
     heatmap.setMap(heatmap.getMap() ? null : map);
 }
 
+// Function to toggle the visibility of the heatmap
+function toggleBinary() {
+    // Input/Output: None
+
+    // Toggle the variable indicating whether the segments button is clicked
+    BinaryClicked = !BinaryClicked;
+
+    // Get the segments button element
+    const binary_button = document.getElementById('toggleBinaryButton');
+
+    // Update the font style based on whether the button is clicked
+    if (BinaryClicked) {
+        binary_button.style.font = 'bold 16px Helvetica, sans-serif';
+        binary_button.style.color = '#070707';
+    } else {
+        binary_button.style.font = '17px Helvetica, sans-serif';
+        binary_button.style.color = '#7c7b7b';
+    }
+}
+
 // Function to dynamically convert alpha value to color
 function getColorFromAlpha(alpha) {
     // Input: alpha - Alpha value
     // Output: Color value (string)
-    return alpha > 0.5 ? 'red' : 'blue';
+
+    if (BinaryClicked) {
+        return alpha > 0.5 ? 'red' : 'blue';
+    } else {
+        // Convert alpha to a value between 0 and 255 for RGB
+        let alphaScaled = Math.floor(alpha * 255);
+
+        // Create RGB color
+        let color = `rgb(${255 - alphaScaled}, 0, ${alphaScaled})`;
+
+        return color;
+    }
 }
 
 // Function to map class_id to a property (color or name)

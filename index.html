@@ -28,12 +28,12 @@
                 <br>
                 This map helps getting insights on how the <strong>TASSEL</strong> algorithm works.<br>
                 <br>
-                The two <strong>buttons</strong> you can see above enable to hide and show the <strong>labelized segments</strong> and the <strong>heatmap</strong>.<br>
+                The two <strong>buttons</strong> you can see above enable to hide and show the <strong>labeled segments</strong> and the <strong>heatmap</strong>.<br>
                 The heatmap represents the <strong>attention weights</strong> of the algorithm. The more the weight is close to 1, the more the algorithm is sure of the class of the segment.<br>
                 <br>
                 When clicking on a segment, you can see the class of the segment and the attention weights of the algorithm for each pixel of the segment in a <strong>right side panel</strong>.<br>
                 <br>
-                The <strong>legend</strong> you can see onn the left side of the map represents the different <strong>classes</strong> of the segments.<br>
+                The <strong>legend</strong> you can see on the left side of the map represents the different <strong>classes</strong> of the segments.<br>
                 <br>
                 If you have any question, please contact us using the <strong>contact button</strong> at the top.<br>
             </p>
@@ -73,7 +73,8 @@
     <button id="toggleSegmentsButton" onclick="toggleSegments()">Segments</button>
     <!-- show/hide heatmap -->
     <button id="toggleHeatmapButton" onclick="toggleHeatmap()">Heatmap</button>
-
+    <!-- set binary/continue color -->
+    <button id="toggleBinaryButton" onclick="toggleBinary()">Binary</button>
     <!-- map  -->
     <div id="map-container"></div>
 
