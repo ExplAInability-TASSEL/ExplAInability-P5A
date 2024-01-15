@@ -1,4 +1,4 @@
-console.log('V1459');
+console.log('V1522');
 // variables
 let mapInPanel;
 let map;
@@ -199,7 +199,7 @@ function initMap() {
 
     // load the map
     map = new google.maps.Map(document.getElementById('map-container'), {
-        zoom: 10,
+        zoom: 12,
         center: centerCoordinates
     });
 
