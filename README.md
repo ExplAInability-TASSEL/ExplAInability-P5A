@@ -40,7 +40,7 @@ Visit [OUR MAP](https://explainability-tassel.github.io/ExplAInability-P5A/)👈
 
 Overview
 
-![Alt Text](https://github.com/ExplAInability-TASSEL/ExplAInability-P5A/blob/main/assets/Enregistrement%20de%20l%E2%80%99%C3%A9cran%202024-01-14%20%C3%A0%2023.31.28.gif)
+![Alt Text](https://github.com/ExplAInability-TASSEL/ExplAInability-P5A/blob/main/assets/Enregistrement%20de%20l%E2%80%99%C3%A9cran%202024-01-16%20%C3%A0%2013.05.40.gif)
 
 ## Organization of the project
 
@@ -48,7 +48,7 @@ This project is organized into several key files and directories:
 
 ### 1. Preprocessing
 
-The preprocessing code is available in the ['preprocessing' branch](https://github.com/ExplAInability-TASSEL/ExplAInability-P5A/tree/preprocessing).
+The preprocessing code resides in the 'preprocessing' branch. You can explore it by visiting [this link](https://github.com/ExplAInability-TASSEL/ExplAInability-P5A/tree/preprocessing).
 
 The preprocessing is done in the numbered notebooks, following the numerical order :
 - `1_data_analyze.ipynb` analyze the input data.
@@ -111,7 +111,7 @@ Python 3.10.13 was used for this project.
     ```
 3. Run the notebooks to train and test the model
 4. Run the map
-5. Open the 'index.html' file to explore the interactive map. Feel free to use 'segment_lat_long.json' as a template for incorporating your own data.
+5. If you want to use the map with your own data, you can use the `index.html` and `segment_lat_long.json` file as a template.
 
 <!-- Performance -->
 ## Model performance
@@ -148,8 +148,6 @@ Model preformance on Test(new) data:
   
 <!-- Authors -->
 ## Authors
-
-We invite you to explore the capabilities of TASSEL and gain valuable insights by navigating through our interactive map. If you encounter any issues or have questions, please refer to the documentation or reach out to our team for assistance. Happy exploring!
 
 - [GAUBIL Clara (@claragbl)](https://github.com/claragbl)
 - [GILLARD Thibault (@Thibault-GILLARD)](https://github.com/Thibault-GILLARD)
