@@ -14,7 +14,6 @@ TASSEL_orig</h3>
     <img src="https://upload.wikimedia.org/wikipedia/fr/e/e9/EPF_logo_2021.png" alt="Logo" width="211" height="179">
   </a>
   <p align="center">
-    Code developed for the web programming course at epf whose goal was "Create your own APIs to share data".
     <br />
     <a href="https://github.com/pierrert3/ExplAInability-P5A/tree/main"><strong>Explore the docs »</strong></a>
     <br />
