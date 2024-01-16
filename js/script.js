@@ -121,15 +121,15 @@ function getColorFromAlpha(alpha) {
         let r, g, b;
 
         if (alpha > 0.5) {
-            // For alpha > 0.5, transition from red (1) to white (0.5)
-            r = Math.floor(255 * (1 - (alpha - 0.5) * 2));
-            g = Math.floor(255 * (1 - (alpha - 0.5) * 2));
-            b = 255;
-        } else {
-            // For alpha <= 0.5, transition from white (0.5) to blue (0)
+            // For alpha > 0.5, transition from white (0.5) to red (1)
             r = 255;
-            g = Math.floor(255 * alpha * 2);
-            b = Math.floor(255 * alpha * 2);
+            g = Math.floor(255 * (1 - (alpha - 0.5) * 2));
+            b = Math.floor(255 * (1 - (alpha - 0.5) * 2));
+        } else {
+            // For alpha <= 0.5, transition from blue (0) to white (0.5)
+            r = Math.floor(255 * (alpha * 2));
+            g = Math.floor(255 * (alpha * 2));
+            b = 255;
         }
 
         // Create RGB color
@@ -212,7 +212,8 @@ function initMap() {
     // load the map
     map = new google.maps.Map(document.getElementById('map-container'), {
         zoom: 12,
-        center: centerCoordinates
+        center: centerCoordinates,
+        mapTypeId: google.maps.MapTypeId.SATELLITE
     });
 
     // create squared bounding box
