@@ -101,11 +101,11 @@ function toggleBinary() {
 
     // Update the font style based on whether the button is clicked
     if (BinaryClicked) {
-        binary_button.style.font = '16px Helvetica, sans-serif';
-        binary_button.style.color = '#7c7b7b';
-    } else {
         binary_button.style.font = 'bold 16px Helvetica, sans-serif';
         binary_button.style.color = '#070707';
+    } else {
+        binary_button.style.font = '16px Helvetica, sans-serif';
+        binary_button.style.color = '#7c7b7b';
     }
 }
 
@@ -117,15 +117,28 @@ function getColorFromAlpha(alpha) {
     if (BinaryClicked) {
         return alpha > 0.5 ? 'red' : 'blue';
     } else {
-        // Convert alpha to a value between 0 and 255 for RGB
-        let alphaScaled = Math.floor(alpha * 255);
+        // Map alpha to a custom color scale between red (1), white, and blue (0)
+        let r, g, b;
+
+        if (alpha > 0.5) {
+            // For alpha > 0.5, transition from red (1) to white (0.5)
+            r = Math.floor(255 * (1 - (alpha - 0.5) * 2));
+            g = Math.floor(255 * (1 - (alpha - 0.5) * 2));
+            b = 255;
+        } else {
+            // For alpha <= 0.5, transition from white (0.5) to blue (0)
+            r = 255;
+            g = Math.floor(255 * alpha * 2);
+            b = Math.floor(255 * alpha * 2);
+        }
 
         // Create RGB color
-        let color = `rgb(${255 - alphaScaled}, 0, ${alphaScaled})`;
+        let color = `rgb(${r}, ${g}, ${b})`;
 
         return color;
     }
 }
+
 
 // Function to map class_id to a property (color or name)
 function getClassProperty(classId, property) {
@@ -306,23 +319,13 @@ function initMap() {
 
                     // Clear the previous weights
                     document.getElementById("legend").innerHTML = '';
-
+                    
                     // Calculate the weights for the two categories
                     const redWeight = Math.max(...areaData.alphas.map(alpha => parseFloat(alpha)));
                     const blueWeight = 1 - redWeight;
-                    var red_color = "#f1c40f";
-                    var blue_color = "#2c3e50";
-
-                    if (BinaryClicked) {
-                        red_color = 'red';
-                        blue_color = 'blue';
-                    } else {
-                        // Convert alpha to a value between 0 and 255 for RGB
-                        let alphaScaled_red = Math.floor(redWeight * 255);
-                        let alphaScaled_blue = Math.floor(blueWeight * 255);
-                        red_color = `rgb(${255 - alphaScaled_red}, 0, ${alphaScaled_red})`;
-                        blue_color = `rgb(${255 - alphaScaled_blue}, 0, ${alphaScaled_blue})`;
-                    }
+                    
+                    var red_color = getColorFromAlpha(redWeight);
+                    var blue_color = getColorFromAlpha(blueWeight);
 
                     // Update the #legend-content with the weights and colored boxes
                     const legendContent = `
