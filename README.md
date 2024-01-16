@@ -40,7 +40,7 @@ Visit [OUR MAP](https://explainability-tassel.github.io/ExplAInability-P5A/)👈
 
 Overview
 
-![Alt Text](https://github.com/ExplAInability-TASSEL/ExplAInability-P5A/blob/main/assets/Enregistrement%20de%20l%E2%80%99%C3%A9cran%202024-01-14%20%C3%A0%2023.31.28.gif)
+![Alt Text](https://github.com/ExplAInability-TASSEL/ExplAInability-P5A/blob/main/assets/Enregistrement%20de%20l%E2%80%99%C3%A9cran%202024-01-16%20%C3%A0%2013.05.40.gif)
 
 ## Organization of the project
 
