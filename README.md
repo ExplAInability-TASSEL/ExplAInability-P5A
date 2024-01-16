@@ -49,6 +49,8 @@ This project is organized into several key files and directories:
 
 ### 1. Preprocessing
 
+The preprocessing code resides in the 'preprocessing' branch. You can explore it by visiting [this link](https://github.com/ExplAInability-TASSEL/ExplAInability-P5A/tree/preprocessing).
+
 The preprocessing is done in the numbered notebooks, following the numerical order :
 - `1_data_analyze.ipynb` analyze the input data.
 - `2_extract_included_segments.ipynb` extract segments partially (0%->100%) included in polygons for training set.
