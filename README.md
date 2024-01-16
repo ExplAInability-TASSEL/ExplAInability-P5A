@@ -118,7 +118,7 @@ Python 3.10.13 was used for this project.
 
 Model preformance on Test(new) data:
 
-## Classification Report
+### Classification Report
 
 | Class           | Precision | Recall | F1-Score | Support |
 |-----------------|-----------|--------|----------|---------|
