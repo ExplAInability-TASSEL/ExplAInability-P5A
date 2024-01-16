@@ -109,6 +109,39 @@ Python 3.10.13 was used for this project.
 3. Run the notebooks to train and test the model
 4. Run the map
 5. If you want to use the map with your own data, you can use the `index.html` and `segment_lat_long.json` file as a template.
+
+<!-- Performance -->
+## Model performance
+
+Model preformance on Test(new) data:
+
+### Classification Report
+
+| Class | Precision | Recall | F1-Score | Support |
+|-------|-----------|--------|----------|---------|
+| 0     | 1.00      | 0.86   | 0.93     | 109     |
+| 1     | 1.00      | 0.94   | 0.97     | 82      |
+| 2     | 1.00      | 0.94   | 0.97     | 85      |
+| 3     | 0.92      | 0.97   | 0.94     | 159     |
+| 4     | 0.89      | 1.00   | 0.94     | 281     |
+| 5     | 1.00      | 0.92   | 0.96     | 218     |
+| 6     | 1.00      | 1.00   | 1.00     | 11      |
+| 7     | 1.00      | 1.00   | 1.00     | 14      |
+
+### Overall Metrics
+
+- Accuracy: 0.95
+- Macro Avg Precision: 0.98
+- Macro Avg Recall: 0.95
+- Macro Avg F1-Score: 0.96
+- Weighted Avg Precision: 0.96
+- Weighted Avg Recall: 0.95
+- Weighted Avg F1-Score: 0.95
+- Total Instances: 959
+
+### Confusion Matrix
+
+![image](https://github.com/ExplAInability-TASSEL/ExplAInability-P5A/assets/117235512/7d1f427f-ca4a-492b-b401-2602d4f03542)
   
 <!-- Authors -->
 ## Authors
