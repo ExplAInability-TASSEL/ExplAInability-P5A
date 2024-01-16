@@ -34,7 +34,7 @@ The use of time series of high-resolution satellite images opens up new opportun
 <!-- MAP VIEW -->
 ## MAP VIEW
 
-Explore the capabilities of our model in action!
+Explore the capabilities of the model in action!
 
 👉Check out our interactive map to gain insights on how the model performs. 
 Visit [OUR MAP](https://explainability-tassel.github.io/ExplAInability-P5A/)👈
